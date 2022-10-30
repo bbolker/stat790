@@ -31,6 +31,7 @@ Materials on this web page are **under construction** and **subject to change**
 - Textbooks:
   - T. Hastie, R. Tibshirani, and J. Friedman. The Elements of Statistical Learning, 2nd ed. https://web.stanford.edu/~hastie/Papers/ESLII.pdf
   - Cosma Shalizi. Advanced Data Analysis from an Elementary Point of View. https://www.stat.cmu.edu/~cshalizi/ADAfaEPoV/
+- Software: R, Julia, Quarto, TeX, (recommended) VS Code: see [software page](software/README.html)
 - Platforms: Avenue to Learn, course web page (see below)
 - [Full course bibliography](stat790_bib.html)
 

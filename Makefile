@@ -1,4 +1,4 @@
-all: docs/assignments/README.html docs/index.html docs/stat790_bib.html 
+all: docs/assignments/README.html docs/index.html docs/stat790_bib.html docs/software/README.html
 ## allnotes docs/assignments/midterm-topics.html
 
 ## see also: mk_all
@@ -20,6 +20,10 @@ docs/assignments/%: assignments/%
 	mkdir -p docs/assignments
 	mv $< docs/$<
 
+docs/software/%: software/%
+	mkdir -p docs/software
+	mv $< docs/$<
+
 %.html: %.rmd
 	Rscript  -e "rmarkdown::render('$<')"
 
@@ -32,7 +36,7 @@ docs/assignments/%: assignments/%
 	mv $(@D)/tmp.docx $*.docx
 
 %.html: %.md
-	Rscript  -e "rmarkdown::render('$<', output_options = 'self_contained')"
+	Rscript  -e "rmarkdown::render('$<')"
 
 %.pdf: %.rmd
 	Rscript -e "rmarkdown::render('$<', output_format = tufte::tufte_handout())" ## , params = list('latex-engine'='xelatex'))"
