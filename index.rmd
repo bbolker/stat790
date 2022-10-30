@@ -13,7 +13,7 @@ tr:nth-child(even) {background-color: #f2f2f2;}
 th {background-color: #ccccff;}
 </style>
 
-Last updated: `r Sys.time()`
+Last updated: `r format(Sys.time(), "%d %b %Y")`
 
 ---
 
@@ -29,8 +29,8 @@ Materials on this web page are **under construction** and **subject to change**
 ### Misc info
 
 - Textbooks:
-    • T. Hastie, R. Tibshirani, and J. Friedman. The Elements of Statistical Learning, 2nd ed. https://web.stanford.edu/~hastie/Papers/ESLII.pdf
-    • Cosma Shalizi. Advanced Data Analysis from an Elementary Point of View. https://www.stat.cmu.edu/~cshalizi/ADAfaEPoV/
+  - T. Hastie, R. Tibshirani, and J. Friedman. The Elements of Statistical Learning, 2nd ed. https://web.stanford.edu/~hastie/Papers/ESLII.pdf
+  - Cosma Shalizi. Advanced Data Analysis from an Elementary Point of View. https://www.stat.cmu.edu/~cshalizi/ADAfaEPoV/
 - Platforms: Avenue to Learn, course web page (see below)
 - [Full course bibliography](stat790_bib.html)
 
