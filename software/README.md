@@ -4,14 +4,13 @@
 
 R is a domain-specific language for statistics and data science
 
-   - download links etc. are available at [CRAN](https://cran.r-project.org/) (Comprehensive R Archive Network)
+   - download links etc. are available at [CRAN](https://cran.r-project.org/) (Comprehensive R Archive Network) (if you already have R installed, make sure you have upgraded to the **latest version**)
    - in the course of the term you will probably need compilation tools for building R code that includes compiled (C/Fortran) code
    
       - [MacOS tools](https://mac.r-project.org/tools/)
       - [Windows tools](https://cran.r-project.org/bin/windows/Rtools/rtools42/rtools.html)
 	  - if you use Linux you are likely to have most of these tools already, but see [here](https://cran.r-project.org/bin/linux/) (and go to the subdirectory appropriate for your distribution); you may also want to use [r2u](https://github.com/eddelbuettel/r2u#r2u-cran-as-ubuntu-binaries) to simplify and speed up package installation
-	  
-	  
+
 ## Julia
 
 Julia is a domain-specific language for high-performance computing and data analysis. Download/install the stable release from [here](https://julialang.org/downloads/).
