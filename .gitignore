@@ -1,1 +1,9 @@
-\.~lock*
+*~
+\#*
+.#*
+.~lock*
+*.log
+*.aux
+*.bbl
+admin/
+private/

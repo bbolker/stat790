@@ -1,6 +1,6 @@
 Monday 3:30-5:30, Weds 9:30-10:30.
 
-Themes:
+## Themes
 
 * preventing overfitting
    * shrinkage
@@ -22,9 +22,25 @@ Themes:
    * gradient descent, SGD
    * IRLS
    * BFGS etc.
+* 
 * loss functions
 * assessment and diagnostics
    * cross-validation (blocked, etc.)
    * bootstrap
 * sparsity
 * continuous vs discrete structures
+
+## Topics
+
+1 Overview: software, bias-variance tradeoff
+2 Regression methods (OLS/lasso/ridge)
+3 Regression with non-Gaussian outcomes (logistic regression etc.)
+4 Basis expansions and regularization
+5 Model assessment and selection
+6 Tree-based methods (CART/MARS/etc.)
+7 Boosting and random forests
+8 Gaussian processes
+9 Optimization and scalability
+10 Latent structures (factor/mixture/graphical models)
+11 Simulation-based inference
+12 Wrap-up

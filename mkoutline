@@ -1,0 +1,6 @@
+#!/bin/bash
+url="https://mcmasteru365-my.sharepoint.com/:w:/g/personal/bolkerb_mcmaster_ca/EY01_bQdHiBOqK4SLlIEGnoBg3vd4ogzK8oAjwYnyEre0g?email=bbolker%40gmail.com&e=P7UQWb"
+## (BMB) wget -O outline.docx ...  doesn't work for some reason ... ?
+Rscript -e "url=\"${url}\"; download.file(sprintf('%s&download=1',url), dest = 'outline.docx')"
+## (BMB) could choose a different style. I think the default is ugly.
+pandoc -o outline.html -H styles/bootstrap.css outline.docx

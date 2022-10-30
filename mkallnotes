@@ -1,0 +1,6 @@
+#! /bin/bash
+for i in ; do
+    for j in html docx pdf; do
+    	make docs/notes/$i.$j
+    done
+done

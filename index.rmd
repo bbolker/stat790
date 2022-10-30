@@ -1,0 +1,83 @@
+---
+title: "Statistical learning (STATS 790)"
+bibliography: stat790.bib
+---
+
+<!-- from https://www.w3schools.com/css/css_table.asp -->
+<style>
+th, td {
+   vertical-align: top;
+   padding: 15px;
+}
+tr:nth-child(even) {background-color: #f2f2f2;} 
+th {background-color: #ccccff;}
+</style>
+
+Last updated: `r Sys.time()`
+
+---
+
+Materials on this web page are **under construction** and **subject to change**
+
+---
+
+### Course meetings
+
+- 3:30-5:30 Mon, 9:30-10:30 Weds (Toronto time)
+- Remote availability (for Fields attendees) to be determined (Echo 360/Teams/Zoom)
+
+### Misc info
+
+- Textbooks:
+    • T. Hastie, R. Tibshirani, and J. Friedman. The Elements of Statistical Learning, 2nd ed. https://web.stanford.edu/~hastie/Papers/ESLII.pdf
+    • Cosma Shalizi. Advanced Data Analysis from an Elementary Point of View. https://www.stat.cmu.edu/~cshalizi/ADAfaEPoV/
+- Platforms: Avenue to Learn, course web page (see below)
+- [Full course bibliography](stat790_bib.html)
+
+### Where to find stuff
+
+(to be completed)
+
+- [SpringerLink](https://libraryssl.lib.mcmaster.ca/libaccess/login.php?url=https%3a%2f%2flink.springer.com)
+
+### Links
+
+- [Course outline](outline.docx)
+- [Assignments](./assignments/README.html) (due dates in schedule below)
+- [The back-end for this site](https://github.com/bbolker/stat790)
+
+## Communication
+
+- instructor: [Ben Bolker](http://www.math.mcmaster.ca/~bolker/)
+    - General questions (anything you don't consider private) are best asked in the appropriate channel on Teams
+    - Otherwise e-mail to `bolker@mcmaster.ca` with "STATS 790" in the subject line; include your MacID in your message (if applicable) if not e-mailing from your McMaster e-mail account
+	- office hours TBA
+- teaching assistant: TBA
+    - weekly office hours, TBA
+    - please contact ...
+	- will answer as soon as possible, but will be more readily available during normal working hours (9 AM to 5 PM Toronto time)
+	- responses are **not** guaranteed within 24 hours of an assignment deadline; please plan ahead!
+
+## Schedule
+
+(subject to revision!)
+
+```{r setup, echo=FALSE,message=FALSE,warning=FALSE, results="asis", eval=TRUE}
+library(huxtable)
+library(dplyr)
+library(readr)
+
+mk_url <- function(x) {
+  ifelse(nchar(trimws(x))==0,x,
+         sprintf("[%s](https://bbolker.github.io/stat790/%s.html)",
+                 x,x))
+}
+
+invisible(read_csv("sched.csv")
+         |> hux()
+         |> print_html(max_width=1000)
+)
+```
+
+## References
+
