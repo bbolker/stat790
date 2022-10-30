@@ -1,15 +1,16 @@
-1,2023-01-09,"Overview: big picture, software, bias-variance tradeoff",
-2,2023-01-16,Regression methods (OLS/lasso/ridge),HW 1
+week, start_date, topic, readings, assignments
+1,2023-01-09,"Overview: big picture, software, bias-variance tradeoff",@breimanStatistical2001 and **one of** @millerBreiman2021; @gelmanReflections2021; @raperLeo2020
+2,2023-01-16,Regression methods (OLS/lasso/ridge),,HW 1
 3,2023-01-23,Regression with non-Gaussian outcomes,
-4,2023-01-30,Basis expansion and regularization: GAMs,HW 2
+4,2023-01-30,Basis expansion and regularization: GAMs,,HW 2
 5,2023-02-06,Model assessment and selection,
-6,2023-02-13,Assessing uncertainty,HW 3
+6,2023-02-13,Assessing uncertainty,,HW 3
 ,2023-02-20,Midterm recess,
 7,2023-02-27,Tree-based methods (CART/MARS/etc.),
-8,2023-03-06,"Random forests, boosting",HW 4
-9,2023-03-13,Optimization and scalability,Project proposal
-10,2023-03-20,"Latent structures: factor, mixture, graphical models",HW 5
+8,2023-03-06,"Random forests, boosting",,HW 4
+9,2023-03-13,Optimization and scalability,,Project proposal
+10,2023-03-20,"Latent structures: factor, mixture, graphical models",,HW 5
 11,2023-03-27,Data with dependence (temporal/spatial),
 12,2023-04-03,Students’ choice,
-13,2023-04-10,Wrap up,Project draft
-,2023-04-30,,Project final version
+13,2023-04-10,Wrap up,,Project draft
+,2023-04-30,,,Project final version

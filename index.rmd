@@ -74,8 +74,11 @@ mk_url <- function(x) {
 }
 
 invisible(read_csv("sched.csv")
-         |> hux()
-         |> print_html(max_width=1000)
+          |> mutate(across(start_date, format, "%d %b %Y"))
+          |> rename(Week = "week", `Start date` = "start_date",
+                    Topic = "topic", Assignments = "assignments")
+          |> hux()
+          |> print_html(max_width=1000)
 )
 ```
 
