@@ -8,3 +8,6 @@
 admin/
 private/
 .Rhistory
+books/
+*_files/
+tmp.*

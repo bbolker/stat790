@@ -1,5 +1,5 @@
 #! /bin/bash
-for i in ; do
+for i in intro; do
     for j in html docx pdf; do
     	make docs/notes/$i.$j
     done

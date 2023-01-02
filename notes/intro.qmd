@@ -1,0 +1,66 @@
+---
+title: "Introduction (week 1, part 1)"
+reference-location: margin
+citation-location: margin
+bibilography: ../stat790.bib
+date: today
+date-format: "D MMM YYYY"
+---
+
+## integrity
+
+* Stack Overflow and ChatGPT
+* group work, copying
+
+## technical skills/tools
+
+* reproducibility: version control (Github)
+* machinery
+    * R, Julia
+	* VScode
+	* reproducibility: Quarto or Sweave or Jupyter notebook
+
+## Goals
+
+* understand theory behind (novel) methods
+* read papers
+* (choose methods)
+* implement methods
+* read/understand/improve existing methods
+
+## About me
+
+* weird background (physics u/g, Zoology PhD, epidemiological modeling)
+* biases:
+* interested in scientific answers (but see @navarroScience2019)
+
+## Themes
+
+* preventing overfitting
+   * shrinkage
+   * regularization
+   * penalization
+   * dropouts (NN)
+   * constraining tree depth 
+   * learning rate (boosting)
+   * early stopping
+   * priors
+* basis construction/feature engineering
+   * splines
+   * GPs
+   * tree splits
+   * wavelets
+   * Fourier bases
+   * neural network architecture
+* optimization
+   * gradient descent, SGD
+   * IRLS
+   * BFGS etc.
+* 
+* loss functions
+* assessment and diagnostics
+   * cross-validation (blocked, etc.)
+   * bootstrap
+* sparsity
+* continuous vs discrete structures
+

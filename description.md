@@ -2,7 +2,7 @@ Monday 3:30-5:30, Weds 9:30-10:30.
 
 ## Themes
 
-* preventing overfitting
+* bias-variance tradeoff/preventing overfitting
    * shrinkage
    * regularization
    * penalization
@@ -11,6 +11,7 @@ Monday 3:30-5:30, Weds 9:30-10:30.
    * learning rate (boosting)
    * early stopping
    * priors
+   * (double descent?)
 * basis construction/feature engineering
    * splines
    * GPs
@@ -21,14 +22,15 @@ Monday 3:30-5:30, Weds 9:30-10:30.
 * optimization
    * gradient descent, SGD
    * IRLS
-   * BFGS etc.
-* 
+   * Newton and quasi-Newton (BFGS etc.)
+   * (E-M)
+   * map-reduce
 * loss functions
 * assessment and diagnostics
    * cross-validation (blocked, etc.)
    * bootstrap
 * sparsity
-* continuous vs discrete structures
+* latent structures (continuous vs discrete, dimensionality, linear vs nonlinear ...)
 
 ## Topics
 

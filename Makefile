@@ -27,12 +27,17 @@ docs/software/%: software/%
 %.html: %.rmd
 	Rscript  -e "rmarkdown::render('$<')"
 
+%.html: %.qmd
+	quarto render $< --to revealjs
+
 ## https://stackoverflow.com/questions/5178828/how-to-replace-all-lines-between-two-points-and-subtitute-it-with-some-text-in-s
 ## FIXME, sed -r doesn't work on MacOS
-%.docx: %.rmd
+## https://stackoverflow.com/questions/42646316/what-does-d-mean-in-shell-script
+## @D = directory of traget
+%.docx: %.qmd
 ##	sed -r '/::::: \{#special .spoiler/,/:::::/c\**SPOILER**\n' < $< > $(@D)/tmp.rmd
-	cp $< $(@D)/tmp.rmd
-	Rscript -e "rmarkdown::render('$(@D)/tmp.rmd', output_format = 'word_document')"
+	cp $< $(@D)/tmp.qmd
+	quarto render $(@D)/tmp.qmd --to docx --toc   
 	mv $(@D)/tmp.docx $*.docx
 
 %.html: %.md
@@ -40,6 +45,9 @@ docs/software/%: software/%
 
 %.pdf: %.rmd
 	Rscript -e "rmarkdown::render('$<', output_format = tufte::tufte_handout())" ## , params = list('latex-engine'='xelatex'))"
+
+%.pdf: %.qmd
+	quarto render $< --to pdf --toc   
 
 %.pdf: %.tex
 	pdflatex $<
