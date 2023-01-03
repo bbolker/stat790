@@ -4,6 +4,8 @@ author: "Ben and Ethan Bolker"
 date: 2 Jan 2023
 ---
 
+![](pix/by-sa.png)
+
 (Modified from https://www.cs.umb.edu/~eb/honesty/ by Ethan Bolker, with permission)
 
 You are taking this course in order to learn as much as you can about the material it covers. No learning occurs in a vacuum. You learn from lectures and reading and poking around the internet, by playing with ideas, by talking to other people about what you are trying to learn. That makes learning easier and a lot more fun. But part of the ethical code under which we function at a University requires that we acknowledge the sources of ideas we use in work of our own - papers, assignments, presentations, and computer code. When you turn in work that you have discussed with someone, or that contains ideas that you found in a book or on the web, **you must indicate that fact**. I expect you to talk to each other and to read materials other than those assigned. I also expect to see evidence in your work that you have done so. I am happy when I see a reference to a book or a web site that I haven't heard of, or a comment in one of your problem sets saying that you didn't understand something until you talked with a classmate. Learning to acknowledge intellectual debts is part of learning. It has nothing to do with grades or dishonesty. You should be reading, talking to each other, and telling the world that you have done so.
