@@ -1,11 +1,13 @@
 ---
-title: "Introduction (week 1, part 1)"
+title: "Introduction<br>(week 1, part 1)"
 reference-location: margin
 citation-location: margin
-bibilography: ../stat790.bib
+bibliography: ../stat790.bib
 date: today
 date-format: "D MMM YYYY"
 ---
+
+<!-- typically renders in docs/ dir  -->
 
 ## integrity
 
@@ -17,8 +19,10 @@ date-format: "D MMM YYYY"
 * reproducibility: version control (Github)
 * machinery
     * R, Julia
-	* VScode
+	* VSCode
 	* reproducibility: Quarto or Sweave or Jupyter notebook
+* *command line bullshittery* ("bullshit (read: diagnosing and debugging weird things) is a part of life in the world of computers") [@adarValue2015]
+
 
 ## Goals
 

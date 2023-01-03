@@ -1,6 +1,6 @@
 #! /bin/bash
 for i in intro; do
-    for j in html docx pdf; do
+    for j in html docx pdf slides.html; do
     	make docs/notes/$i.$j
     done
 done

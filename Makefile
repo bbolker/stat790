@@ -1,4 +1,4 @@
-all: docs/assignments/README.html docs/index.html docs/stat790_bib.html docs/software/README.html
+all: docs/assignments/README.html docs/index.html docs/stat790_bib.html docs/software/README.html docs/honesty.html
 ## allnotes docs/assignments/midterm-topics.html
 
 ## see also: mk_all
@@ -14,7 +14,8 @@ docs/%: %
 
 docs/notes/%: notes/%
 	mkdir -p docs/notes
-	mv $< docs/$<
+	cp $< docs/$<
+	cd docs
 
 docs/assignments/%: assignments/%
 	mkdir -p docs/assignments
@@ -27,8 +28,13 @@ docs/software/%: software/%
 %.html: %.rmd
 	Rscript  -e "rmarkdown::render('$<')"
 
-%.html: %.qmd
-	quarto render $< --to revealjs
+%.slides.html: %.qmd
+## @F = file: https://stackoverflow.com/questions/59446839/get-filename-from-in-makefile
+	quarto render $< --to revealjs -o $(@F)
+	mv $(@F) notes
+
+## %.html: %.qmd
+## 	quarto render $< --to revealjs
 
 ## https://stackoverflow.com/questions/5178828/how-to-replace-all-lines-between-two-points-and-subtitute-it-with-some-text-in-s
 ## FIXME, sed -r doesn't work on MacOS
@@ -39,6 +45,7 @@ docs/software/%: software/%
 	cp $< $(@D)/tmp.qmd
 	quarto render $(@D)/tmp.qmd --to docx --toc   
 	mv $(@D)/tmp.docx $*.docx
+
 
 %.html: %.md
 	Rscript  -e "rmarkdown::render('$<')"

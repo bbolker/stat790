@@ -35,6 +35,7 @@ Materials on this web page are **under construction** and **subject to change**
 - Platforms: Avenue to Learn, course web page (see below)
 - [Full course bibliography](stat790_bib.html)
 - Expected preparation: While there are no formal prerequisites, to succeed in this course you will need to be comfortable with (1)  multivariable calculus; (2) linear algebra (focusing on numerical computation, e.g. at the level of [MATH 3NA3](https://mcmasteru365.sharepoint.com/:w:/s/sci-course-outlines/ETS28ygy6rZBs3-oLnuLkRYBMthhG_x681iQsnGSbPjHMw?e=d3VrR8)); (3) basics of linear regression (e.g. at the level of [STATS 3A03](https://mcmasteru365.sharepoint.com/:w:/s/sci-course-outlines/EX5q-QIB-lRGvCleB8YStCIB1pfpenDKNb4Uc-53WEGBrg?e=ScAtu8)); (4) Some programming language; R is recommended, but knowledge of Python/Matlab/Java should be transferable; (5) basic knowledge of data science methods (e.g. lasso/ridge regression, random forests, boosting), at the level of [STATS/CSE 780](https://mcmasteru365.sharepoint.com/:w:/s/sci-course-outlines/EVigYZ1rvklEm6iuA0SkY2YBtXn_oXAFGJQnNmm9St-y_w?e=jajZ3H) (recommended; to catch up in this area, try @jamesintroduction2013 chapters 2, 5-8).
+- Notes on [plagiarism/collaboration/attribution](honesty.html)
 
 ### Where to find stuff
 
