@@ -9,62 +9,76 @@ date-format: "D MMM YYYY"
 
 <!-- typically renders in docs/ dir  -->
 
-## integrity
+## Logistics
 
+* (almost) everything at course web page, https://bbolker.github.io/stat790
+* Zoom link: https://tinyurl.com/stat790-zoom-2023
+* communication/forums (TBD)
+* assignment marks (TBD)
+
+## Integrity
+
+* [notes on honesty](../honesty.html)
+* why copying code is good
 * Stack Overflow and ChatGPT
 * group work, copying
 
-## technical skills/tools
-
-* reproducibility: version control (Github)
-* machinery
-    * R, Julia
-	* VSCode
-	* reproducibility: Quarto or Sweave or Jupyter notebook
-* *command line bullshittery* ("bullshit (read: diagnosing and debugging weird things) is a part of life in the world of computers") [@adarValue2015]
-
-
 ## Goals
 
-* understand theory behind (novel) methods
+* understand theory behind (novel) SL/ML methods
 * read papers
 * (choose methods)
 * implement methods
 * read/understand/improve existing methods
 
+## Technical skills & tools
+
+* reproducibility: version control (Git/GitHub)
+* machinery
+   * R, Julia
+	* VSCode
+   * Unix shell?
+	* reproducibility: Quarto/Sweave/Jupyter notebooks
+* *command line bullshittery* ("bullshit (read: diagnosing and debugging weird things) is a part of life in the world of computers") [@adarValue2015]
+
 ## About me
 
 * weird background (physics u/g, Zoology PhD, epidemiological modeling)
-* biases:
-* interested in scientific answers (but see @navarroScience2019)
+* biases/interests:
+   * scientific answers vs. prediction only (but see @navarroScience2019)
+   * generative models
+   * data visualization
+   * solving problems in context, practical issues
+   * rants (p-values, snooping, dichotomization, unbalanced categorical responses ...)
 
-## Themes
+# Themes
 
-* preventing overfitting
-   * shrinkage
-   * regularization
-   * penalization
-   * dropouts (NN)
-   * constraining tree depth 
-   * learning rate (boosting)
-   * early stopping
-   * priors
-* basis construction/feature engineering
-   * splines
-   * GPs
-   * tree splits
-   * wavelets
-   * Fourier bases
-   * neural network architecture
-* optimization
-   * gradient descent, SGD
-   * IRLS
-   * BFGS etc.
-* 
-* loss functions
-* assessment and diagnostics
-   * cross-validation (blocked, etc.)
-   * bootstrap
-* sparsity
-* continuous vs discrete structures
+## Bias/variance tradeoff
 
+* under/overfitting, Goldilocks
+   * shrinkage, regularization, penalization, dropout (neural networks), tree depth, learning rate (boosting), early stopping, priors ...
+
+## basis construction/feature engineering
+
+* splines, Gaussian processes, tree splits, wavelets, Fourier bases, neural network architecture ...
+
+## optimization
+
+* (stochastic) gradient descent
+* iterative methods
+   * IRLS (iteratively reweighted least squares), expectation-maximization
+   * quasi-Newton (Broyden-Fletcher-Goldfarb-Shanno)
+
+## quantifying accuracy and uncertainty
+
+* train/validate/test: cross-validation (blocked, etc.)
+* bootstrap
+
+## sparsity
+
+* dimension reduction
+    * structural zeros within vectors or matrices  
+    e.g. adjacency matrices
+    * reduced-rank matrices
+* computational efficiency
+* a means to an end
