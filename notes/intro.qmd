@@ -20,8 +20,27 @@ date-format: "D MMM YYYY"
 
 * [notes on honesty](../honesty.html)
 * why copying code is good
-* Stack Overflow and ChatGPT
-* group work, copying
+* Stack Overflow, ChatGPT, and all that
+* group work
+
+## Materials
+
+* Two books: 
+   * @hastieelements2009 (approx ch. 1-10, 14-15)
+   * @shaliziAdvanced2022 (approx. ch. 1-4, 7-9, 14-15, 23?)
+* Primary literature TBD
+* Why both?
+
+## Prerequisites
+
+From the course outline:
+
+* linear algebra (pref. numeric: MATH 3NA)
+* probability & statistics (at least up to regression: STATS 3A03)
+* computation (pref. R, possibly Python/Julia/Matlab/etc.)
+* ML/data science (STATS 780)
+
+See also ADA p. 15.
 
 ## Goals
 
@@ -32,6 +51,8 @@ date-format: "D MMM YYYY"
 * read/understand/improve existing methods
 
 ## Technical skills & tools
+
+These are not focal to the course, but are unavoidable and useful
 
 * reproducibility: version control (Git/GitHub)
 * machinery
@@ -45,34 +66,60 @@ date-format: "D MMM YYYY"
 
 * weird background (physics u/g, Zoology PhD, epidemiological modeling)
 * biases/interests:
-   * scientific answers vs. prediction only (but see @navarroScience2019)
+   * scientific inference $\gg$ pure prediction (but see @navarroScience2019)
    * generative models
    * data visualization
    * solving problems in context, practical issues
    * rants (p-values, snooping, dichotomization, unbalanced categorical responses ...)
 
-# Themes
+# Overview of material/themes
 
-## Bias/variance tradeoff
+## what is ``statistical learning'' anyway?
 
-* under/overfitting, Goldilocks
-   * shrinkage, regularization, penalization, dropout (neural networks), tree depth, learning rate (boosting), early stopping, priors ...
+* statistics $\to$ computational statistics $\to$ machine learning $\to$ AI
+    * inference vs. prediction
+	* parametric vs. nonparametric
+	* pure analysis vs. pure computation
+	* small/medium vs. big data
+
+## big picture
+
+* make connections between methods
+   * analogy: t-test/ANOVA/regression vs "the general linear model" [@lindelovCommon2019]
+* building blocks/themes
 
 ## basis construction/feature engineering
 
-* splines, Gaussian processes, tree splits, wavelets, Fourier bases, neural network architecture ...
+* SL typically uses **nonparametric** methods
+   * families of curves/distributions that can be expanded/made arbitrarily complex
+* basis construction
+   * splines, Gaussian processes, tree splits, wavelets, Fourier bases, neural network architecture ...
 
 ## optimization
 
 * (stochastic) gradient descent
-* iterative methods
+* iterative methods, e.g.:
    * IRLS (iteratively reweighted least squares), expectation-maximization
    * quasi-Newton (Broyden-Fletcher-Goldfarb-Shanno)
+   * expectation-maximization
+* map/reduce
+
+## bias/variance tradeoff
+
+* under/overfitting, Goldilocks
+   * shrinkage, regularization, penalization, dropout (neural networks), tree depth, learning rate (boosting), early stopping, priors ...
 
 ## quantifying accuracy and uncertainty
 
-* train/validate/test: cross-validation (blocked, etc.)
-* bootstrap
+* raw point estimates are problematic
+* accuracy measures
+* uncertainty measures
+* methods:
+    * parametric methods
+    * train/validate/test (cross-validation etc.); out-of-bag error
+    * bootstrap?
+	* high-dimensional inference [@dezeureHighDimensional2015a]
+    * conformal prediction [@shaferTutorial2008]
 
 ## sparsity
 
@@ -82,3 +129,5 @@ date-format: "D MMM YYYY"
     * reduced-rank matrices
 * computational efficiency
 * a means to an end
+
+## references

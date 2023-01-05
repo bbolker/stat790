@@ -4,7 +4,7 @@ author: "Ben and Ethan Bolker"
 date: 2 Jan 2023
 ---
 
-![](pix/by-sa.png)
+![creative commons BY-SA license](pix/by-sa-small.png)
 
 (Modified from https://www.cs.umb.edu/~eb/honesty/ by Ethan Bolker, with permission)
 

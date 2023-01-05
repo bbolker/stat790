@@ -7,7 +7,7 @@
 <link href="intro_files/libs/quarto-html/tippy.css" rel="stylesheet">
 <link href="intro_files/libs/quarto-html/quarto-html.min.css" rel="stylesheet" data-mode="light">
 <link href="intro_files/libs/quarto-html/quarto-syntax-highlighting.css" rel="stylesheet" id="quarto-text-highlighting-styles"><meta charset="utf-8">
-  <meta name="generator" content="quarto-1.2.269">
+  <meta name="generator" content="quarto-1.0.37">
 
   <title>Introduction (week 1, part 1)</title>
   <meta name="apple-mobile-web-app-capable" content="yes">
@@ -18,15 +18,10 @@
   <style>
     code{white-space: pre-wrap;}
     span.smallcaps{font-variant: small-caps;}
-    div.columns{display: flex; gap: min(4vw, 1.5em);}
-    div.column{flex: auto; overflow-x: auto;}
+    span.underline{text-decoration: underline;}
+    div.column{display: inline-block; vertical-align: top; width: 50%;}
     div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
     ul.task-list{list-style: none;}
-    ul.task-list li input[type="checkbox"] {
-      width: 0.8em;
-      margin: 0 0.8em 0.2em -1.6em;
-      vertical-align: middle;
-    }
     div.csl-bib-body { }
     div.csl-entry {
       clear: both;
@@ -341,91 +336,188 @@
   <div class="reveal">
     <div class="slides">
 
-<section id="title-slide" class="quarto-title-block center">
+<section id="title-slide" class="center">
   <h1 class="title">Introduction<br>(week 1, part 1)</h1>
+  <p class="date">4 Jan 2023</p>
+</section>
 
-<div class="quarto-title-authors">
-</div>
+<section class="slide level2">
 
-  <p class="date">2 Jan 2023</p>
+<!-- typically renders in docs/ dir  -->
+</section>
+<section id="logistics" class="slide level2">
+<h2>Logistics</h2>
+<ul>
+<li>(almost) everything at course web page, https://bbolker.github.io/stat790</li>
+<li>Zoom link: https://tinyurl.com/stat790-zoom-2023</li>
+<li>communication/forums (TBD)</li>
+<li>assignment marks (TBD)</li>
+</ul>
 </section>
 <section id="integrity" class="slide level2">
-<h2>integrity</h2>
+<h2>Integrity</h2>
 <ul>
-<li>Stack Overflow and ChatGPT</li>
-<li>group work, copying</li>
+<li><a href="../honesty.html">notes on honesty</a></li>
+<li>why copying code is good</li>
+<li>Stack Overflow, ChatGPT, and all that</li>
+<li>group work</li>
 </ul>
 </section>
-<section id="technical-skillstools" class="slide level2">
-<h2>technical skills/tools</h2>
+<section id="materials" class="slide level2">
+<h2>Materials</h2>
 <ul>
-<li>reproducibility: version control (Github)</li>
-<li>machinery
+<li>Two books:
 <ul>
-<li>R, Julia</li>
-<li>VSCode</li>
-<li>reproducibility: Quarto or Sweave or Jupyter notebook</li>
+<li><span class="citation" data-cites="hastieelements2009">Hastie, Tibshirani, and Friedman (<a href="#/ref-hastieelements2009" role="doc-biblioref" onclick="return false;">2009</a>)</span> (approx ch.&nbsp;1-10, 14-15)</li>
+<li><span class="citation" data-cites="shaliziAdvanced2022">Shalizi (<a href="#/ref-shaliziAdvanced2022" role="doc-biblioref" onclick="return false;">2022</a>)</span> (approx. ch.&nbsp;1-4, 7-9, 14-15, 23?)</li>
 </ul></li>
-<li><em>command line bullshittery</em> (“bullshit (read: diagnosing and debugging weird things) is a part of life in the world of computers”) <span class="citation" data-cites="adarValue2015">(<a href="#/themes" role="doc-biblioref" onclick="">Adar 2015</a>)</span></li>
+<li>Primary literature TBD</li>
+<li>Why both?</li>
 </ul>
+</section>
+<section id="prerequisites" class="slide level2">
+<h2>Prerequisites</h2>
+<p>From the course outline:</p>
+<ul>
+<li>linear algebra (pref. numeric: MATH 3NA)</li>
+<li>probability &amp; statistics (at least up to regression: STATS 3A03)</li>
+<li>computation (pref. R, possibly Python/Julia/Matlab/etc.)</li>
+<li>ML/data science (STATS 780)</li>
+</ul>
+<p>See also ADA p.&nbsp;15.</p>
 </section>
 <section id="goals" class="slide level2">
 <h2>Goals</h2>
 <ul>
-<li>understand theory behind (novel) methods</li>
+<li>understand theory behind (novel) SL/ML methods</li>
 <li>read papers</li>
 <li>(choose methods)</li>
 <li>implement methods</li>
 <li>read/understand/improve existing methods</li>
 </ul>
 </section>
+<section id="technical-skills-tools" class="slide level2">
+<h2>Technical skills &amp; tools</h2>
+<p>These are not focal to the course, but are unavoidable and useful</p>
+<ul>
+<li>reproducibility: version control (Git/GitHub)</li>
+<li>machinery
+<ul>
+<li>R, Julia</li>
+<li>VSCode</li>
+<li>Unix shell?</li>
+<li>reproducibility: Quarto/Sweave/Jupyter notebooks</li>
+</ul></li>
+<li><em>command line bullshittery</em> (“bullshit (read: diagnosing and debugging weird things) is a part of life in the world of computers”) <span class="citation" data-cites="adarValue2015">(<a href="#/ref-adarValue2015" role="doc-biblioref" onclick="return false;">Adar 2015</a>)</span></li>
+</ul>
+</section>
 <section id="about-me" class="slide level2">
 <h2>About me</h2>
 <ul>
 <li>weird background (physics u/g, Zoology PhD, epidemiological modeling)</li>
-<li>biases:</li>
-<li>interested in scientific answers (but see <span class="citation" data-cites="navarroScience2019">Navarro (<a href="#/themes" role="doc-biblioref" onclick="">2019</a>)</span>)</li>
+<li>biases/interests:
+<ul>
+<li>scientific inference <span class="math inline">\(\gg\)</span> pure prediction (but see <span class="citation" data-cites="navarroScience2019">Navarro (<a href="#/ref-navarroScience2019" role="doc-biblioref" onclick="return false;">2019</a>)</span>)</li>
+<li>generative models</li>
+<li>data visualization</li>
+<li>solving problems in context, practical issues</li>
+<li>rants (p-values, snooping, dichotomization, unbalanced categorical responses …)</li>
+</ul></li>
 </ul>
 </section>
-<section id="themes" class="slide level2 smaller scrollable">
-<h2>Themes</h2>
+<section>
+<section id="overview-of-materialthemes" class="title-slide slide level1 center">
+<h1>Overview of material/themes</h1>
+
+</section>
+<section id="what-is-statistical-learning-anyway" class="slide level2">
+<h2>what is ``statistical learning’’ anyway?</h2>
 <ul>
-<li>preventing overfitting
+<li>statistics <span class="math inline">\(\to\)</span> computational statistics <span class="math inline">\(\to\)</span> machine learning <span class="math inline">\(\to\)</span> AI
 <ul>
-<li>shrinkage</li>
-<li>regularization</li>
-<li>penalization</li>
-<li>dropouts (NN)</li>
-<li>constraining tree depth</li>
-<li>learning rate (boosting)</li>
-<li>early stopping</li>
-<li>priors</li>
+<li>inference vs.&nbsp;prediction</li>
+<li>parametric vs.&nbsp;nonparametric</li>
+<li>pure analysis vs.&nbsp;pure computation</li>
+<li>small/medium vs.&nbsp;big data</li>
 </ul></li>
-<li>basis construction/feature engineering
-<ul>
-<li>splines</li>
-<li>GPs</li>
-<li>tree splits</li>
-<li>wavelets</li>
-<li>Fourier bases</li>
-<li>neural network architecture</li>
-</ul></li>
-<li>optimization
-<ul>
-<li>gradient descent, SGD</li>
-<li>IRLS</li>
-<li>BFGS etc.</li>
-</ul></li>
-<li></li>
-<li>loss functions</li>
-<li>assessment and diagnostics
-<ul>
-<li>cross-validation (blocked, etc.)</li>
-<li>bootstrap</li>
-</ul></li>
-<li>sparsity</li>
-<li>continuous vs discrete structures</li>
 </ul>
+</section>
+<section id="big-picture" class="slide level2">
+<h2>big picture</h2>
+<ul>
+<li>make connections between methods
+<ul>
+<li>analogy: t-test/ANOVA/regression vs “the general linear model” <span class="citation" data-cites="lindelovCommon2019">(<a href="#/ref-lindelovCommon2019" role="doc-biblioref" onclick="return false;">Lindeløv 2019</a>)</span></li>
+</ul></li>
+<li>building blocks/themes</li>
+</ul>
+</section>
+<section id="basis-constructionfeature-engineering" class="slide level2">
+<h2>basis construction/feature engineering</h2>
+<ul>
+<li>SL typically uses <strong>nonparametric</strong> methods
+<ul>
+<li>families of curves/distributions that can be expanded/made arbitrarily complex</li>
+</ul></li>
+<li>basis construction
+<ul>
+<li>splines, Gaussian processes, tree splits, wavelets, Fourier bases, neural network architecture …</li>
+</ul></li>
+</ul>
+</section>
+<section id="optimization" class="slide level2">
+<h2>optimization</h2>
+<ul>
+<li>(stochastic) gradient descent</li>
+<li>iterative methods, e.g.:
+<ul>
+<li>IRLS (iteratively reweighted least squares), expectation-maximization</li>
+<li>quasi-Newton (Broyden-Fletcher-Goldfarb-Shanno)</li>
+<li>expectation-maximization</li>
+</ul></li>
+<li>map/reduce</li>
+</ul>
+</section>
+<section id="biasvariance-tradeoff" class="slide level2">
+<h2>bias/variance tradeoff</h2>
+<ul>
+<li>under/overfitting, Goldilocks
+<ul>
+<li>shrinkage, regularization, penalization, dropout (neural networks), tree depth, learning rate (boosting), early stopping, priors …</li>
+</ul></li>
+</ul>
+</section>
+<section id="quantifying-accuracy-and-uncertainty" class="slide level2">
+<h2>quantifying accuracy and uncertainty</h2>
+<ul>
+<li>raw point estimates are problematic</li>
+<li>accuracy measures</li>
+<li>uncertainty measures</li>
+<li>methods:
+<ul>
+<li>parametric methods</li>
+<li>train/validate/test (cross-validation etc.); out-of-bag error</li>
+<li>bootstrap?</li>
+<li>high-dimensional inference <span class="citation" data-cites="dezeureHighDimensional2015a">(<a href="#/ref-dezeureHighDimensional2015a" role="doc-biblioref" onclick="return false;">Dezeure et al. 2015</a>)</span></li>
+<li>conformal prediction <span class="citation" data-cites="shaferTutorial2008">(<a href="#/ref-shaferTutorial2008" role="doc-biblioref" onclick="return false;">Shafer and Vovk 2008</a>)</span></li>
+</ul></li>
+</ul>
+</section>
+<section id="sparsity" class="slide level2">
+<h2>sparsity</h2>
+<ul>
+<li>dimension reduction
+<ul>
+<li>structural zeros within vectors or matrices<br>
+e.g.&nbsp;adjacency matrices</li>
+<li>reduced-rank matrices</li>
+</ul></li>
+<li>computational efficiency</li>
+<li>a means to an end</li>
+</ul>
+</section>
+<section id="references" class="slide level2 smaller scrollable">
+<h2>references</h2>
 <div class="footer footer-default">
 
 </div>
@@ -433,11 +525,26 @@
 <div id="ref-adarValue2015" class="csl-entry" role="doc-biblioentry">
 Adar, Eytan. 2015. <span>“On the Value of Command-Line <span>‘Bullshittery’</span>.”</span> <em>Medium</em>. <a href="https://medium.com/@eytanadar/on-the-value-of-command-line-bullshittery-94dc19ec8c61">https://medium.com/@eytanadar/on-the-value-of-command-line-bullshittery-94dc19ec8c61</a>.
 </div>
+<div id="ref-dezeureHighDimensional2015a" class="csl-entry" role="doc-biblioentry">
+Dezeure, Ruben, Peter Bühlmann, Lukas Meier, and Nicolai Meinshausen. 2015. <span>“High-Dimensional Inference: Confidence Intervals, p-Values and <span>R</span> Software Hdi.”</span> <em>Statistical Science</em> 30 (4): 533–58. <a href="https://doi.org/10.1214/15-STS527">https://doi.org/10.1214/15-STS527</a>.
+</div>
+<div id="ref-hastieelements2009" class="csl-entry" role="doc-biblioentry">
+Hastie, Trevor, Robert Tibshirani, and J. H Friedman. 2009. <em>The Elements of Statistical Learning Data Mining, Inference, and Prediction</em>. <span>New York</span>: <span>Springer</span>. <a href="http://public.eblib.com/EBLPublic/PublicView.do?ptiID=437866">http://public.eblib.com/EBLPublic/PublicView.do?ptiID=437866</a>.
+</div>
+<div id="ref-lindelovCommon2019" class="csl-entry" role="doc-biblioentry">
+Lindeløv, Jonas Kristoffer. 2019. <span>“Common Statistical Tests Are Linear Models (or: How to Teach Stats).”</span> <a href="https://lindeloev.github.io/tests-as-linear/">https://lindeloev.github.io/tests-as-linear/</a>.
+</div>
 <div id="ref-navarroScience2019" class="csl-entry" role="doc-biblioentry">
 Navarro, Danielle. 2019. <span>“Science and Statistics.”</span> <span>Aarhus University</span>. <a href="https://slides.com/djnavarro/scienceandstatistics">https://slides.com/djnavarro/scienceandstatistics</a>.
 </div>
+<div id="ref-shaferTutorial2008" class="csl-entry" role="doc-biblioentry">
+Shafer, Glenn, and Vladimir Vovk. 2008. <span>“A Tutorial on Conformal Prediction.”</span> <em>Journal of Machine Learning Research</em> 9: 371–421. <a href="https://jmlr.csail.mit.edu/papers/volume9/shafer08a/shafer08a.pdf">https://jmlr.csail.mit.edu/papers/volume9/shafer08a/shafer08a.pdf</a>.
 </div>
-</section>
+<div id="ref-shaliziAdvanced2022" class="csl-entry" role="doc-biblioentry">
+Shalizi, Cosma Rohilla. 2022. <em>Advanced Data Analysis from an Elementary Point of View</em>. <a href="https://www.stat.cmu.edu/~cshalizi/ADAfaEPoV/">https://www.stat.cmu.edu/~cshalizi/ADAfaEPoV/</a>.
+</div>
+</div>
+</section></section>
     </div>
   </div>
 
@@ -687,24 +794,7 @@ Navarro, Danielle. 2019. <span>“Science and Statistics.”</span> <span>Aarhus
         button.classList.add('code-copy-button-checked');
         var currentTitle = button.getAttribute("title");
         button.setAttribute("title", "Copied!");
-        let tooltip;
-        if (window.bootstrap) {
-          button.setAttribute("data-bs-toggle", "tooltip");
-          button.setAttribute("data-bs-placement", "left");
-          button.setAttribute("data-bs-title", "Copied!");
-          tooltip = new bootstrap.Tooltip(button, 
-            { trigger: "manual", 
-              customClass: "code-copy-button-tooltip",
-              offset: [0, -8]});
-          tooltip.show();    
-        }
         setTimeout(function() {
-          if (tooltip) {
-            tooltip.hide();
-            button.removeAttribute("data-bs-title");
-            button.removeAttribute("data-bs-toggle");
-            button.removeAttribute("data-bs-placement");
-          }
           button.setAttribute("title", currentTitle);
           button.classList.remove('code-copy-button-checked');
         }, 1000);
@@ -734,50 +824,31 @@ Navarro, Danielle. 2019. <span>“Science and Statistics.”</span> <span>Aarhus
       for (var i=0; i<noterefs.length; i++) {
         const ref = noterefs[i];
         tippyHover(ref, function() {
-          // use id or data attribute instead here
-          let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+          let href = ref.getAttribute('href');
           try { href = new URL(href).hash; } catch {}
           const id = href.replace(/^#\/?/, "");
           const note = window.document.getElementById(id);
           return note.innerHTML;
         });
       }
-      const findCites = (el) => {
-        const parentEl = el.parentElement;
-        if (parentEl) {
-          const cites = parentEl.dataset.cites;
-          if (cites) {
-            return {
-              el,
-              cites: cites.split(' ')
-            };
-          } else {
-            return findCites(el.parentElement)
-          }
-        } else {
-          return undefined;
-        }
-      };
       var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
       for (var i=0; i<bibliorefs.length; i++) {
         const ref = bibliorefs[i];
-        const citeInfo = findCites(ref);
-        if (citeInfo) {
-          tippyHover(citeInfo.el, function() {
-            var popup = window.document.createElement('div');
-            citeInfo.cites.forEach(function(cite) {
-              var citeDiv = window.document.createElement('div');
-              citeDiv.classList.add('hanging-indent');
-              citeDiv.classList.add('csl-entry');
-              var biblioDiv = window.document.getElementById('ref-' + cite);
-              if (biblioDiv) {
-                citeDiv.innerHTML = biblioDiv.innerHTML;
-              }
-              popup.appendChild(citeDiv);
-            });
-            return popup.innerHTML;
+        const cites = ref.parentNode.getAttribute('data-cites').split(' ');
+        tippyHover(ref, function() {
+          var popup = window.document.createElement('div');
+          cites.forEach(function(cite) {
+            var citeDiv = window.document.createElement('div');
+            citeDiv.classList.add('hanging-indent');
+            citeDiv.classList.add('csl-entry');
+            var biblioDiv = window.document.getElementById('ref-' + cite);
+            if (biblioDiv) {
+              citeDiv.innerHTML = biblioDiv.innerHTML;
+            }
+            popup.appendChild(citeDiv);
           });
-        }
+          return popup.innerHTML;
+        });
       }
     });
     </script>

@@ -15,7 +15,6 @@ docs/%: %
 docs/notes/%: notes/%
 	mkdir -p docs/notes
 	cp $< docs/$<
-	cd docs
 
 docs/assignments/%: assignments/%
 	mkdir -p docs/assignments
@@ -30,8 +29,13 @@ docs/software/%: software/%
 
 %.slides.html: %.qmd
 ## @F = file: https://stackoverflow.com/questions/59446839/get-filename-from-in-makefile
-	quarto render $< --to revealjs -o $(@F)
-	mv $(@F) notes
+	cd notes; quarto render $(<F) --to revealjs -o $(@F)
+## mv $(@F) docs/notes
+
+
+%.html: %.qmd
+## @F = file: https://stackoverflow.com/questions/59446839/get-filename-from-in-makefile
+	cd notes; quarto render $(<F)
 
 ## %.html: %.qmd
 ## 	quarto render $< --to revealjs
