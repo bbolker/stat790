@@ -1,6 +1,7 @@
 #! /bin/bash
-for i in intro; do
+for i in intro chap1; do
     for j in html docx pdf slides.html; do
     	make docs/notes/$i.$j
     done
+    ## mv notes/$i.slides.html docs/notes  ## hack
 done
