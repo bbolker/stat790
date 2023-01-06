@@ -52,35 +52,50 @@ See also ADA p. 15.
 
 ## Technical skills & tools
 
-These are not focal to the course, but are unavoidable and useful
+Not focal, but unavoidable and useful
 
-* reproducibility: version control (Git/GitHub)
-* machinery
-   * R, Julia
-	* VSCode
-   * Unix shell?
-	* reproducibility: Quarto/Sweave/Jupyter notebooks
-* *command line bullshittery* ("bullshit (read: diagnosing and debugging weird things) is a part of life in the world of computers") [@adarValue2015]
+* R, Julia
+* VSCode
+* shell tools
+* reproducibility
+   * version control (Git/GitHub)
+   * documents: Quarto/Sweave/Jupyter notebooks
+* see also: [the missing semester](https://missing.csail.mit.edu/)
 
-## About me
+## command line bullshittery
 
-* weird background (physics u/g, Zoology PhD, epidemiological modeling)
-* biases/interests:
-   * scientific inference $\gg$ pure prediction (but see @navarroScience2019)
-   * generative models
-   * data visualization
-   * solving problems in context, practical issues
-   * rants (p-values, snooping, dichotomization, unbalanced categorical responses ...)
+> bullshit (read: diagnosing and debugging weird things) is a part of life in the world of computers) [@adarValue2015]
+
+## about me
+
+* weird background (physics/math u/g, Zoology PhD, epidemiological modeling)
+* math biology (ecology/evolution/epidemiology)
+* computational statistics (mixed models, Bayesian stats)
+
+## things I like/obsess about
+
+* scientific inference $\gg$ pure prediction (but see @navarroScience2019)
+* generative models
+* data visualization
+* solving problems in context, practical issues
+* bad statistical practice (p-value abuse, snooping, dichotomania, imbalance handling, ...)
 
 # Overview of material/themes
 
-## what is ``statistical learning'' anyway?
+## what is "statistical learning" anyway?
 
 * statistics $\to$ computational statistics $\to$ machine learning $\to$ AI
     * inference vs. prediction
 	* parametric vs. nonparametric
 	* pure analysis vs. pure computation
 	* small/medium vs. big data
+
+## what is "big data"?
+
+* enough data that you need to worry about computational efficiency
+* enough data that you need to worry about moving data around  
+(e.g. currently $\gtrsim 2$ Tb?)
+<!-- https://math.stackexchange.com/questions/1394952/is-there-a-greater-than-about-symbol -->
 
 ## big picture
 
@@ -94,30 +109,49 @@ These are not focal to the course, but are unavoidable and useful
    * families of curves/distributions that can be expanded/made arbitrarily complex
 * basis construction
    * splines, Gaussian processes, tree splits, wavelets, Fourier bases, neural network architecture ...
+   
+## choice of loss function
+
+e.g.
+
+* L2 (least-squares): convenient, traditional (selects mean) 
+* L1 (minimum absolute deviation): more robust (selects median)
+* categorical responses: accuracy?
+    * continuous measures almost better than discretized ones
+* negative log-likelihood/deviance
+* **depends on context**
 
 ## optimization
+
+e.g.
 
 * (stochastic) gradient descent
 * iterative methods, e.g.:
    * IRLS (iteratively reweighted least squares), expectation-maximization
    * quasi-Newton (Broyden-Fletcher-Goldfarb-Shanno)
    * expectation-maximization
-* map/reduce
+* parallelization (map/reduce)
 
 ## bias/variance tradeoff
 
-* under/overfitting, Goldilocks
-   * shrinkage, regularization, penalization, dropout (neural networks), tree depth, learning rate (boosting), early stopping, priors ...
+* under/overfitting
+* principled, flexible ways to control and optimize model complexity
+   * e.g.: shrinkage, regularization, penalization, dropout (neural networks), tree depth, learning rate (boosting), early stopping, Bayesian priors ...
 
 ## quantifying accuracy and uncertainty
 
-* raw point estimates are problematic
-* accuracy measures
-* uncertainty measures
+* want to know **out-of-sample** performance (loss function)
+* measures: AUC, MSE, R^2, etc.
 * methods:
-    * parametric methods
-    * train/validate/test (cross-validation etc.); out-of-bag error
-    * bootstrap?
+    * parametric (e.g. adjusted R^2, AIC)
+    * train/validate/test (cross-validation etc.)
+	* out-of-bag error
+
+## quantifying uncertainty
+
+* raw point estimates are problematic!
+* confidence intervals etc.
+    * bootstrap
 	* high-dimensional inference [@dezeureHighDimensional2015a]
     * conformal prediction [@shaferTutorial2008]
 

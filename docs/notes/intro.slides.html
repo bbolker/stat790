@@ -338,7 +338,7 @@
 
 <section id="title-slide" class="center">
   <h1 class="title">Introduction<br>(week 1, part 1)</h1>
-  <p class="date">4 Jan 2023</p>
+  <p class="date">5 Jan 2023</p>
 </section>
 
 <section class="slide level2">
@@ -398,31 +398,41 @@
 </section>
 <section id="technical-skills-tools" class="slide level2">
 <h2>Technical skills &amp; tools</h2>
-<p>These are not focal to the course, but are unavoidable and useful</p>
-<ul>
-<li>reproducibility: version control (Git/GitHub)</li>
-<li>machinery
+<p>Not focal, but unavoidable and useful</p>
 <ul>
 <li>R, Julia</li>
 <li>VSCode</li>
-<li>Unix shell?</li>
-<li>reproducibility: Quarto/Sweave/Jupyter notebooks</li>
+<li>shell tools</li>
+<li>reproducibility
+<ul>
+<li>version control (Git/GitHub)</li>
+<li>documents: Quarto/Sweave/Jupyter notebooks</li>
 </ul></li>
-<li><em>command line bullshittery</em> (“bullshit (read: diagnosing and debugging weird things) is a part of life in the world of computers”) <span class="citation" data-cites="adarValue2015">(<a href="#/ref-adarValue2015" role="doc-biblioref" onclick="return false;">Adar 2015</a>)</span></li>
+<li>see also: <a href="https://missing.csail.mit.edu/">the missing semester</a></li>
 </ul>
 </section>
+<section id="command-line-bullshittery" class="slide level2">
+<h2>command line bullshittery</h2>
+<blockquote>
+<p>bullshit (read: diagnosing and debugging weird things) is a part of life in the world of computers) <span class="citation" data-cites="adarValue2015">(<a href="#/ref-adarValue2015" role="doc-biblioref" onclick="return false;">Adar 2015</a>)</span></p>
+</blockquote>
+</section>
 <section id="about-me" class="slide level2">
-<h2>About me</h2>
+<h2>about me</h2>
 <ul>
-<li>weird background (physics u/g, Zoology PhD, epidemiological modeling)</li>
-<li>biases/interests:
+<li>weird background (physics/math u/g, Zoology PhD, epidemiological modeling)</li>
+<li>math biology (ecology/evolution/epidemiology)</li>
+<li>computational statistics (mixed models, Bayesian stats)</li>
+</ul>
+</section>
+<section id="things-i-likeobsess-about" class="slide level2">
+<h2>things I like/obsess about</h2>
 <ul>
 <li>scientific inference <span class="math inline">\(\gg\)</span> pure prediction (but see <span class="citation" data-cites="navarroScience2019">Navarro (<a href="#/ref-navarroScience2019" role="doc-biblioref" onclick="return false;">2019</a>)</span>)</li>
 <li>generative models</li>
 <li>data visualization</li>
 <li>solving problems in context, practical issues</li>
-<li>rants (p-values, snooping, dichotomization, unbalanced categorical responses …)</li>
-</ul></li>
+<li>bad statistical practice (p-value abuse, snooping, dichotomania, imbalance handling, …)</li>
 </ul>
 </section>
 <section>
@@ -431,7 +441,7 @@
 
 </section>
 <section id="what-is-statistical-learning-anyway" class="slide level2">
-<h2>what is ``statistical learning’’ anyway?</h2>
+<h2>what is “statistical learning” anyway?</h2>
 <ul>
 <li>statistics <span class="math inline">\(\to\)</span> computational statistics <span class="math inline">\(\to\)</span> machine learning <span class="math inline">\(\to\)</span> AI
 <ul>
@@ -440,6 +450,14 @@
 <li>pure analysis vs.&nbsp;pure computation</li>
 <li>small/medium vs.&nbsp;big data</li>
 </ul></li>
+</ul>
+</section>
+<section id="what-is-big-data" class="slide level2">
+<h2>what is “big data”?</h2>
+<ul>
+<li>enough data that you need to worry about computational efficiency</li>
+<li>enough data that you need to worry about moving data around<br>
+(e.g.&nbsp;currently <span class="math inline">\(\gtrsim 2\)</span> Tb?) <!-- https://math.stackexchange.com/questions/1394952/is-there-a-greater-than-about-symbol --></li>
 </ul>
 </section>
 <section id="big-picture" class="slide level2">
@@ -465,8 +483,23 @@
 </ul></li>
 </ul>
 </section>
+<section id="choice-of-loss-function" class="slide level2">
+<h2>choice of loss function</h2>
+<p>e.g.</p>
+<ul>
+<li>L2 (least-squares): convenient, traditional (selects mean)</li>
+<li>L1 (minimum absolute deviation): more robust (selects median)</li>
+<li>categorical responses: accuracy?
+<ul>
+<li>continuous measures almost better than discretized ones</li>
+</ul></li>
+<li>negative log-likelihood/deviance</li>
+<li><strong>depends on context</strong></li>
+</ul>
+</section>
 <section id="optimization" class="slide level2">
 <h2>optimization</h2>
+<p>e.g.</p>
 <ul>
 <li>(stochastic) gradient descent</li>
 <li>iterative methods, e.g.:
@@ -475,29 +508,39 @@
 <li>quasi-Newton (Broyden-Fletcher-Goldfarb-Shanno)</li>
 <li>expectation-maximization</li>
 </ul></li>
-<li>map/reduce</li>
+<li>parallelization (map/reduce)</li>
 </ul>
 </section>
 <section id="biasvariance-tradeoff" class="slide level2">
 <h2>bias/variance tradeoff</h2>
 <ul>
-<li>under/overfitting, Goldilocks
+<li>under/overfitting</li>
+<li>principled, flexible ways to control and optimize model complexity
 <ul>
-<li>shrinkage, regularization, penalization, dropout (neural networks), tree depth, learning rate (boosting), early stopping, priors …</li>
+<li>e.g.: shrinkage, regularization, penalization, dropout (neural networks), tree depth, learning rate (boosting), early stopping, Bayesian priors …</li>
 </ul></li>
 </ul>
 </section>
 <section id="quantifying-accuracy-and-uncertainty" class="slide level2">
 <h2>quantifying accuracy and uncertainty</h2>
 <ul>
-<li>raw point estimates are problematic</li>
-<li>accuracy measures</li>
-<li>uncertainty measures</li>
+<li>want to know <strong>out-of-sample</strong> performance (loss function)</li>
+<li>measures: AUC, MSE, R^2, etc.</li>
 <li>methods:
 <ul>
-<li>parametric methods</li>
-<li>train/validate/test (cross-validation etc.); out-of-bag error</li>
-<li>bootstrap?</li>
+<li>parametric (e.g.&nbsp;adjusted R^2, AIC)</li>
+<li>train/validate/test (cross-validation etc.)</li>
+<li>out-of-bag error</li>
+</ul></li>
+</ul>
+</section>
+<section id="quantifying-uncertainty" class="slide level2">
+<h2>quantifying uncertainty</h2>
+<ul>
+<li>raw point estimates are problematic!</li>
+<li>confidence intervals etc.
+<ul>
+<li>bootstrap</li>
 <li>high-dimensional inference <span class="citation" data-cites="dezeureHighDimensional2015a">(<a href="#/ref-dezeureHighDimensional2015a" role="doc-biblioref" onclick="return false;">Dezeure et al. 2015</a>)</span></li>
 <li>conformal prediction <span class="citation" data-cites="shaferTutorial2008">(<a href="#/ref-shaferTutorial2008" role="doc-biblioref" onclick="return false;">Shafer and Vovk 2008</a>)</span></li>
 </ul></li>

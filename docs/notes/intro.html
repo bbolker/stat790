@@ -72,7 +72,7 @@ div.csl-indent {
     <div>
     <div class="quarto-title-meta-heading">Published</div>
     <div class="quarto-title-meta-contents">
-      <p class="date">4 Jan 2023</p>
+      <p class="date">5 Jan 2023</p>
     </div>
   </div>
     
@@ -184,6 +184,14 @@ Navarro, Danielle. 2019. <span>“Science and Statistics.”</span> <span>Aarhus
 </ul></li>
 </ul>
 </section>
+<section id="aside-what-is-big-data" class="level2">
+<h2 class="anchored" data-anchor-id="aside-what-is-big-data">(aside) what is “big data”?</h2>
+<ul>
+<li>enough data that you need to worry about computational efficiency</li>
+<li>enough data that you need to worry about moving data around<br>
+(e.g.&nbsp;currently <span class="math inline">\(\grtsim 2\)</span> Tb?)</li>
+</ul>
+</section>
 <section id="big-picture" class="level2 page-columns page-full">
 <h2 class="anchored" data-anchor-id="big-picture">big picture</h2>
 <ul>
@@ -207,6 +215,20 @@ Lindeløv, Jonas Kristoffer. 2019. <span>“Common Statistical Tests Are Linear 
 <ul>
 <li>splines, Gaussian processes, tree splits, wavelets, Fourier bases, neural network architecture …</li>
 </ul></li>
+</ul>
+</section>
+<section id="choice-of-loss-function" class="level2">
+<h2 class="anchored" data-anchor-id="choice-of-loss-function">choice of loss function</h2>
+<p>e.g.</p>
+<ul>
+<li>L2 (least-squares): convenient, traditional (selects mean)</li>
+<li>L1 (minimum absolute deviation): more robust (selects median)</li>
+<li>categorical responses: accuracy?
+<ul>
+<li>continuous measures almost better than discretized ones</li>
+</ul></li>
+<li>negative log-likelihood/deviance</li>
+<li><strong>depends on context</strong></li>
 </ul>
 </section>
 <section id="optimization" class="level2">
