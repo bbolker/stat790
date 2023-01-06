@@ -1,0 +1,63 @@
+---
+title: "Introduction<br>(week 1, part 3)"
+reference-location: margin
+citation-location: margin
+bibliography: ../stat790.bib
+date: today
+date-format: "D MMM YYYY"
+---
+
+\newcommand{\y}{\mathbf y}
+\newcommand{\X}{\mathbf X}
+\newcommand{\bbeta}{\boldsymbol \beta}
+
+<!-- typically renders in docs/ dir  -->
+
+## books
+
+* ESL and ADA cover very similar material
+* both compare linear regression and nearest-neighbour methods as opposite ends of a specrum
+
+## Fisher's irises
+
+* Canadian content (irises of the Gaspé peninsula) [@fisherUse1936]
+* Fisher was a eugenist [@bodmeroutstanding2021]
+* multiple versions/errors! [@bezdekWill1999]
+* alternative: [Palmer penguins dataset](https://allisonhorst.github.io/palmerpenguins/)
+
+## linear models
+
+* can write out as $\hat Y = \hat \beta_0 + \sum X_j \hat \beta_j$
+* go almost immediately to $\hat Y = X^{\top} \hat \beta$ or $\left<X, \beta\right>$ or $\mathbf X \beta$
+* $\mathbf X$ is the *model matrix* (sometimes "design matrix")
+* usually includes an intercept column
+* can contain *any* (precomputed) functions of input variables
+* input vars $\to$ predictor vars
+* 1D examples
+
+## least squares
+
+* choose L2 norm (p-norm = $\left( \sum |x|^p \right)^{1/p}$)
+* [poll](https://www.polleverywhere.com/free_text_polls/6ZeKc99weqzmVSNsQdJyu): why?
+* $\sum_i (Y_i - X_i \beta)^2$
+* equivalent to $(\y-\X\beta)^\top (\y-\X\beta)$
+* differentiate and solve: $\hat \beta = (\X^\top\X)^{-1} \X^\top \y$
+* **hat matrix**: 
+$$
+\begin{split}
+\hat x  = H \y & =  \X \hat \beta \\
+ & = \X (\X^\top\X)^{-1} \X^\top \y \\
+ H &  = \X (\X^\top\X)^{-1} \X^\top
+\end{split}
+$$
+* regression as a *linear filter*
+
+## bias-variance expansion
+
+## linear regression
+
+## nearest-neighbor
+
+## dimensionality
+
+## references
