@@ -52,12 +52,43 @@ $$
 $$
 * regression as a *linear filter*
 
-## bias-variance expansion
+## regression: nuts and bolts
 
-## linear regression
+* don't do naive linear algebra!
+   * `fortunes::fortune("SLOOOOW")`
+* QR decomposition
+* will dig into computational details a bit next week (?)
+
+## regression as classification
+
+![fig2.1](../pix/boundary1.png)
+
+* slightly weird
+* looseness of "classification" vs "regression"
+   * should probably use *discriminant analysis* here
+   * or logistic regression
 
 ## nearest-neighbor
 
+* $\frac{1}{k} \sum_{x_i \in N_k(x)} y_i$
+* also a linear smoother: columns of $\X$ are $1/k \times$ *indicator variables*: $(x_i \in N_k(x))$ and the $\beta$ values are $y_i$
+* **hardening** predictions: better to leave as a probability?
+
+## from nearest to $k$-NN
+
+* unlike (this version of) linear regression, complexity is adjustable
+* from "nearest neighbor" to "$N$-n.n." (i.e. the mean)
+* tuning parameter ($k$) is **discrete** (e.g. awkward for optimization)
+
+**poll**: what would be some ways to make linear regression have adjustable complexity?
+
 ## dimensionality
+
+* **curse of dimensionality**
+* more points are near the edge of a set
+* more points are needed to "fill in"/characterize a density
+* the mode of a distribution is no longer "typical" in some sense[@gelmantypical2020]
+
+## bias-variance expansion
 
 ## references

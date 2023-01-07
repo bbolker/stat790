@@ -1,0 +1,6 @@
+library(nycflights13)
+m1 <- lm(dep_delay ~ factor(month), flights)
+summary(m1)
+library(sjPlot)
+plot_model(m1, "pred")
+write.csv(flights, file = "flights.csv")
