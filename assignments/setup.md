@@ -44,4 +44,4 @@ title: "software installation"
 ## extras
 
 * recommended `radian` R console (also need Python installed!) `pip install radian`; update settings. See https://code.visualstudio.com/docs/languages/r
-
+* spellchecker?

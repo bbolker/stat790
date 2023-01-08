@@ -85,7 +85,7 @@ Not focal, but unavoidable and useful
 ## what is "statistical learning" anyway?
 
 * statistics $\to$ computational statistics $\to$ machine learning $\to$ AI
-    * inference vs. prediction
+   * inference^[**causal** inference is another can of worms (covered in ADA), which we won't touch] vs. prediction
 	* parametric vs. nonparametric
 	* pure analysis vs. pure computation
 	* small/medium vs. big data
@@ -93,13 +93,14 @@ Not focal, but unavoidable and useful
 ## what is "big data"?
 
 * enough data that you need to worry about computational efficiency
+   * interested in **scaling** of methods (time/memory) in $n$, $p$
 * enough data that you need to worry about moving data around  
 (e.g. currently $\gtrsim 2$ Tb?)
 <!-- https://math.stackexchange.com/questions/1394952/is-there-a-greater-than-about-symbol -->
 
 ## big picture
 
-* make connections between methods
+* concepts underlying methods; connections between methods
    * analogy: t-test/ANOVA/regression vs "the general linear model" [@lindelovCommon2019]
 * building blocks/themes
 
@@ -131,6 +132,17 @@ e.g.
    * quasi-Newton (Broyden-Fletcher-Goldfarb-Shanno)
    * expectation-maximization
 * parallelization (map/reduce)
+
+## tools
+
+* everything is differentiation and linear algebra
+* we want to solve equations/optimize (diff.) in high dimensions (lin. alg.)
+* e.g. Newton's method for optimization is 
+$$
+H(x_k) \Delta x = -g(x_k)
+$$
+where $H$ is the *Hessian*, $g$ is the gradient vector, $\Delta x$ is the update step
+* [ObXKCD](https://xkcd.com/1838/)
 
 ## bias/variance tradeoff
 

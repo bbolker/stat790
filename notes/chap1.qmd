@@ -16,13 +16,15 @@ date-format: "D MMM YYYY"
 ## books
 
 * ESL and ADA cover very similar material
-* both compare linear regression and nearest-neighbour methods as opposite ends of a specrum
+* both compare linear regression and nearest-neighbour methods as opposite ends of a complexity spectrum
+* ESL has more on dimensionality
+
 
 ## Fisher's irises
 
 * Canadian content (irises of the Gaspé peninsula) [@fisherUse1936]
-* Fisher was a eugenist [@bodmeroutstanding2021]
-* multiple versions/errors! [@bezdekWill1999]
+* Fisher was a eugenist (!) [@bodmeroutstanding2021]
+* multiple versions of the data set, with errors ... [@bezdekWill1999]
 * alternative: [Palmer penguins dataset](https://allisonhorst.github.io/palmerpenguins/)
 
 ## linear models
@@ -51,12 +53,14 @@ $$
 \end{split}
 $$
 * regression as a *linear filter*
+* cf. explicit expression in ADA 1.52
 
 ## regression: nuts and bolts
 
-* don't do naive linear algebra!
+* never do naive linear algebra!
    * `fortunes::fortune("SLOOOOW")`
-* QR decomposition
+* R: QR decomp with Householder rotations
+* Julia ???
 * will dig into computational details a bit next week (?)
 
 ## regression as classification
@@ -74,13 +78,30 @@ $$
 * also a linear smoother: columns of $\X$ are $1/k \times$ *indicator variables*: $(x_i \in N_k(x))$ and the $\beta$ values are $y_i$
 * **hardening** predictions: better to leave as a probability?
 
+## consistency
+
+* if we want *consistency* we need (roughly) the number of observations used to make a prediction to grow (fast enough) with the total sample size $N$
+* doesn't hold for fixed $k$
+* but will work if $k/n \to 0$ as $k\to \infty, n \to infty$ (ADA)
+
 ## from nearest to $k$-NN
 
 * unlike (this version of) linear regression, complexity is adjustable
 * from "nearest neighbor" to "$N$-n.n." (i.e. the mean)
 * tuning parameter ($k$) is **discrete** (e.g. awkward for optimization)
 
-**poll**: what would be some ways to make linear regression have adjustable complexity?
+**poll**: can you think of any ways to modify linear regression to have adjustable complexity?
+
+## from NN to kernel smoothers (ADA, ESL 2.8.2)
+
+* kernel **density estimation** may be familiar
+* generalize "nearest neighbor" kernel
+* from ADA:
+$$
+\hat \mu(x) = \sum_i \left( \frac{K(x_i, x)}{\sum_j K(x_j, x)} \right) y_i
+$$
+* or $K(d(x_i,x)/h)$ where $h$ is the **bandwidth**
+* also not consistent unless we let $h \to 0$ and $n \to \infty$ (at the "right" rate)
 
 ## dimensionality
 
@@ -88,7 +109,35 @@ $$
 * more points are near the edge of a set
 * more points are needed to "fill in"/characterize a density
 * the mode of a distribution is no longer "typical" in some sense[@gelmantypical2020]
+* heuristic: surface to volume ratio of a $p$-ball is $p$^[surprisingly slow!]
+* results from ESL: distance from origin to nearest point (of $N$) in dimension $p$
+$$
+d(p,N) = \left(1- \frac{1}{2}^{1/N} \right)^{1/p}
+$$
+* Bayesians: the mode is not "typical" @gelmantypical2020
 
-## bias-variance expansion
+## bias-variance expansion/trade-off
+
+* general expansion of $E[(y-\hat \mu(x))^2]$, expanded as 
+$$
+E[(\underbrace{(y-\mu(x))}_{\textrm{diff betw y, true RF}}+ \underbrace{(\mu(x)-\hat \mu(x)}_{\textrm{diff betw true RF, chosen approx}})^2
+$$
+* take expectations, drop 0 terms $\to$ variance + bias$^2$
+* allow for variation across training sets, get $\sigma^2 + \mathrm{var} + \mathrm{bias}^2$ (ESL 2.47)
+* ADA example: true function (sine) is *worse than a constant function* for noisy data (Fig 1.3). cf. @waltersEffects1981
+* bias $\approx$ **within-sample** error; easy to minimize
+
+## the picture
+
+![](../pix/biasvar.png)
+
+* want to find the 'sweet spot' with low computational effort, with minimal assumptions, and without snooping
+
+## effective degrees of freedom
+
+* may be able to compute a complexity measure, for simple cases
+* ... such as linear weights
+* **trace of the hat matrix**; ADA 1.66-1.68
+* related to ESL 2.28
 
 ## references
