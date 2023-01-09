@@ -1,5 +1,7 @@
 # Software tools for STAT 790, statistical learning
 
+(see also [setup info](../assignments/setup.html))
+
 ## R
 
 R is a domain-specific language for statistics and data science
@@ -19,7 +21,6 @@ Julia is a domain-specific language for high-performance computing and data anal
 
 [Quarto](https://quarto.org/) is a scientific publishing/reporting system for integrating code and output in a document or notebook. [Download/install link](https://quarto.org/docs/get-started/)
 
-
 ## VS Code
 
 [Visual Studio Code](https://code.visualstudio.com/) (VSCode) is an integrated development environment (IDE). While it primarily targets software development rather than data analysis, it handles multiple languages better than RStudio (see below). [Download and install](https://code.visualstudio.com/download)
@@ -31,14 +32,13 @@ Julia is a domain-specific language for high-performance computing and data anal
   
 ## TeX 
 
-[TeX](https://en.wikipedia.org/wiki/TeX) is an ancient (first released in the 1970s) typesetting/document creation system that is still standard in mathematics and many technical fields
+[TeX](https://en.wikipedia.org/wiki/TeX) is an ancient (first released in the 1970s) typesetting/document creation system that is still standard in mathematics and many technical fields. If you already have (La)TeX installed on your system, you probably don't need to reinstall it.
 
-   - [install TinyTeX for quarto](https://quarto.org/docs/output-formats/pdf-engine.html)
+- [install TinyTeX for quarto](https://quarto.org/docs/output-formats/pdf-engine.html)
 
 ## Python (optional)
 
-You'll need to install Python to install `radian`, which is an improved R console for VS Code. [Download/install](https://www.python.org/downloads/)
-
+You'll need to install Python if you want to use `radian`, which is an improved R console for VS Code. [Download/install](https://www.python.org/downloads/)
 
 ## RStudio
 

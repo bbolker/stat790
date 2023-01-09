@@ -1,5 +1,5 @@
 week, start_date, topic, readings, assignments, notes
-1,2023-01-09,"Overview: big picture, software, bias-variance tradeoff",@breimanStatistical2001 and **one of** @millerBreiman2021; @gelmanReflections2021; @raperLeo2020; ESL chaps 1-2; ADA chap 1, [software setup](./assignments/setup.html) ,[esl chap 1 scribbles](book_notes/esl_ch-1.2pdf); [ada chap 1 scribbles](book_notes/ada_ch1.pdf); [intro](notes/intro.pdf); [chap1](notes/chap1.pdf); [intro R code](code/lin.R); [intro Julia code](code/lin.jl)
+1,2023-01-09,"Overview: big picture, software, bias-variance tradeoff",;ESL ch. 1-2; ADA ch. 1; @breimanStatistical2001 and **one of** {@millerBreiman2021; @gelmanReflections2021; @raperLeo2020}, [software setup](./assignments/setup.html) ,[esl chap 1 scribbles](book_notes/esl_ch-1.2pdf); [ada chap 1 scribbles](book_notes/ada_ch1.pdf); [intro](notes/intro.pdf); [chap1](notes/chap1.pdf); [intro R code](code/lin.R); [intro Julia code](code/lin.jl)
 2,2023-01-16,Regression methods (OLS/lasso/ridge),,HW 1 (Friday)
 3,2023-01-23,Regression with non-Gaussian outcomes,
 4,2023-01-30,Basis expansion and regularization: GAMs,,HW 2
