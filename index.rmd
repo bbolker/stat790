@@ -23,8 +23,9 @@ Materials on this web page are **under construction** and **subject to change**
 
 ### Course meetings
 
-- 3:30-5:30 Mon, 9:30-10:30 Weds (Toronto time), [IWC (Ivor Wynne Centre) 223](https://osm.org/go/ZXtIyrMv?m=) ([floor plan](https://www.mcmaster.ca/uts/maps/iwc2.html))
-- Remote availability (for Fields attendees) to be determined (Echo 360/Teams/Zoom)
+- 3:30-5:30 Mon (Toronto time), [IWC (Ivor Wynne Centre) 223](https://osm.org/go/ZXtIyrMv?m=) ([floor plan](https://www.mcmaster.ca/uts/maps/iwc2.html))
+- 9:30-10:30 Weds, Hamilton Hall 102
+- For Fields attendees: by [zoom](https://zoom.us/j/94032290804?pwd=bHlYYWNkSkZlbXhRVFY4emFaOThvZz09)
 
 ### Misc info
 
@@ -48,6 +49,8 @@ Materials on this web page are **under construction** and **subject to change**
 - [Course outline](outline.docx)
 - [Assignments](./assignments/README.html) (due dates in schedule below)
 - [The back-end for this site](https://github.com/bbolker/stat790)
+- [Notes on academic integrity](./honesty.html)
+- [R style guide](./R_style.html)
 
 ## Communication
 

@@ -1,0 +1,90 @@
+---
+title: "theobio style guide"
+date: Updated October 2021
+bibliography: "stat790.bib"
+---
+
+<!-- FIXME: why do square brackets get mangled??? -->
+<!-- Something to do with the two-step process (html via md) -->
+
+Follow Hadley Wickham's [style guide](http://adv-r.had.co.nz/Style.html), adapted from [Google's style guide](https://google.github.io/styleguide/Rguide.xml) (HW's link to Google is broken). Some of the differences between Google and HW are:
+
+- HW prefers `snake_case` for identifiers, Google likes kebab or camel (`variable.name` (or `variableName`), `FunctionName`, `kConstantName`)
+- HW uses Roxygen
+
+You can use whatever naming conventions you want but **be consistent**. (This holds more generally, e.g. for choice of tidyverse pipe `%>%` or native pipe `|>`, etc.)
+
+In addition:
+
+- don't use names of built-in R objects (especially `data`, but also: `sd`, `t`, `dt`, `df`, `I`, ...) for your own variables. `fortunes::fortune(77)`:
+
+> Firstly, don't call your matrix 'matrix'. Would you call your dog 'dog'? Anyway, it might clash with the function 'matrix'. (Barry Rowlingson, R-help (October 2004))
+
+- **don't** use absolute paths (i.e. `C:\\Joe's Computer\\Important Stuff`)
+- **don't** use spaces or other special characters (`&`, `#`, `$`, parentheses) in file names (`_` and `.` are OK)
+- **don't** leave interactive commands like (especially) `View()`, `head()`, `str()` in your code (unless commented out)
+- loading packages:
+	- **don't** use `install.packages()` in a script (unless it's commented out)	
+	- load all of the required packages at the top of your script; this way it's easy for others to see which packages they might need to install
+	     - if you have packages from somewhere other than the main (CRAN) repository (e.g. Bioconductor or a Github repository), leave a comment telling people how to install them
+	 	- try to load only the packages you need; don't load a huge list of unnecessary packages (e.g. all of the ones used in class examples)
+		- if you load `tidyverse`, you don't need to explicitly load any of the contained packages (`dplyr`, `tidyr`, `ggplot2`, etc.)
+    - use `library()` instead of `require()` to load packages
+- **don't** depend on case sensitivity for anything important
+- **don't** put `rm(list=ls())` at the top of your code [@bryan_project-oriented_2017]
+	- instead, get in the habit of restarting R (`Session > Restart R` or via hotkey in RStudio)
+- similarly, don't put `setwd(...)` at the head of your file (instead, assume that the user has set their working directory correctly; this can be done (1) by hand with `setwd()`; (2) in RStudio, via the `Session` menu; (3) automatically in RStudio, by using an R project (home directory is stored in the `.Rproj` file); (4) using the `here` package	
+- always use `TRUE` and `FALSE` rather than `T`/`F` (is this in the other style guides already???)
+- don't load your data straight from a URL (best to download and cache the file, in case your network connection is bad or the file disappears/changes)
+- **don't** use "extreme tidyverse"; e.g. use `mean(dd$x)` instead of `dd %>% pull(x) %>% mean()`
+- use `count()` instead of `group_by(..)+summarize(count=n())`, *or* use base-R `table` (which also spreads the results): `with(your_data,table(var1,var2))`
+- rename bad variable names (long, containing spaces or special characters) near the beginning of your script (with `dplyr::rename()`)
+- use the `data=` argument whenever possible (e.g. `lm()`)
+- use the `across()` function in tidyverse (in conjunction with `mutate` and `summarise`) to transform multiple columns
+- use `stopifnot()` (or the `assertthat` package from the extended hadleyverse) to test conditions
+- use log scales often, especially for morphometric measurements
+- especially when using a linear scale, adjust units so the range can be expressed with small numbers (e.g. 1-5 instead of 1,000,000 to 5,000,000) (or use ggplot scaling/axis break stuff)
+- use comma-separation to combine multiple `mutate()` steps
+- use explicit `print()` statements rather than relying on objects to self-print
+- use explicit `return()` statements rather than relying on R's implicit "return value is the last statement in the function" rule
+- omit unnecessary `c()` (e.g. `c(1:30)`). Lean toward `seq()` and `seq_along()`, but OK (?) to use `:`
+- usually put each `ggplot` specification on a separate line
+
+---
+
+- surround multi-line expressions with parentheses instead of relying on R's rule that statements should be carried on to the next line when the line ends with a binary operator (usually `+`, `%>%`). For example,
+```{r cont1,eval=FALSE}
+thing <- (thing %>%
+          mutate(foo=x^2)
+)
+```
+rather than
+```{r cont2,eval=FALSE}
+thing <- thing %>%
+    mutate(foo=x^2)
+```
+Consider moving the operator to the next line:
+```{r cont3,eval=FALSE}
+thing <- (thing
+     %>% mutate(foo=x^2)
+)
+```
+This makes it easier to comment out unwanted lines temporarily.
+- Similarly, for complicated multi-argument expressions, put the comma on the following line to make commenting/deleting arguments easier (JD)
+```{r eval=FALSE} 
+thing <- (thing 
+    %>% mutate(foo=x^2
+           , bar=x^3
+           , bletch=x^4
+	)
+)
+```
+rather than
+```{r eval=FALSE}
+thing <- thing %>%
+    mutate(foo=x^2,
+           bar=x^3,
+           bletch=x^4)
+```
+
+## References

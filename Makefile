@@ -1,4 +1,4 @@
-all: docs/assignments/README.html docs/index.html docs/stat790_bib.html docs/software/README.html docs/honesty.html
+all: docs/assignments/README.html docs/index.html docs/stat790_bib.html docs/software/README.html docs/honesty.html docs/R_style.html
 ## allnotes docs/assignments/midterm-topics.html
 
 ## see also: mk_all
