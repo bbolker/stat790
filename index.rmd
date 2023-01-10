@@ -46,6 +46,8 @@ Materials on this web page are **under construction** and **subject to change**
 
 ### Links
 
+- [Lecture recordings](https://www.youtube.com/playlist?list=PLArBKNfJxuuks3YRWAO-fBxX18QCrTmon)
+- [Piazza](https://piazza.com/mcmaster.ca/spring2023/stats790) (course forum/communications)
 - [Course outline](outline.docx)
 - [Assignments](./assignments/README.html) (due dates in schedule below)
 - [The back-end for this site](https://github.com/bbolker/stat790)
