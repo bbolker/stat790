@@ -82,7 +82,7 @@ $$
 
 * if we want *consistency* we need (roughly) the number of observations used to make a prediction to grow (fast enough) with the total sample size $N$
 * doesn't hold for fixed $k$
-* but will work if $k/n \to 0$ as $k\to \infty, n \to infty$ (ADA)
+* but will work if $k/n \to 0$ as $k\to \infty, n \to \infty$ (ADA)
 
 ## from nearest to $k$-NN
 
