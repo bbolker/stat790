@@ -34,13 +34,12 @@ date-format: "D MMM YYYY"
 * $\mathbf X$ is the *model matrix* (sometimes "design matrix")
 * usually includes an intercept column
 * can contain *any* (precomputed) functions of input variables
-* input vars $\to$ predictor vars
+* input vars (directly measured) $\to$ predictor vars (transformations, basis expansions, etc.)
 * 1D examples
 
 ## least squares
 
 * choose L2 norm (p-norm = $\left( \sum |x|^p \right)^{1/p}$)
-* [poll](https://www.polleverywhere.com/free_text_polls/6ZeKc99weqzmVSNsQdJyu): why?
 * $\sum_i (Y_i - X_i \beta)^2$
 * equivalent to $(\y-\X\beta)^\top (\y-\X\beta)$
 * differentiate and solve: $\hat \beta = (\X^\top\X)^{-1} \X^\top \y$
@@ -60,6 +59,7 @@ $$
 * never do naive linear algebra!
    * `fortunes::fortune("SLOOOOW")`
 * R: QR decomp with Householder rotations
+   * see: [lm.c](https://github.com/wch/r-source/blob/79298c499218846d14500255efd622b5021c10ec/src/library/stats/src/lm.c), [dqlrs](https://github.com/wch/r-source/blob/79298c499218846d14500255efd622b5021c10ec/src/appl/dqrls.f), [dqrdc2](https://github.com/wch/r-source/blob/79298c499218846d14500255efd622b5021c10ec/src/appl/dqrdc2.f) ([from the beginning](https://github.com/wch/r-source/blob/2c986d4bcd267202c240ebb4300322d788033303/src/appl.f/dqrdc2.f))
 * Julia ???
 * will dig into computational details a bit next week (?)
 
@@ -90,7 +90,7 @@ $$
 * from "nearest neighbor" to "$N$-n.n." (i.e. the mean)
 * tuning parameter ($k$) is **discrete** (e.g. awkward for optimization)
 
-**poll**: can you think of any ways to modify linear regression to have adjustable complexity?
+**poll**: what are some ways we can modify linear regression to have adjustable complexity?
 
 ## from NN to kernel smoothers (ADA, ESL 2.8.2)
 
