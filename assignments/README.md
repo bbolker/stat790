@@ -1,4 +1,4 @@
 ## assignments
 
 * [software setup](./setup.html)
-* HW 1 (due Friday 20 Jan, 5 PM)
+* [HW 1](./hw1.md) (due Friday 20 Jan, midnight)
