@@ -2,19 +2,25 @@
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
 
 <meta charset="utf-8">
-<meta name="generator" content="quarto-1.0.37">
+<meta name="generator" content="quarto-1.2.269">
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
+<meta name="dcterms.date" content="2023-01-16">
 
 <title>Introduction (week 1, part 1)</title>
 <style>
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
-span.underline{text-decoration: underline;}
-div.column{display: inline-block; vertical-align: top; width: 50%;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
 div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
 ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1.6em;
+  vertical-align: middle;
+}
 div.csl-bib-body { }
 div.csl-entry {
   clear: both;
@@ -72,9 +78,10 @@ div.csl-indent {
     <div>
     <div class="quarto-title-meta-heading">Published</div>
     <div class="quarto-title-meta-contents">
-      <p class="date">6 Jan 2023</p>
+      <p class="date">16 Jan 2023</p>
     </div>
   </div>
+  
     
   </div>
   
@@ -182,22 +189,25 @@ Navarro, Danielle. 2019. <span>“Science and Statistics.”</span> <span>Aarhus
 </div></div></section>
 <section id="overview-of-materialthemes" class="level1 page-columns page-full">
 <h1>Overview of material/themes</h1>
-<section id="what-is-statistical-learning-anyway" class="level2">
+<section id="what-is-statistical-learning-anyway" class="level2 page-columns page-full">
 <h2 class="anchored" data-anchor-id="what-is-statistical-learning-anyway">what is “statistical learning” anyway?</h2>
 <ul>
 <li>statistics <span class="math inline">\(\to\)</span> computational statistics <span class="math inline">\(\to\)</span> machine learning <span class="math inline">\(\to\)</span> AI
 <ul>
-<li>inference vs.&nbsp;prediction</li>
+<li>inference<a href="#fn1" class="footnote-ref" id="fnref1" role="doc-noteref"><sup>1</sup></a> vs.&nbsp;prediction</li>
 <li>parametric vs.&nbsp;nonparametric</li>
 <li>pure analysis vs.&nbsp;pure computation</li>
 <li>small/medium vs.&nbsp;big data</li>
 </ul></li>
 </ul>
-</section>
+<div class="no-row-height column-margin column-container"><li id="fn1"><p><sup>1</sup>&nbsp;<strong>causal</strong> inference is another can of worms (covered in ADA), which we won’t touch</p></li></div></section>
 <section id="what-is-big-data" class="level2">
 <h2 class="anchored" data-anchor-id="what-is-big-data">what is “big data”?</h2>
 <ul>
-<li>enough data that you need to worry about computational efficiency</li>
+<li>enough data that you need to worry about computational efficiency
+<ul>
+<li>interested in <strong>scaling</strong> of methods (time/memory) in <span class="math inline">\(n\)</span>, <span class="math inline">\(p\)</span></li>
+</ul></li>
 <li>enough data that you need to worry about moving data around<br>
 (e.g.&nbsp;currently <span class="math inline">\(\gtrsim 2\)</span> Tb?) <!-- https://math.stackexchange.com/questions/1394952/is-there-a-greater-than-about-symbol --></li>
 </ul>
@@ -205,7 +215,7 @@ Navarro, Danielle. 2019. <span>“Science and Statistics.”</span> <span>Aarhus
 <section id="big-picture" class="level2 page-columns page-full">
 <h2 class="anchored" data-anchor-id="big-picture">big picture</h2>
 <ul>
-<li>make connections between methods
+<li>concepts underlying methods; connections between methods
 <ul>
 <li>analogy: t-test/ANOVA/regression vs “the general linear model” <span class="citation" data-cites="lindelovCommon2019">(<a href="#ref-lindelovCommon2019" role="doc-biblioref">Lindeløv 2019</a>)</span></li>
 </ul></li>
@@ -253,6 +263,17 @@ Lindeløv, Jonas Kristoffer. 2019. <span>“Common Statistical Tests Are Linear 
 <li>expectation-maximization</li>
 </ul></li>
 <li>parallelization (map/reduce)</li>
+</ul>
+</section>
+<section id="tools" class="level2">
+<h2 class="anchored" data-anchor-id="tools">tools</h2>
+<ul>
+<li>everything is differentiation and linear algebra</li>
+<li>we want to solve equations/optimize (diff.) in high dimensions (lin. alg.)</li>
+<li>e.g.&nbsp;Newton’s method for optimization is <span class="math display">\[
+H(x_k) \Delta x = -g(x_k)
+\]</span> where <span class="math inline">\(H\)</span> is the <em>Hessian</em>, <span class="math inline">\(g\)</span> is the gradient vector, <span class="math inline">\(\Delta x\)</span> is the update step</li>
+<li><a href="https://xkcd.com/1838/">ObXKCD</a></li>
 </ul>
 </section>
 <section id="biasvariance-tradeoff" class="level2">
@@ -313,6 +334,7 @@ e.g.&nbsp;adjacency matrices</li>
 </section>
 </section>
 
+
 </main>
 <!-- /main column -->
 <script id="quarto-html-after-body" type="application/javascript">
@@ -356,7 +378,24 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
     button.classList.add('code-copy-button-checked');
     var currentTitle = button.getAttribute("title");
     button.setAttribute("title", "Copied!");
+    let tooltip;
+    if (window.bootstrap) {
+      button.setAttribute("data-bs-toggle", "tooltip");
+      button.setAttribute("data-bs-placement", "left");
+      button.setAttribute("data-bs-title", "Copied!");
+      tooltip = new bootstrap.Tooltip(button, 
+        { trigger: "manual", 
+          customClass: "code-copy-button-tooltip",
+          offset: [0, -8]});
+      tooltip.show();    
+    }
     setTimeout(function() {
+      if (tooltip) {
+        tooltip.hide();
+        button.removeAttribute("data-bs-title");
+        button.removeAttribute("data-bs-toggle");
+        button.removeAttribute("data-bs-placement");
+      }
       button.setAttribute("title", currentTitle);
       button.classList.remove('code-copy-button-checked');
     }, 1000);
@@ -384,31 +423,50 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
   for (var i=0; i<noterefs.length; i++) {
     const ref = noterefs[i];
     tippyHover(ref, function() {
-      let href = ref.getAttribute('href');
+      // use id or data attribute instead here
+      let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
       try { href = new URL(href).hash; } catch {}
       const id = href.replace(/^#\/?/, "");
       const note = window.document.getElementById(id);
       return note.innerHTML;
     });
   }
+  const findCites = (el) => {
+    const parentEl = el.parentElement;
+    if (parentEl) {
+      const cites = parentEl.dataset.cites;
+      if (cites) {
+        return {
+          el,
+          cites: cites.split(' ')
+        };
+      } else {
+        return findCites(el.parentElement)
+      }
+    } else {
+      return undefined;
+    }
+  };
   var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
   for (var i=0; i<bibliorefs.length; i++) {
     const ref = bibliorefs[i];
-    const cites = ref.parentNode.getAttribute('data-cites').split(' ');
-    tippyHover(ref, function() {
-      var popup = window.document.createElement('div');
-      cites.forEach(function(cite) {
-        var citeDiv = window.document.createElement('div');
-        citeDiv.classList.add('hanging-indent');
-        citeDiv.classList.add('csl-entry');
-        var biblioDiv = window.document.getElementById('ref-' + cite);
-        if (biblioDiv) {
-          citeDiv.innerHTML = biblioDiv.innerHTML;
-        }
-        popup.appendChild(citeDiv);
+    const citeInfo = findCites(ref);
+    if (citeInfo) {
+      tippyHover(citeInfo.el, function() {
+        var popup = window.document.createElement('div');
+        citeInfo.cites.forEach(function(cite) {
+          var citeDiv = window.document.createElement('div');
+          citeDiv.classList.add('hanging-indent');
+          citeDiv.classList.add('csl-entry');
+          var biblioDiv = window.document.getElementById('ref-' + cite);
+          if (biblioDiv) {
+            citeDiv.innerHTML = biblioDiv.innerHTML;
+          }
+          popup.appendChild(citeDiv);
+        });
+        return popup.innerHTML;
       });
-      return popup.innerHTML;
-    });
+    }
   }
 });
 </script>

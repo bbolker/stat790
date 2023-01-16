@@ -8,7 +8,7 @@ date-format: "D MMM YYYY"
 ---
 
 \newcommand{\U}{\mathbf U}
-\newcommand{\u}{\mathbf u}
+\newcommand{\uu}{\mathbf u}
 \newcommand{\V}{\mathbf V}
 \newcommand{\B}{\mathbf B}
 \newcommand{\y}{\mathbf y}
@@ -248,7 +248,7 @@ $$
 \end{split}
 $$
 
-* and ridge translates to $\sum \u_j \frac{d^2_j}{d^2_j + \lambda} \u_j^\top \y$
+* and ridge translates to $\sum \uu_j \frac{d^2_j}{d^2_j + \lambda} \uu_j^\top \y$
 * i.e. **shrinking the $j^\textrm{th}$ principal component** by $\frac{d^2_j}{d^2_j + \lambda}$
 * (if inputs are orthonormal all coefficients are shrunk equally)
 
