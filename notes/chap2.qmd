@@ -274,3 +274,12 @@ $$
 * could use $L_p$ penalization with $1 < p < 2$ (equivalent to a *generalized normal* or *exponential power* prior: $\propto \exp\left(|(x-\mu)/s|^{p}\right)$ (`gnorm` package)
 * **elastic-net** (penalty $\propto \alpha \sum \beta^2 + (1-\alpha) \sum |\beta|$)
     * computationally nicer and sparsity-inducing
+
+## arm-waving
+
+* how do we decide on a 'best' model?
+* run everything and compare on a test set? (Do we need another level of nested cross-validation?)
+* appropriate metrics: fit quality? fit quality/time or within a time threshold?
+* interpretability?
+* analogue of [no free lunch theorem](https://en.wikipedia.org/wiki/No_free_lunch_theorem): "any two optimization algorithms are equivalent when their performance is averaged across all possible problems" [@wolpertNo1997;@giraud-carrierJustification2005]
+
