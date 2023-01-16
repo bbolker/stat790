@@ -1,0 +1,276 @@
+---
+title: "Chapter 2 (week 2)"
+reference-location: margin
+citation-location: margin
+bibliography: ../stat790.bib
+date: today
+date-format: "D MMM YYYY"
+---
+
+\newcommand{\U}{\mathbf U}
+\newcommand{\u}{\mathbf u}
+\newcommand{\V}{\mathbf V}
+\newcommand{\B}{\mathbf B}
+\newcommand{\y}{\mathbf y}
+\newcommand{\Y}{\mathbf Y}
+\newcommand{\X}{\mathbf X}
+\newcommand{\x}{\mathbf x}
+\newcommand{\Z}{\mathbf Z}
+\newcommand{\z}{\mathbf z}
+\newcommand{\hatmat}{\mathbf H}
+\newcommand{\bbeta}{\boldsymbol \beta}
+\newcommand{\R}{\mathbf R}
+\newcommand{\GGamma}{\boldsymbol \Gamma}
+\newcommand{\Q}{\mathbf Q}
+\newcommand{\D}{\mathbf D}
+\newcommand{\I}{\mathbf I}
+\newcommand{\bzero}{\boldsymbol 0}
+
+<!-- typically renders in docs/ dir  -->
+
+## "God is in every leaf of every tree"
+
+* From Andrew Gelman ([blog](https://statmodeling.stat.columbia.edu/2005/10/06/god_is_in_every/))
+* "No problem is too small or too trivial if we really do something about it." (@dysonWise2005 quoting Richard Feynman)
+* (an excuse for going down rabbit holes?)
+
+## feature selection
+
+* *feature* $\approx$ a column of the model matrix
+* termwise selection, e.g. 
+    * all columns associated with a categorical variable
+    * all columns of a basis expansion (polynomial etc.) of a continuous variable
+* columnwise selection
+    * fine for prediction
+    * silly for inference?
+* selection maintaining the **principle of marginality** [@venablesExegeses1998]  
+(i.e., don't drop lower-order effects from a model containing interactions)
+* ¿∃ a way to **merge categories** on the fly (based on rarity, correlation, predictive ability)?
+
+## why select?
+
+* save memory
+* save "flops" (floating-point operations)
+* optimize bias-variance tradeoff
+* optimize data collection
+* parsimonious/simple explanations (e.g. `rms::fastbw` in R)
+
+## why select (2)?
+
+* save memory: OK
+* save flops, optimize B-V
+    * which is best: soft (ridge), semi-soft (lasso/SCAD), hard (stepwise/subset) penalization?
+
+## selection: filters, wrappers, embedded methods [@jovicreview2015]
+
+* **filters**: standalone recipes
+   * e.g. minimum-redundancy maximum relevance (mrMR) [@pengFeature2005]
+      * similar to stepwise forward, but no estimation done (compute mutual information)
+      * **greedy** 
+   * general, low-cost
+* wrappers: applied around specific methods
+   * e.g. stepwise regression
+   * general, evaluates prediction
+* embedded methods: integrate estimation and selection
+   * e.g. lasso etc.
+   * most efficient? can combine shrinkage and selection
+
+## stepwise abuse
+
+* stepwise regression for **prediction** may be fine [@murtaughPerformance2009]
+    * selection based on AIC etc. more sensible than with p-values
+    * note $\Delta AIC \propto p-\textrm{value}$, if using columnwise/1-df steps
+        * $\Delta \log {\cal L} \leftrightarrow \Delta AIC = 0 \leftrightarrow p  = 0.16 $
+        * leave-one-out cross-validation (LOOCV) asymptotically equiv. to AIC (@stoneAsymptotic1977a; but see [CV](https://stats.stackexchange.com/questions/407291/example-and-counterexample-for-stones-1977-assumption))
+* for **inference**, terrible if done naively (but see @blanchetForward2008)
+    * see [CrossValidated](https://stats.stackexchange.com/questions/20836/algorithms-for-automatic-model-selection)
+    * unstable, biased estimates; overconfident inference ("snooping")
+* ESL: stepwise as a jumping-off point/comparator for different
+
+## POLLS
+
+* did you learn to do stepwise regression in a class? Were you warned about its limitations?
+* have you used stepwise regression? were you aware of its limitations at the time?
+* have you used SR "in real life"? for prediction or inference?
+
+## contrasts for categorical variables
+
+* expanding categorical variables to dummy variables
+* automatically handled by `model.matrix()` in R (`StatsModels.jl:modelmatrix` in Julia)
+
+```{r contrasts, message=FALSE}
+library(palmerpenguins)
+library(tidyverse)
+library(faux)
+set.seed(101)
+pp <- penguins[sample(nrow(penguins)), c("species", "island")]  ## scramble
+head(model.matrix(~species+island, pp))
+## faux makes nicer factors!
+## rename variables/**idempotent** operations: f(f(x)) = f(x) ∀x
+pp2 <- mutate(pp, across(where(is.factor), contr_code_treatment))
+head(model.matrix(~species+island, pp2))
+colnames(model.matrix(~species*island, pp2))
+```
+
+* identifiability constraints: leave out one category
+    * post-hoc evaluation (e.g. `emmeans` R pkg)
+    * penalized methods
+
+## regression, again
+
+* hat matrix ($\hatmat = \X(\X^\top \X)^{-1} \X^\top \y$) as *projection matrix* from $\R^N$ to $\R^p$
+   * (what if we first transformed $\X$ to be orthonormal?)
+* **non-full-rank** case ($\textrm{rank}(\X) < p$)
+   * non-unique solutions
+   * may break our linear algebra, depending on what we use
+
+```{r}
+X <- matrix(c(1:3, 2*(1:3)), ncol = 2)
+y <- 1:3
+Matrix::rankMatrix(X)
+try(solve(X %*% t(X)))
+try(qr.solve(qr(X),y))
+lm.fit(X, y)$coefficients
+```
+
+**Q**: how would we do this with SVD (`svd`), or Cholesky decomposition (`chol`)?
+
+## side note: [Bessel's correction](https://en.wikipedia.org/wiki/Bessel%27s_correction)
+
+* ESL gives $\hat \sigma^2 = \frac{1}{N-p-1} \cdot \textrm{RSS}$
+    * **note** $p$ doesn't include the constant term/intercept column
+* note unbiased estimate of the residual variance
+* MLE would give $\textrm{RSS}/N$
+* unbiased estimate of resid std. error divides by $N-1.5$; minimum MSE (for Normal distribution) divides by $N+1$ (!)
+* bias is scale-dependent ($E(f(x)) \neq f(E(x))$ in general) and might not matter as much as you think
+
+## prostate cancer example
+
+* data exploration: `pairs(., gap = 0)` (can be extended with `panel` function); `corrplot::corrplot.mixed(., lower="number", upper = "ellipse")`; `GGally::ggpairs()`. Can use `faraway::prostate`.
+
+```{r prostate, eval = FALSE}
+## a bit of data exploration
+pp <- (prostate
+ |> mutate(across(
+    where(~length(unique(.))<=4),
+    factor))
+)
+ggpairs(pp)
+corrplot::corrplot.mixed(cor(prostate), 
+           lower ='number', upper = 'ellipse')
+```
+
+## train/test error
+
+* hardly worth it for simple regression problems (measures like adjusted $R^2$ and AIC(c) give reasonable estimates of out-of-sample error)
+
+## Gauss-Markov theorem
+
+* simple
+* applicable as long as data are independent and homoscedastic (iid is stronger)
+* MVUE (minimum-variance *unbiased* estimator)
+* but **not** necessarily minimum MSE!
+
+## regression by orthogonalization (3.2.3)
+
+* build up regression by successive orthogonalization
+     * regress $\x_j$ on residuals of all previous columns ($\z_0, \z_1, \ldots, \z_j$) to get coefficients $\hat \gamma_{\ell j}$, residual $\z_j$.
+     * regress $\y$ on $\z_p$ to get $\hat \beta_p$
+     * order???
+* Gram-Schmidt orthogonalization (successive projection)
+* if $\Z$ is the residual columns and $\GGamma$ is the (upper-triangular) matrix of $\gamma_{\ell j}$, then $\X = \Z \GGamma$
+* if $\D = \textrm{Diag}(||\z_j||)$
+* and $\X = \Z \D^{-1}\D \GGamma = \Q\R$ with $\Q$ orthonormal, $\R$ upper triangular
+* $\to$ standard decomposition!
+
+## multiple outputs
+
+* somewhat niche problem ...
+* changing $\y$ to $\Y$, $\beta$ to $\B$, the algebra mostly stays the same
+* separate coefficients for each problem
+* if homoscedastic, no need to consider correlation of observations!
+
+## return to subset/stepwise selection
+
+* still not sure it's worth it
+* can update efficiently based on QR decomp 
+* forward-stagewise: **less** efficient
+* **digression**: inefficiency as a virtue
+    * improve bias-var tradeoff by *worsening* fit
+    * early stopping, dropout, etc. etc.
+
+![ESL fig 3.7](../pix/esl_fig37.png)
+
+# shrinkage methods
+
+## ridge
+
+* L2 penalty on coefficients
+* predictors must be normalized! (scale of $\beta_j$ depends on scale of $x_j$)
+* equivalence between penalty ($+ \lambda \sum \beta^2$) and constraint ($\sum \beta^2 \le t$)  
+("one-to-one correspondence" between $\lambda$ and $t$, but not simple!)
+* add $\lambda \I$ in the normal equations
+* works for non-full-rank problems
+
+## Bayesian analogue
+
+* analogous to setting iid Gaussian prior on individual $\beta$ parameters
+* log-posterior = log-likelihood + log-prior $\propto \sigma^2 \textrm{RSS} + \lambda \sum \beta^2$
+* MAP (maximum *a posteriori*) estimate, **not** "proper" Bayesian est (mode, not mean, of posterior)
+
+## solving ridge by QR
+
+* note that we can solve ridge regression by introducing *pseudo-observations* (*data augmentation*)
+* set
+$$
+\B = \left(
+    \begin{array}{c}
+    \X^\top \X \\
+    \sqrt{\lambda} \I
+    \end{array}
+\right)
+$$
+
+
+* and $\y^* = (\y \: \bzero)$
+* and solving $(\B^\top \B) \bbeta = \B \y^*$ by QR decomposition [@atlasQR2013]
+*  ¿¿∃ a trick for solving for successive $\lambda$ values faster ... ?
+
+
+## singular value decomposition
+
+* if $\X = \U \D \V^\top$ then
+$$
+\begin{split}
+\X(\X^\top \X)^{-1} \X^\top \y & = \U \D \V^\top (\V \D\U\top \cdot \U \D\ \V^\top)^{-1} \V \D \U^\top \y \\
+ & = \U \D \V^\top (\V \D^2 \V^\top)^{-1} \V \D \U^\top \y \\
+ & = \U \U^\top \y
+\end{split}
+$$
+
+* and ridge translates to $\sum \u_j \frac{d^2_j}{d^2_j + \lambda} \u_j^\top \y$
+* i.e. **shrinking the $j^\textrm{th}$ principal component** by $\frac{d^2_j}{d^2_j + \lambda}$
+* (if inputs are orthonormal all coefficients are shrunk equally)
+
+## effective df
+
+* this also shows that effective df = trace of hat matrix = $\sum \frac{d^2_j}{d^2_j + \lambda}$
+* see also @hastieRidge2020
+
+## lasso
+
+* L1 regularization
+* **sparsity-inducing**
+* least-angle regression (LARS)
+* `glmnet` et al. use cyclic coordinate descent [@friedmanRegularization2010] (also in [Julia analogue](https://github.com/JuliaStats/Lasso.jl))
+    * plus "warm-start" algorithm 
+
+## ridge vs lasso vs best-subset vs elastic net
+
+![](../pix/ridgelasso.png)
+
+## other penalties
+
+* could use $L_p$ penalization with $1 < p < 2$ (equivalent to a *generalized normal* or *exponential power* prior: $\propto \exp\left(|(x-\mu)/s|^{p}\right)$ (`gnorm` package)
+* **elastic-net** (penalty $\propto \alpha \sum \beta^2 + (1-\alpha) \sum |\beta|$)
+    * computationally nicer and sparsity-inducing

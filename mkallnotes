@@ -1,5 +1,5 @@
 #! /bin/bash
-for i in intro chap1; do
+for i in intro chap1 chap2; do
     for j in pdf; do ## html docx pdf slides.html
     	make docs/notes/$i.$j
     done
