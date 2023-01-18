@@ -44,8 +44,9 @@ summary(m1)
 
 library(sjPlot)
 plot_model(m1, "pred")
-write.csv(flights, file = "flights.csv") ## for Julia input
+## write.csv(flights, file = "flights.csv") ## for Julia input
 saveRDS(flights, file = "flights.rds")
+## see also: arrow, parquet, vroom
 
 
 remotes::install_github("sfirke/packagemetrics")

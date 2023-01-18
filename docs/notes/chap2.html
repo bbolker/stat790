@@ -1,0 +1,712 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.2.269">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+<meta name="dcterms.date" content="2023-01-17">
+
+<title>Chapter 2 (week 2)</title>
+<style>
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1.6em;
+  vertical-align: middle;
+}
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+    color: #aaaaaa;
+  }
+pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+code span.al { color: #ff0000; font-weight: bold; } /* Alert */
+code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
+code span.at { color: #7d9029; } /* Attribute */
+code span.bn { color: #40a070; } /* BaseN */
+code span.bu { color: #008000; } /* BuiltIn */
+code span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
+code span.ch { color: #4070a0; } /* Char */
+code span.cn { color: #880000; } /* Constant */
+code span.co { color: #60a0b0; font-style: italic; } /* Comment */
+code span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
+code span.do { color: #ba2121; font-style: italic; } /* Documentation */
+code span.dt { color: #902000; } /* DataType */
+code span.dv { color: #40a070; } /* DecVal */
+code span.er { color: #ff0000; font-weight: bold; } /* Error */
+code span.ex { } /* Extension */
+code span.fl { color: #40a070; } /* Float */
+code span.fu { color: #06287e; } /* Function */
+code span.im { color: #008000; font-weight: bold; } /* Import */
+code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+code span.kw { color: #007020; font-weight: bold; } /* Keyword */
+code span.op { color: #666666; } /* Operator */
+code span.ot { color: #007020; } /* Other */
+code span.pp { color: #bc7a00; } /* Preprocessor */
+code span.sc { color: #4070a0; } /* SpecialChar */
+code span.ss { color: #bb6688; } /* SpecialString */
+code span.st { color: #4070a0; } /* String */
+code span.va { color: #19177c; } /* Variable */
+code span.vs { color: #4070a0; } /* VerbatimString */
+code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
+div.csl-bib-body { }
+div.csl-entry {
+  clear: both;
+}
+.hanging div.csl-entry {
+  margin-left:2em;
+  text-indent:-2em;
+}
+div.csl-left-margin {
+  min-width:2em;
+  float:left;
+}
+div.csl-right-inline {
+  margin-left:2em;
+  padding-left:1em;
+}
+div.csl-indent {
+  margin-left: 2em;
+}
+</style>
+
+
+<script src="chap2_files/libs/clipboard/clipboard.min.js"></script>
+<script src="chap2_files/libs/quarto-html/quarto.js"></script>
+<script src="chap2_files/libs/quarto-html/popper.min.js"></script>
+<script src="chap2_files/libs/quarto-html/tippy.umd.min.js"></script>
+<script src="chap2_files/libs/quarto-html/anchor.min.js"></script>
+<link href="chap2_files/libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="chap2_files/libs/quarto-html/quarto-syntax-highlighting.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="chap2_files/libs/bootstrap/bootstrap.min.js"></script>
+<link href="chap2_files/libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="chap2_files/libs/bootstrap/bootstrap.min.css" rel="stylesheet" id="quarto-bootstrap" data-mode="light">
+
+  <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js" type="text/javascript"></script>
+
+</head>
+
+<body>
+
+<div id="quarto-content" class="page-columns page-rows-contents page-layout-article">
+<div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+</div>
+<main class="content page-columns page-full" id="quarto-document-content">
+
+<header id="title-block-header" class="quarto-title-block default">
+<div class="quarto-title">
+<h1 class="title">Chapter 2 (week 2)</h1>
+</div>
+
+
+
+<div class="quarto-title-meta">
+
+    
+    <div>
+    <div class="quarto-title-meta-heading">Published</div>
+    <div class="quarto-title-meta-contents">
+      <p class="date">17 Jan 2023</p>
+    </div>
+  </div>
+  
+    
+  </div>
+  
+
+</header>
+
+<!-- typically renders in docs/ dir  -->
+<section id="god-is-in-every-leaf-of-every-tree" class="level2 page-columns page-full">
+<h2 class="anchored" data-anchor-id="god-is-in-every-leaf-of-every-tree">“God is in every leaf of every tree”</h2>
+<ul>
+<li>From Andrew Gelman (<a href="https://statmodeling.stat.columbia.edu/2005/10/06/god_is_in_every/">blog</a>)</li>
+<li>“No problem is too small or too trivial if we really do something about it.” (<span class="citation" data-cites="dysonWise2005">Dyson (<a href="#ref-dysonWise2005" role="doc-biblioref">2005</a>)</span> quoting Richard Feynman)</li>
+<li>(an excuse for going down rabbit holes?)</li>
+</ul>
+<div class="no-row-height column-margin column-container"><div id="ref-dysonWise2005" class="csl-entry" role="doc-biblioentry">
+Dyson, Freeman. 2005. <span>“Wise <span>Man</span>.”</span> <em>New York Review of Books</em>, October. <a href="https://www.nybooks.com/articles/2005/10/20/wise-man/">https://www.nybooks.com/articles/2005/10/20/wise-man/</a>.
+</div></div></section>
+<section id="feature-selection" class="level2 page-columns page-full">
+<h2 class="anchored" data-anchor-id="feature-selection">feature selection</h2>
+<ul>
+<li><em>feature</em> <span class="math inline">\(\approx\)</span> a column of the model matrix</li>
+<li>termwise selection, e.g.&nbsp;
+<ul>
+<li>all columns associated with a categorical variable</li>
+<li>all columns of a basis expansion (polynomial etc.) of a continuous variable</li>
+</ul></li>
+<li>columnwise selection
+<ul>
+<li>fine for prediction</li>
+<li>silly for inference?</li>
+</ul></li>
+<li>selection maintaining the <strong>principle of marginality</strong> <span class="citation" data-cites="venablesExegeses1998">(<a href="#ref-venablesExegeses1998" role="doc-biblioref">Venables 1998</a>)</span><br>
+(i.e., don’t drop lower-order effects from a model containing interactions)</li>
+<li>¿∃ a way to <strong>merge categories</strong> on the fly (based on rarity, correlation, predictive ability)?</li>
+</ul>
+<div class="no-row-height column-margin column-container"><div id="ref-venablesExegeses1998" class="csl-entry" role="doc-biblioentry">
+Venables, W. N. 1998. <span>“Exegeses on <span>Linear</span> <span>Models</span>.”</span> In. 1998 <span>International</span> <span>S</span>-<span>PLUS</span> <span>User</span> <span>Conference</span>. Washington, DC. <a href="http://www.stats.ox.ac.uk/pub/MASS3/Exegeses.pdf">http://www.stats.ox.ac.uk/pub/MASS3/Exegeses.pdf</a>.
+</div></div></section>
+<section id="why-select" class="level2">
+<h2 class="anchored" data-anchor-id="why-select">why select?</h2>
+<ul>
+<li>save memory</li>
+<li>save “flops” (floating-point operations)</li>
+<li>optimize bias-variance tradeoff</li>
+<li>optimize data collection</li>
+<li>parsimonious/simple explanations (e.g.&nbsp;<code>rms::fastbw</code> in R)</li>
+</ul>
+</section>
+<section id="why-select-2" class="level2">
+<h2 class="anchored" data-anchor-id="why-select-2">why select (2)?</h2>
+<ul>
+<li>save memory: OK</li>
+<li>save flops, optimize B-V
+<ul>
+<li>which is best: soft (ridge), semi-soft (lasso/SCAD), hard (stepwise/subset) penalization?</li>
+</ul></li>
+</ul>
+</section>
+<section id="selection-filters-wrappers-embedded-methods" class="level2 page-columns page-full">
+<h2 class="anchored" data-anchor-id="selection-filters-wrappers-embedded-methods">selection: filters, wrappers, embedded methods</h2>
+<p><span class="citation" data-cites="jovicreview2015">Jović, Brkić, and Bogunović (<a href="#ref-jovicreview2015" role="doc-biblioref">2015</a>)</span></p>
+<div class="no-row-height column-margin column-container"><div id="ref-jovicreview2015" class="csl-entry" role="doc-biblioentry">
+Jović, A., K. Brkić, and N. Bogunović. 2015. <span>“A Review of Feature Selection Methods with Applications.”</span> In <em>38th <span>International</span> <span>Convention</span> on <span>Information</span> and <span>Communication</span> <span>Technology</span>, <span>Electronics</span> and <span>Microelectronics</span> (<span>MIPRO</span>)</em>, 1200–1205. <a href="https://doi.org/10.1109/MIPRO.2015.7160458">https://doi.org/10.1109/MIPRO.2015.7160458</a>.
+</div></div><ul>
+<li><strong>filters</strong>: standalone recipes
+<ul>
+<li>e.g.&nbsp;minimum-redundancy maximum relevance (mrMR) <span class="citation" data-cites="pengFeature2005">(<a href="#ref-pengFeature2005" role="doc-biblioref">Peng, Long, and Ding 2005</a>)</span>
+<ul>
+<li>similar to stepwise forward, but no estimation done (compute mutual information)</li>
+<li><strong>greedy</strong></li>
+</ul></li>
+<li>general, low-cost</li>
+</ul></li>
+<li>wrappers: applied around specific methods
+<ul>
+<li>e.g.&nbsp;stepwise regression</li>
+<li>general, evaluates prediction</li>
+</ul></li>
+<li>embedded methods: integrate estimation and selection
+<ul>
+<li>e.g.&nbsp;lasso etc.</li>
+<li>most efficient? can combine shrinkage and selection</li>
+</ul></li>
+</ul>
+<div class="no-row-height column-margin column-container"><div id="ref-pengFeature2005" class="csl-entry" role="doc-biblioentry">
+Peng, Hanchuan, Fuhui Long, and C. Ding. 2005. <span>“Feature Selection Based on Mutual Information Criteria of Max-Dependency, Max-Relevance, and Min-Redundancy.”</span> <em>IEEE Transactions on Pattern Analysis and Machine Intelligence</em> 27 (8): 1226–38. <a href="https://doi.org/10.1109/TPAMI.2005.159">https://doi.org/10.1109/TPAMI.2005.159</a>.
+</div></div></section>
+<section id="stepwise-abuse" class="level2 page-columns page-full">
+<h2 class="anchored" data-anchor-id="stepwise-abuse">stepwise abuse</h2>
+<ul>
+<li>stepwise regression for <strong>prediction</strong> may be fine <span class="citation" data-cites="murtaughPerformance2009">(<a href="#ref-murtaughPerformance2009" role="doc-biblioref">Murtaugh 2009</a>)</span>
+<ul>
+<li>selection based on AIC etc. more sensible than with p-values</li>
+<li>note <span class="math inline">\(\Delta AIC \propto p-\textrm{value}\)</span>, if using columnwise/1-df steps
+<ul>
+<li><span class="math inline">\(\Delta \log({\cal L}) \leftrightarrow \Delta AIC = 0 \leftrightarrow p = 0.16\)</span></li>
+<li>leave-one-out cross-validation (LOOCV) asymptotically equiv. to AIC (<span class="citation" data-cites="stoneAsymptotic1977a">Stone (<a href="#ref-stoneAsymptotic1977a" role="doc-biblioref">1977</a>)</span>; but see <a href="https://stats.stackexchange.com/questions/407291/example-and-counterexample-for-stones-1977-assumption">CV</a>)</li>
+</ul></li>
+</ul></li>
+<li>for <strong>inference</strong>, terrible if done naively (but see <span class="citation" data-cites="blanchetForward2008">Blanchet, Legendre, and Borcard (<a href="#ref-blanchetForward2008" role="doc-biblioref">2008</a>)</span>)
+<ul>
+<li>see <a href="https://stats.stackexchange.com/questions/20836/algorithms-for-automatic-model-selection">CrossValidated</a></li>
+<li>unstable, biased estimates; overconfident inference (“snooping”)</li>
+</ul></li>
+<li>ESL: stepwise as a jumping-off point/comparator for different</li>
+</ul>
+<div class="no-row-height column-margin column-container"><div id="ref-murtaughPerformance2009" class="csl-entry" role="doc-biblioentry">
+Murtaugh, Paul A. 2009. <span>“Performance of Several Variable-Selection Methods Applied to Real Ecological Data.”</span> <em>Ecology Letters</em> 12 (10): 1061–68. <a href="https://doi.org/10.1111/j.1461-0248.2009.01361.x">https://doi.org/10.1111/j.1461-0248.2009.01361.x</a>.
+</div><div id="ref-stoneAsymptotic1977a" class="csl-entry" role="doc-biblioentry">
+Stone, M. 1977. <span>“An <span>Asymptotic</span> <span>Equivalence</span> of <span>Choice</span> of <span>Model</span> by <span>Cross</span>-<span>Validation</span> and <span>Akaike</span>’s <span>Criterion</span>.”</span> <em>Journal of the Royal Statistical Society. Series B (Methodological)</em> 39 (1): 44–47. <a href="https://www.jstor.org/stable/2984877">https://www.jstor.org/stable/2984877</a>.
+</div><div id="ref-blanchetForward2008" class="csl-entry" role="doc-biblioentry">
+Blanchet, F. Guillaume, Pierre Legendre, and Daniel Borcard. 2008. <span>“Forward <span>Selection</span> of <span>Explanatory</span> <span>Variables</span>.”</span> <em>Ecology</em> 89 (9): 2623–32. <a href="https://doi.org/10.1890/07-0986.1">https://doi.org/10.1890/07-0986.1</a>.
+</div></div></section>
+<section id="polls" class="level2">
+<h2 class="anchored" data-anchor-id="polls">POLLS</h2>
+<ul>
+<li>did you learn to do stepwise regression in a class? Were you warned about its limitations?</li>
+<li>have you used stepwise regression? were you aware of its limitations at the time?</li>
+<li>have you used SR “in real life”? for prediction or inference?</li>
+</ul>
+</section>
+<section id="contrasts-for-categorical-variables" class="level2">
+<h2 class="anchored" data-anchor-id="contrasts-for-categorical-variables">contrasts for categorical variables</h2>
+<ul>
+<li>expanding categorical variables to dummy variables</li>
+<li>automatically handled by <code>model.matrix()</code> in R (<code>StatsModels.jl:modelmatrix</code> in Julia)</li>
+</ul>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(palmerpenguins)</span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(tidyverse)</span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(faux)</span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a><span class="fu">set.seed</span>(<span class="dv">101</span>)</span>
+<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a>pp <span class="ot">&lt;-</span> penguins[<span class="fu">sample</span>(<span class="fu">nrow</span>(penguins)), <span class="fu">c</span>(<span class="st">"species"</span>, <span class="st">"island"</span>)]  <span class="do">## scramble</span></span>
+<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(<span class="fu">model.matrix</span>(<span class="sc">~</span>species<span class="sc">+</span>island, pp))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>  (Intercept) speciesChinstrap speciesGentoo islandDream islandTorgersen
+1           1                1             0           1               0
+2           1                1             0           1               0
+3           1                0             0           1               0
+4           1                0             1           0               0
+5           1                1             0           1               0
+6           1                1             0           1               0</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb3"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="do">## faux makes nicer factors!</span></span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a><span class="do">## rename variables/**idempotent** operations: f(f(x)) = f(x) ∀x</span></span>
+<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a>pp2 <span class="ot">&lt;-</span> <span class="fu">mutate</span>(pp, <span class="fu">across</span>(<span class="fu">where</span>(is.factor), contr_code_treatment))</span>
+<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(<span class="fu">model.matrix</span>(<span class="sc">~</span>species<span class="sc">+</span>island, pp2))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>  (Intercept) species.Chinstrap-Adelie species.Gentoo-Adelie
+1           1                        1                     0
+2           1                        1                     0
+3           1                        0                     0
+4           1                        0                     1
+5           1                        1                     0
+6           1                        1                     0
+  island.Dream-Biscoe island.Torgersen-Biscoe
+1                   1                       0
+2                   1                       0
+3                   1                       0
+4                   0                       0
+5                   1                       0
+6                   1                       0</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb5"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="fu">colnames</span>(<span class="fu">model.matrix</span>(<span class="sc">~</span>species<span class="sc">*</span>island, pp2))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] "(Intercept)"                                     
+[2] "species.Chinstrap-Adelie"                        
+[3] "species.Gentoo-Adelie"                           
+[4] "island.Dream-Biscoe"                             
+[5] "island.Torgersen-Biscoe"                         
+[6] "species.Chinstrap-Adelie:island.Dream-Biscoe"    
+[7] "species.Gentoo-Adelie:island.Dream-Biscoe"       
+[8] "species.Chinstrap-Adelie:island.Torgersen-Biscoe"
+[9] "species.Gentoo-Adelie:island.Torgersen-Biscoe"   </code></pre>
+</div>
+</div>
+<ul>
+<li>identifiability constraints: leave out one category
+<ul>
+<li>post-hoc evaluation (e.g.&nbsp;<code>emmeans</code> R pkg)</li>
+<li>penalized methods</li>
+</ul></li>
+</ul>
+</section>
+<section id="regression-again" class="level2">
+<h2 class="anchored" data-anchor-id="regression-again">regression, again</h2>
+<ul>
+<li>hat matrix (<span class="math inline">\(\mathbf H= \mathbf X(\mathbf X^\top \mathbf X)^{-1} \mathbf X^\top \mathbf y\)</span>) as <em>projection matrix</em> from <span class="math inline">\(\mathbf R^N\)</span> to <span class="math inline">\(\mathbf R^p\)</span>
+<ul>
+<li>(what if we first transformed <span class="math inline">\(\mathbf X\)</span> to be orthonormal?)</li>
+</ul></li>
+<li><strong>non-full-rank</strong> case (<span class="math inline">\(\textrm{rank}(\mathbf X) &lt; p\)</span>)
+<ul>
+<li>non-unique solutions</li>
+<li>may break our linear algebra, depending on what we use</li>
+</ul></li>
+</ul>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb7"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a>X <span class="ot">&lt;-</span> <span class="fu">matrix</span>(<span class="fu">c</span>(<span class="dv">1</span><span class="sc">:</span><span class="dv">3</span>, <span class="dv">2</span><span class="sc">*</span>(<span class="dv">1</span><span class="sc">:</span><span class="dv">3</span>)), <span class="at">ncol =</span> <span class="dv">2</span>)</span>
+<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a>y <span class="ot">&lt;-</span> <span class="dv">1</span><span class="sc">:</span><span class="dv">3</span></span>
+<span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a>Matrix<span class="sc">::</span><span class="fu">rankMatrix</span>(X)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 1
+attr(,"method")
+[1] "tolNorm2"
+attr(,"useGrad")
+[1] FALSE
+attr(,"tol")
+[1] 6.661338e-16</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb9"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="fu">try</span>(<span class="fu">solve</span>(X <span class="sc">%*%</span> <span class="fu">t</span>(X)))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Error in solve.default(X %*% t(X)) : 
+  Lapack routine dgesv: system is exactly singular: U[2,2] = 0</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb11"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a><span class="fu">try</span>(<span class="fu">qr.solve</span>(<span class="fu">qr</span>(X),y))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Error in qr.solve(qr(X), y) : singular matrix 'a' in solve</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb13"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a><span class="fu">lm.fit</span>(X, y)<span class="sc">$</span>coefficients</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>x1 x2 
+ 1 NA </code></pre>
+</div>
+</div>
+<p><strong>Q</strong>: how would we do this with SVD (<code>svd</code>), or Cholesky decomposition (<code>chol</code>)?</p>
+</section>
+<section id="side-note-bessels-correction" class="level2">
+<h2 class="anchored" data-anchor-id="side-note-bessels-correction">side note: <a href="https://en.wikipedia.org/wiki/Bessel%27s_correction">Bessel’s correction</a></h2>
+<ul>
+<li>ESL gives <span class="math inline">\(\hat \sigma^2 = \frac{1}{N-p-1} \cdot \textrm{RSS}\)</span>
+<ul>
+<li><strong>note</strong> <span class="math inline">\(p\)</span> doesn’t include the constant term/intercept column</li>
+</ul></li>
+<li>note unbiased estimate of the residual variance</li>
+<li>MLE would give <span class="math inline">\(\textrm{RSS}/N\)</span></li>
+<li>unbiased estimate of resid std. error divides by <span class="math inline">\(N-1.5\)</span>; minimum MSE (for Normal distribution) divides by <span class="math inline">\(N+1\)</span> (!)</li>
+<li>bias is scale-dependent (<span class="math inline">\(E(f(x)) \neq f(E(x))\)</span> in general) and might not matter as much as you think</li>
+</ul>
+</section>
+<section id="prostate-cancer-example" class="level2">
+<h2 class="anchored" data-anchor-id="prostate-cancer-example">prostate cancer example</h2>
+<ul>
+<li>data exploration: <code>pairs(., gap = 0)</code> (can be extended with <code>panel</code> function); <code>corrplot::corrplot.mixed(., lower="number", upper = "ellipse")</code>; <code>GGally::ggpairs()</code>. Can use <code>faraway::prostate</code>.</li>
+</ul>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb15"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a><span class="do">## a bit of data exploration</span></span>
+<span id="cb15-2"><a href="#cb15-2" aria-hidden="true" tabindex="-1"></a>pp <span class="ot">&lt;-</span> (prostate</span>
+<span id="cb15-3"><a href="#cb15-3" aria-hidden="true" tabindex="-1"></a> <span class="sc">|&gt;</span> <span class="fu">mutate</span>(<span class="fu">across</span>(</span>
+<span id="cb15-4"><a href="#cb15-4" aria-hidden="true" tabindex="-1"></a>    <span class="fu">where</span>(<span class="sc">~</span><span class="fu">length</span>(<span class="fu">unique</span>(.))<span class="sc">&lt;=</span><span class="dv">4</span>),</span>
+<span id="cb15-5"><a href="#cb15-5" aria-hidden="true" tabindex="-1"></a>    factor))</span>
+<span id="cb15-6"><a href="#cb15-6" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb15-7"><a href="#cb15-7" aria-hidden="true" tabindex="-1"></a><span class="fu">ggpairs</span>(pp)</span>
+<span id="cb15-8"><a href="#cb15-8" aria-hidden="true" tabindex="-1"></a>corrplot<span class="sc">::</span><span class="fu">corrplot.mixed</span>(<span class="fu">cor</span>(prostate), </span>
+<span id="cb15-9"><a href="#cb15-9" aria-hidden="true" tabindex="-1"></a>           <span class="at">lower =</span><span class="st">'number'</span>, <span class="at">upper =</span> <span class="st">'ellipse'</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</section>
+<section id="traintest-error" class="level2">
+<h2 class="anchored" data-anchor-id="traintest-error">train/test error</h2>
+<ul>
+<li>hardly worth it for simple regression problems (measures like adjusted <span class="math inline">\(R^2\)</span> and AIC(c) give reasonable estimates of out-of-sample error)</li>
+</ul>
+</section>
+<section id="gauss-markov-theorem" class="level2">
+<h2 class="anchored" data-anchor-id="gauss-markov-theorem">Gauss-Markov theorem</h2>
+<ul>
+<li>simple</li>
+<li>applicable as long as data are independent and homoscedastic (iid is stronger)</li>
+<li>MVUE (minimum-variance <em>unbiased</em> estimator)</li>
+<li>but <strong>not</strong> necessarily minimum MSE!</li>
+</ul>
+</section>
+<section id="regression-by-orthogonalization-3.2.3" class="level2">
+<h2 class="anchored" data-anchor-id="regression-by-orthogonalization-3.2.3">regression by orthogonalization (3.2.3)</h2>
+<ul>
+<li>build up regression by successive orthogonalization
+<ul>
+<li>regress <span class="math inline">\(\mathbf x_j\)</span> on residuals of all previous columns (<span class="math inline">\(\mathbf z_0, \mathbf z_1, \ldots, \mathbf z_j\)</span>) to get coefficients <span class="math inline">\(\hat \gamma_{\ell j}\)</span>, residual <span class="math inline">\(\mathbf z_j\)</span>.</li>
+<li>regress <span class="math inline">\(\mathbf y\)</span> on <span class="math inline">\(\mathbf z_p\)</span> to get <span class="math inline">\(\hat \beta_p\)</span></li>
+<li>order???</li>
+</ul></li>
+<li>Gram-Schmidt orthogonalization (successive projection)</li>
+<li>if <span class="math inline">\(\mathbf Z\)</span> is the residual columns and <span class="math inline">\(\boldsymbol \Gamma\)</span> is the (upper-triangular) matrix of <span class="math inline">\(\gamma_{\ell j}\)</span>, then <span class="math inline">\(\mathbf X= \mathbf Z\boldsymbol \Gamma\)</span></li>
+<li>if <span class="math inline">\(\mathbf D= \textrm{Diag}(||\mathbf z_j||)\)</span></li>
+<li>and <span class="math inline">\(\mathbf X= \mathbf Z\mathbf D^{-1}\mathbf D\boldsymbol \Gamma= \mathbf Q\mathbf R\)</span> with <span class="math inline">\(\mathbf Q\)</span> orthonormal, <span class="math inline">\(\mathbf R\)</span> upper triangular</li>
+<li><span class="math inline">\(\to\)</span> standard decomposition!</li>
+</ul>
+</section>
+<section id="multiple-outputs" class="level2">
+<h2 class="anchored" data-anchor-id="multiple-outputs">multiple outputs</h2>
+<ul>
+<li>somewhat niche problem …</li>
+<li>changing <span class="math inline">\(\mathbf y\)</span> to <span class="math inline">\(\mathbf Y\)</span>, <span class="math inline">\(\beta\)</span> to <span class="math inline">\(\mathbf B\)</span>, the algebra mostly stays the same</li>
+<li>separate coefficients for each problem</li>
+<li>if homoscedastic, no need to consider correlation of observations!</li>
+</ul>
+</section>
+<section id="return-to-subsetstepwise-selection" class="level2">
+<h2 class="anchored" data-anchor-id="return-to-subsetstepwise-selection">return to subset/stepwise selection</h2>
+<ul>
+<li>still not sure it’s worth it</li>
+<li>can update efficiently based on QR decomp</li>
+<li>forward-stagewise: <strong>less</strong> efficient</li>
+<li><strong>digression</strong>: inefficiency as a virtue
+<ul>
+<li>improve bias-var tradeoff by <em>worsening</em> fit</li>
+<li>early stopping, dropout, etc. etc.</li>
+</ul></li>
+</ul>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="../pix/esl_fig37.png" class="img-fluid figure-img"></p>
+<p></p><figcaption class="figure-caption">ESL fig 3.7</figcaption><p></p>
+</figure>
+</div>
+</section>
+<section id="shrinkage-methods" class="level1 page-columns page-full">
+<h1>shrinkage methods</h1>
+<section id="ridge" class="level2">
+<h2 class="anchored" data-anchor-id="ridge">ridge</h2>
+<ul>
+<li>L2 penalty on coefficients</li>
+<li>predictors must be normalized! (scale of <span class="math inline">\(\beta_j\)</span> depends on scale of <span class="math inline">\(x_j\)</span>)</li>
+<li>equivalence between penalty (<span class="math inline">\(+ \lambda \sum \beta^2\)</span>) and constraint (<span class="math inline">\(\sum \beta^2 \le t\)</span>)<br>
+(“one-to-one correspondence” between <span class="math inline">\(\lambda\)</span> and <span class="math inline">\(t\)</span>, but not simple!)</li>
+<li>add <span class="math inline">\(\lambda \mathbf I\)</span> in the normal equations</li>
+<li>works for non-full-rank problems</li>
+</ul>
+</section>
+<section id="bayesian-analogue" class="level2">
+<h2 class="anchored" data-anchor-id="bayesian-analogue">Bayesian analogue</h2>
+<ul>
+<li>analogous to setting iid Gaussian prior on individual <span class="math inline">\(\beta\)</span> parameters</li>
+<li>log-posterior = log-likelihood + log-prior <span class="math inline">\(\propto \sigma^2 \textrm{RSS} + \lambda \sum \beta^2\)</span></li>
+<li>MAP (maximum <em>a posteriori</em>) estimate, <strong>not</strong> “proper” Bayesian est (mode, not mean, of posterior)</li>
+</ul>
+</section>
+<section id="solving-ridge-by-qr" class="level2 page-columns page-full">
+<h2 class="anchored" data-anchor-id="solving-ridge-by-qr">solving ridge by QR</h2>
+<ul>
+<li><p>note that we can solve ridge regression by introducing <em>pseudo-observations</em> (<em>data augmentation</em>)</p></li>
+<li><p>set <span class="math display">\[
+\mathbf B= \left(
+  \begin{array}{c}
+  \mathbf X^\top \mathbf X\\
+  \sqrt{\lambda} \mathbf I
+  \end{array}
+\right)
+\]</span></p></li>
+<li><p>and <span class="math inline">\(\mathbf y^* = (\mathbf y\: \boldsymbol 0)\)</span></p></li>
+<li><p>and solving <span class="math inline">\((\mathbf B^\top \mathbf B) \boldsymbol \beta= \mathbf B\mathbf y^*\)</span> by QR decomposition <span class="citation" data-cites="atlasQR2013">(<a href="#ref-atlasQR2013" role="doc-biblioref">Atlas 2013</a>)</span></p></li>
+<li><p>¿¿∃ a trick for solving for successive <span class="math inline">\(\lambda\)</span> values faster … ?</p></li>
+</ul>
+<div class="no-row-height column-margin column-container"><div id="ref-atlasQR2013" class="csl-entry" role="doc-biblioentry">
+Atlas. 2013. <span>“<span>QR</span> Factorization for Ridge Regression.”</span> <em>Mathematics Stack Exchange</em>. <a href="https://math.stackexchange.com/questions/299481/qr-factorization-for-ridge-regression">https://math.stackexchange.com/questions/299481/qr-factorization-for-ridge-regression</a>.
+</div></div></section>
+<section id="singular-value-decomposition" class="level2">
+<h2 class="anchored" data-anchor-id="singular-value-decomposition">singular value decomposition</h2>
+<ul>
+<li><p>if <span class="math inline">\(\mathbf X= \mathbf U\mathbf D\mathbf V^\top\)</span> then <span class="math display">\[
+\begin{split}
+\mathbf X(\mathbf X^\top \mathbf X)^{-1} \mathbf X^\top \mathbf y&amp; = \mathbf U\mathbf D\mathbf V^\top (\mathbf V\mathbf D\mathbf U\top \cdot \mathbf U\mathbf D\ \mathbf V^\top)^{-1} \mathbf V\mathbf D\mathbf U^\top \mathbf y\\
+&amp; = \mathbf U\mathbf D\mathbf V^\top (\mathbf V\mathbf D^2 \mathbf V^\top)^{-1} \mathbf V\mathbf D\mathbf U^\top \mathbf y\\
+&amp; = \mathbf U\mathbf U^\top \mathbf y
+\end{split}
+\]</span></p></li>
+<li><p>and ridge translates to <span class="math inline">\(\sum \mathbf u_j \frac{d^2_j}{d^2_j + \lambda} \mathbf u_j^\top \mathbf y\)</span></p></li>
+<li><p>i.e.&nbsp;<strong>shrinking the <span class="math inline">\(j^\textrm{th}\)</span> principal component</strong> by <span class="math inline">\(\frac{d^2_j}{d^2_j + \lambda}\)</span></p></li>
+<li><p>(if inputs are orthonormal all coefficients are shrunk equally)</p></li>
+</ul>
+</section>
+<section id="effective-df" class="level2 page-columns page-full">
+<h2 class="anchored" data-anchor-id="effective-df">effective df</h2>
+<ul>
+<li>this also shows that effective df = trace of hat matrix = <span class="math inline">\(\sum \frac{d^2_j}{d^2_j + \lambda}\)</span></li>
+<li>see also <span class="citation" data-cites="hastieRidge2020">Hastie (<a href="#ref-hastieRidge2020" role="doc-biblioref">2020</a>)</span></li>
+</ul>
+<div class="no-row-height column-margin column-container"><div id="ref-hastieRidge2020" class="csl-entry" role="doc-biblioentry">
+Hastie, Trevor. 2020. <span>“Ridge <span>Regularization</span>: <span>An</span> <span>Essential</span> <span>Concept</span> in <span>Data</span> <span>Science</span>.”</span> <em>Technometrics</em> 62 (4): 426–33. <a href="https://doi.org/10.1080/00401706.2020.1791959">https://doi.org/10.1080/00401706.2020.1791959</a>.
+</div></div></section>
+<section id="lasso" class="level2 page-columns page-full">
+<h2 class="anchored" data-anchor-id="lasso">lasso</h2>
+<ul>
+<li>L1 regularization</li>
+<li><strong>sparsity-inducing</strong></li>
+<li>least-angle regression (LARS)</li>
+<li><code>glmnet</code> et al.&nbsp;use cyclic coordinate descent <span class="citation" data-cites="friedmanRegularization2010">(<a href="#ref-friedmanRegularization2010" role="doc-biblioref">Friedman, Hastie, and Tibshirani 2010</a>)</span> (also in <a href="https://github.com/JuliaStats/Lasso.jl">Julia analogue</a>)
+<ul>
+<li>plus “warm-start” algorithm</li>
+</ul></li>
+</ul>
+<div class="no-row-height column-margin column-container"><div id="ref-friedmanRegularization2010" class="csl-entry" role="doc-biblioentry">
+Friedman, Jerome, Trevor Hastie, and Rob Tibshirani. 2010. <span>“Regularization <span>Paths</span> for <span>Generalized</span> <span>Linear</span> <span>Models</span> via <span>Coordinate</span> <span>Descent</span>.”</span> <em>Journal of Statistical Software</em> 33 (1): 1–22. <a href="https://www.ncbi.nlm.nih.gov/pmc/articles/PMC2929880/">https://www.ncbi.nlm.nih.gov/pmc/articles/PMC2929880/</a>.
+</div></div></section>
+<section id="ridge-vs-lasso-vs-best-subset-vs-elastic-net" class="level2">
+<h2 class="anchored" data-anchor-id="ridge-vs-lasso-vs-best-subset-vs-elastic-net">ridge vs lasso vs best-subset vs elastic net</h2>
+<p><img src="../pix/ridgelasso.png" class="img-fluid"></p>
+</section>
+<section id="other-penalties" class="level2">
+<h2 class="anchored" data-anchor-id="other-penalties">other penalties</h2>
+<ul>
+<li>could use <span class="math inline">\(L_p\)</span> penalization with <span class="math inline">\(1 &lt; p &lt; 2\)</span> (equivalent to a <em>generalized normal</em> or <em>exponential power</em> prior: <span class="math inline">\(\propto \exp\left(|(x-\mu)/s|^{p}\right)\)</span> (<code>gnorm</code> package)</li>
+<li><strong>elastic-net</strong> (penalty <span class="math inline">\(\propto \alpha \sum \beta^2 + (1-\alpha) \sum |\beta|\)</span>)
+<ul>
+<li>computationally nicer and sparsity-inducing</li>
+</ul></li>
+</ul>
+</section>
+<section id="arm-waving" class="level2 page-columns page-full">
+<h2 class="anchored" data-anchor-id="arm-waving">arm-waving</h2>
+<ul>
+<li>how do we decide on a ‘best’ model?</li>
+<li>run everything and compare on a test set? (Do we need another level of nested cross-validation?)</li>
+<li>appropriate metrics: fit quality? fit quality/time or within a time threshold?</li>
+<li>interpretability?</li>
+<li>analogue of <a href="https://en.wikipedia.org/wiki/No_free_lunch_theorem">no free lunch theorem</a>: “any two optimization algorithms are equivalent when their performance is averaged across all possible problems” <span class="citation" data-cites="wolpertNo1997 giraud-carrierJustification2005">(<a href="#ref-wolpertNo1997" role="doc-biblioref">Wolpert and Macready 1997</a>; <a href="#ref-giraud-carrierJustification2005" role="doc-biblioref">Giraud-Carrier and Provost 2005</a>)</span></li>
+</ul>
+<div class="no-row-height column-margin column-container"><div id="ref-wolpertNo1997" class="csl-entry" role="doc-biblioentry">
+Wolpert, D. H., and W. G. Macready. 1997. <span>“No Free Lunch Theorems for Optimization.”</span> <em>IEEE Transactions on Evolutionary Computation</em> 1 (1): 67–82. <a href="https://doi.org/10.1109/4235.585893">https://doi.org/10.1109/4235.585893</a>.
+</div><div id="ref-giraud-carrierJustification2005" class="csl-entry" role="doc-biblioentry">
+Giraud-Carrier, Christophe, and Foster Provost. 2005. <span>“Toward a Justification of Meta-Learning: <span>Is</span> the No Free Lunch Theorem a Show-Stopper?”</span> <em>Proceedings of the ICML-2005 Workshop on Meta-Learning</em>, January.
+</div></div>
+</section>
+</section>
+
+</main>
+<!-- /main column -->
+<script id="quarto-html-after-body" type="application/javascript">
+window.document.addEventListener("DOMContentLoaded", function (event) {
+  const toggleBodyColorMode = (bsSheetEl) => {
+    const mode = bsSheetEl.getAttribute("data-mode");
+    const bodyEl = window.document.querySelector("body");
+    if (mode === "dark") {
+      bodyEl.classList.add("quarto-dark");
+      bodyEl.classList.remove("quarto-light");
+    } else {
+      bodyEl.classList.add("quarto-light");
+      bodyEl.classList.remove("quarto-dark");
+    }
+  }
+  const toggleBodyColorPrimary = () => {
+    const bsSheetEl = window.document.querySelector("link#quarto-bootstrap");
+    if (bsSheetEl) {
+      toggleBodyColorMode(bsSheetEl);
+    }
+  }
+  toggleBodyColorPrimary();  
+  const icon = "";
+  const anchorJS = new window.AnchorJS();
+  anchorJS.options = {
+    placement: 'right',
+    icon: icon
+  };
+  anchorJS.add('.anchored');
+  const clipboard = new window.ClipboardJS('.code-copy-button', {
+    target: function(trigger) {
+      return trigger.previousElementSibling;
+    }
+  });
+  clipboard.on('success', function(e) {
+    // button target
+    const button = e.trigger;
+    // don't keep focus
+    button.blur();
+    // flash "checked"
+    button.classList.add('code-copy-button-checked');
+    var currentTitle = button.getAttribute("title");
+    button.setAttribute("title", "Copied!");
+    let tooltip;
+    if (window.bootstrap) {
+      button.setAttribute("data-bs-toggle", "tooltip");
+      button.setAttribute("data-bs-placement", "left");
+      button.setAttribute("data-bs-title", "Copied!");
+      tooltip = new bootstrap.Tooltip(button, 
+        { trigger: "manual", 
+          customClass: "code-copy-button-tooltip",
+          offset: [0, -8]});
+      tooltip.show();    
+    }
+    setTimeout(function() {
+      if (tooltip) {
+        tooltip.hide();
+        button.removeAttribute("data-bs-title");
+        button.removeAttribute("data-bs-toggle");
+        button.removeAttribute("data-bs-placement");
+      }
+      button.setAttribute("title", currentTitle);
+      button.classList.remove('code-copy-button-checked');
+    }, 1000);
+    // clear code selection
+    e.clearSelection();
+  });
+  function tippyHover(el, contentFn) {
+    const config = {
+      allowHTML: true,
+      content: contentFn,
+      maxWidth: 500,
+      delay: 100,
+      arrow: false,
+      appendTo: function(el) {
+          return el.parentElement;
+      },
+      interactive: true,
+      interactiveBorder: 10,
+      theme: 'quarto',
+      placement: 'bottom-start'
+    };
+    window.tippy(el, config); 
+  }
+  const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+  for (var i=0; i<noterefs.length; i++) {
+    const ref = noterefs[i];
+    tippyHover(ref, function() {
+      // use id or data attribute instead here
+      let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+      try { href = new URL(href).hash; } catch {}
+      const id = href.replace(/^#\/?/, "");
+      const note = window.document.getElementById(id);
+      return note.innerHTML;
+    });
+  }
+  const findCites = (el) => {
+    const parentEl = el.parentElement;
+    if (parentEl) {
+      const cites = parentEl.dataset.cites;
+      if (cites) {
+        return {
+          el,
+          cites: cites.split(' ')
+        };
+      } else {
+        return findCites(el.parentElement)
+      }
+    } else {
+      return undefined;
+    }
+  };
+  var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+  for (var i=0; i<bibliorefs.length; i++) {
+    const ref = bibliorefs[i];
+    const citeInfo = findCites(ref);
+    if (citeInfo) {
+      tippyHover(citeInfo.el, function() {
+        var popup = window.document.createElement('div');
+        citeInfo.cites.forEach(function(cite) {
+          var citeDiv = window.document.createElement('div');
+          citeDiv.classList.add('hanging-indent');
+          citeDiv.classList.add('csl-entry');
+          var biblioDiv = window.document.getElementById('ref-' + cite);
+          if (biblioDiv) {
+            citeDiv.innerHTML = biblioDiv.innerHTML;
+          }
+          popup.appendChild(citeDiv);
+        });
+        return popup.innerHTML;
+      });
+    }
+  }
+});
+</script>
+</div> <!-- /content -->
+
+
+
+</body></html>
