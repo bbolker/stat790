@@ -61,7 +61,9 @@ date-format: "D MMM YYYY"
 * save flops, optimize B-V
     * which is best: soft (ridge), semi-soft (lasso/SCAD), hard (stepwise/subset) penalization?
 
-## selection: filters, wrappers, embedded methods [@jovicreview2015]
+## selection: filters, wrappers, embedded methods 
+
+@jovicreview2015
 
 * **filters**: standalone recipes
    * e.g. minimum-redundancy maximum relevance (mrMR) [@pengFeature2005]
@@ -80,7 +82,7 @@ date-format: "D MMM YYYY"
 * stepwise regression for **prediction** may be fine [@murtaughPerformance2009]
     * selection based on AIC etc. more sensible than with p-values
     * note $\Delta AIC \propto p-\textrm{value}$, if using columnwise/1-df steps
-        * $\Delta \log {\cal L} \leftrightarrow \Delta AIC = 0 \leftrightarrow p  = 0.16 $
+        * $\Delta \log({\cal L}) \leftrightarrow \Delta AIC = 0 \leftrightarrow p  = 0.16$
         * leave-one-out cross-validation (LOOCV) asymptotically equiv. to AIC (@stoneAsymptotic1977a; but see [CV](https://stats.stackexchange.com/questions/407291/example-and-counterexample-for-stones-1977-assumption))
 * for **inference**, terrible if done naively (but see @blanchetForward2008)
     * see [CrossValidated](https://stats.stackexchange.com/questions/20836/algorithms-for-automatic-model-selection)
