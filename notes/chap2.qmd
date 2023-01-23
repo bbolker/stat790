@@ -259,6 +259,10 @@ $$
 * this also shows that effective df = trace of hat matrix = $\sum \frac{d^2_j}{d^2_j + \lambda}$
 * see also @hastieRidge2020
 
+## ridge projection
+
+![](https://online.stat.psu.edu/stat857/node/155/)
+
 ## lasso
 
 * L1 regularization
@@ -267,7 +271,30 @@ $$
 * `glmnet` et al. use cyclic coordinate descent [@friedmanRegularization2010] (also in [Julia analogue](https://github.com/JuliaStats/Lasso.jl))
     * plus "warm-start" algorithm 
 
+## pathwise coordinate descent
+
+\newcommand{\bkl}{\tilde \beta_k(\lambda)}
+\newcommand{\bjl}{\tilde \beta_j(\lambda)}
+
+* ESL \S 3.8.6
+* $\bkl$ is **current** estimate of $\beta_k(\lambda)$.  Then
+
+$$
+R = \frac{1}{2} \sum_{i=1}^N \left( y_i - \sum_{\k neq j} x_ik \bkl - x_{ij} \beta_j \right)^2 + \lambda \sum_{k \neq j} |\bkl| + \lambda |\beta_j|
+$$
+
+* i.e. univariate lasso on $j$ with $k$ parameters fixed
+* or lasso on *partial residual* $(y_i - \tilde y_i^{(j)}) = y_i - \sum_{k \neq j} \tilde \beta_k(\lambda)$
+* **solution**:
+
+$$
+\bjl \from S\left( \sum_{i=1}^N x_{ij}(y_i - \tilde y_i^{(j)}), \lambda \right)
+$$
+
+* where $S(t, \lambda) = \textrm{sign}(t)(|t| - \lambda)$
+
 ## ridge vs lasso vs best-subset vs elastic net
+
 
 ![](../pix/ridgelasso.png)
 
@@ -276,6 +303,26 @@ $$
 * could use $L_p$ penalization with $1 < p < 2$ (equivalent to a *generalized normal* or *exponential power* prior: $\propto \exp\left(|(x-\mu)/s|^{p}\right)$ (`gnorm` package)
 * **elastic-net** (penalty $\propto \alpha \sum \beta^2 + (1-\alpha) \sum |\beta|$)
     * computationally nicer and sparsity-inducing
+
+## and more penalties
+
+* fit unrestricted (linear regression or other) model on lasso-selected variables (why??) [@zhaoDefense2021]
+* **relaxed lasso**:  re-fit lasso on selected variables (why??)
+* **smoothly clipped absolute deviation** (SCAD): $\lambda |\beta| \to J_\alpha(\beta, \lambda)$, with
+$$
+\frac{dJ_a(\beta,\lambda)}{d\beta} = \lambda \cdot \textrm{sign}(\beta) \left[ I(|\beta| \leq \lambda) + \frac{(a\lambda - |\beta|)_+}{(a-1)\lambda} I(||beta|>\lambda)\right]
+$$
+for $a \geq 2$
+* **adaptive lasso** $\approx |\beta|^{1-\nu}$
+
+![](../pix/scad_etc.png)
+
+## grouped lasso
+
+* ESL \S 3.8.4
+* lasso on groups of parameters: compute $||
+
+
 
 ## arm-waving
 
