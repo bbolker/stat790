@@ -280,7 +280,7 @@ $$
 * $\bkl$ is **current** estimate of $\beta_k(\lambda)$.  Then
 
 $$
-R = \frac{1}{2} \sum_{i=1}^N \left( y_i - \sum_{k neq j} x_ik \bkl - x_{ij} \beta_j \right)^2 + \lambda \sum_{k \neq j} |\bkl| + \lambda |\beta_j|
+R = \frac{1}{2} \sum_{i=1}^N \left( y_i - \sum_{k \neq j} x_{ik} \bkl - x_{ij} \beta_j \right)^2 + \lambda \sum_{k \neq j} |\bkl| + \lambda |\beta_j|
 $$
 
 * i.e. univariate lasso on $j$ with $k$ parameters fixed
@@ -313,7 +313,7 @@ $$
 * **relaxed lasso**:  re-fit lasso on selected variables (why??)
 * **smoothly clipped absolute deviation** (SCAD): $\lambda |\beta| \to J_\alpha(\beta, \lambda)$, with
 $$
-\frac{dJ_a(\beta,\lambda)}{d\beta} = \lambda \cdot \textrm{sign}(\beta) \left[ I(|\beta| \leq \lambda) + \frac{(a\lambda - |\beta|)_+}{(a-1)\lambda} I(||beta|>\lambda)\right]
+\frac{dJ_a(\beta,\lambda)}{d\beta} = \lambda \cdot \textrm{sign}(\beta) \left[ I(|\beta| \leq \lambda) + \frac{(a\lambda - |\beta|)_+}{(a-1)\lambda} I(||\beta|>\lambda)\right]
 $$
 for $a \geq 2$
 * **adaptive lasso** $\approx |\beta|^{1-\nu}$
