@@ -126,7 +126,7 @@ colnames(model.matrix(~species*island, pp2))
    * non-unique solutions
    * may break our linear algebra, depending on what we use
 
-```{r}
+```{r solve-tries}
 X <- matrix(c(1:3, 2*(1:3)), ncol = 2)
 y <- 1:3
 Matrix::rankMatrix(X)
@@ -259,17 +259,43 @@ $$
 * this also shows that effective df = trace of hat matrix = $\sum \frac{d^2_j}{d^2_j + \lambda}$
 * see also @hastieRidge2020
 
+## ridge projection
+
+![](../pix/ridgeproj2.png)
+
 ## lasso
 
 * L1 regularization
 * **sparsity-inducing**
-* least-angle regression (LARS)
-* `glmnet` et al. use cyclic coordinate descent [@friedmanRegularization2010] (also in [Julia analogue](https://github.com/JuliaStats/Lasso.jl))
-    * plus "warm-start" algorithm 
+* least-angle regression (LARS): nice, but superseded (also, doesn't work for GLMs)
+* `glmnet` et al. use cyclic/pathwise coordinate descent [@friedmanRegularization2010] (also in [Julia analogue](https://github.com/JuliaStats/Lasso.jl))
+    * plus "warm-start" algorithm
 
-## ridge vs lasso vs best-subset vs elastic net
+## pathwise coordinate descent
 
-![](../pix/ridgelasso.png)
+\newcommand{\bkl}{\tilde \beta_k(\lambda)}
+\newcommand{\bjl}{\tilde \beta_j(\lambda)}
+
+* ESL $\S$ 3.8.6
+* $\bkl$ is **current** estimate of $\beta_k(\lambda)$.  Then
+
+$$
+R = \frac{1}{2} \sum_{i=1}^N \left( y_i - \sum_{k \neq j} x_{ik} \bkl - x_{ij} \beta_j \right)^2 + \lambda \sum_{k \neq j} |\bkl| + \lambda |\beta_j|
+$$
+
+* i.e. univariate lasso on $j$ with $k$ parameters fixed
+* or lasso on *partial residual* $(y_i - \tilde y_i^{(j)}) = y_i - \sum_{k \neq j} \tilde \beta_k(\lambda)$
+* **solution**:
+
+$$
+\bjl \leftarrow S\left( \sum_{i=1}^N x_{ij}(y_i - \tilde y_i^{(j)}), \lambda \right)
+$$
+
+* where $S(t, \lambda) = \textrm{sign}(t)(|t| - \lambda)$
+* can't do all $\lambda$ automatically, but **warm start** algorithm works quickly
+    * start with large $\lambda$ such that all coefficients $\to$ 0
+	* reduce in small steps, using values from previous $\lambda$ to initialize
+* ¿how much worse does this get for other loss functions (e.g. GLMs)?
 
 ## other penalties
 
@@ -277,8 +303,52 @@ $$
 * **elastic-net** (penalty $\propto \alpha \sum \beta^2 + (1-\alpha) \sum |\beta|$)
     * computationally nicer and sparsity-inducing
 
+## ridge vs lasso vs best-subset vs elastic net
+
+![](../pix/ridgelasso.png)
+
+## and more penalties
+
+* fit unrestricted (linear regression or other) model on lasso-selected variables (why??) [@zhaoDefense2021]
+* **relaxed lasso**:  re-fit lasso on selected variables (why??)
+* **smoothly clipped absolute deviation** (SCAD): $\lambda |\beta| \to J_\alpha(\beta, \lambda)$, with
+$$
+\frac{dJ_a(\beta,\lambda)}{d\beta} = \lambda \cdot \textrm{sign}(\beta) \left[ I(|\beta| \leq \lambda) + \frac{(a\lambda - |\beta|)_+}{(a-1)\lambda} I(||\beta|>\lambda)\right]
+$$
+for $a \geq 2$
+* **adaptive lasso** $\approx |\beta|^{1-\nu}$
+
+![](../pix/scad_etc.png)
+
+## grouped lasso
+
+* ESL $\S$ 3.8.4; @yuanModel2006
+* lasso on groups of parameters: compute $||\beta_{\ell}||_2$ by group ($\beta_{\ell}$ is the sub-vector of parameters in group $\ell$, of length $p_\ell$)
+* RSS criterion plus penalty
+
+$$
+\lambda \sum_{\ell = 1}^{L}\sqrt{p_{\ell}} ||\beta_{\ell}||_2
+$$
+* reduces to lasso if every parameter is in a separate group ($||c||_2 = |c|$ if $c$ is a scalar)
+* ESL: "encourages sparsity at both the group and individual levels"
+* ¿ridge-like within groups, lasso-like between groups¿
+
+![](../pix/groupedlasso.png)
+
+* ¿has someone written a formula-to-groupedlasso interface¿
+* **sparse grouped lasso**: like elastic net (convex combination) but for regular lasso + grouped lasso
+
+## finding packages
+
+```{r pkg-find, cache=TRUE}
+a1 <- available.packages()
+grep("lasso", rownames(a1), ignore.case = TRUE, value = TRUE)
+```
+* also see `sos` package
+
 ## arm-waving
 
+* optimization: scaling/robustness vs speed
 * how do we decide on a 'best' model?
 * run everything and compare on a test set? (Do we need another level of nested cross-validation?)
 * appropriate metrics: fit quality? fit quality/time or within a time threshold?
