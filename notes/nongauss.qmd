@@ -1,0 +1,110 @@
+---
+title: "Non-Gaussian responses (week 2)"
+reference-location: margin
+citation-location: margin
+bibliography: ../stat790.bib
+date: today
+date-format: "D MMM YYYY"
+---
+
+\newcommand{\B}{\mathbf B}
+\newcommand{\D}{\mathbf D}
+\newcommand{\GGamma}{\boldsymbol \Gamma}
+\newcommand{\G}{\mathbf G}
+\newcommand{\I}{\mathbf I}
+\newcommand{\Q}{\mathbf Q}
+\newcommand{\R}{\mathbf R}
+\newcommand{\U}{\mathbf U}
+\newcommand{\V}{\mathbf V}
+\newcommand{\W}{\mathbf W}
+\newcommand{\X}{\mathbf X}
+\newcommand{\Y}{\mathbf Y}
+\newcommand{\Z}{\mathbf Z}
+\newcommand{\bbeta}{\boldsymbol \beta}
+\newcommand{\bzero}{\boldsymbol 0}
+\newcommand{\eeta}{\boldsymbol \eta}
+\newcommand{\hatmat}{\mathbf H}
+\newcommand{\p}{\mathbf p}
+\newcommand{\uu}{\mathbf u}
+\newcommand{\x}{\mathbf x}
+\newcommand{\y}{\mathbf y}
+\newcommand{\z}{\mathbf z}
+
+<!-- typically renders in docs/ dir  -->
+
+## Non-Gaussian responses
+
+- Why worry about it?
+- Isn't least-squares good enough?
+- **poll** ([polleverywhere](https://www.polleverywhere.com/login))
+
+## Some answers
+
+- heteroscedasticity (Gauss-Markov only applies to homog. variance)
+- still unbiased but not minimum variance
+- maybe we shouldn't (e.g. **linear probability model** in econometrics)
+    - adjust for heteroscedasticity with **robust/sandwich estimators** etc. (White): 
+	
+$$
+\hat \V = (\X^\top \X)^{-1} (\X^\top \G \X) (\X^\top \X)^{-1}
+$$
+where $\G = \textrm{Diag} (\hat \varepsilon_i ^2 )$
+(contrast with $s^2 (\X^\top \X)^{-1}$)
+- if we have **nonlinear** models, MLEs are no longer unbiased
+
+## Why not linear?
+
+- unrealistic predictions (e.g. probabilities outside of $[0,1]$
+- varying effects (e.g. effect of a 1-unit change in $x$ on probability must differ depending on baseline probability)
+
+
+## Logistic regression (ESL $\S$ 4.4)
+
+* Worst-case scenario (farthest from Gaussian)
+* ESL starts with a *multinomial* model:
+
+$$
+\log \left( \frac{\textrm{Pr}(G=i|X=x)}{\textrm{Pr}(G=K|X=x)} = \beta_{i0} + \beta_i^\top x, \quad $i \in 1 \ldots K-1$
+$$
+(and so $\textrm{Pr}(G=K|X=x) = 1/\left(1 + \sum_{i=1}^{K-1} \exp(\beta_{i0} + \eta_i^\top x)\right)$)
+
+* independent of baseline/reparameterization
+* log-likelihood $\sum \log p__i(x_i; \theta)$ where $\theta$ is the complete set of parameters
+
+## Log-likelihood
+
+* for two categories, log-likelihood simplifies to
+$$
+\begin{split}
+ & \sum\left( y_i \beta^\top x_i - \log \left( 1+ e^{\beta^\top x_i} \right) \right)
+=  &  \sum\left( y_i \eta_i - \log \left( 1+ exp(\eta_i) \right) \right)
+\end{split}
+$$
+* **weight matrix** $\W = \textrm{Diag}(p(1-p))$
+    * more generally, $\textrm{Diag}(1/\textrm{Var}(\mu))$
+* score equation: 
+   * $\sum x_i(y_i - p(x_i; \beta))$
+   * $\X^\top (\y - \p)$
+   * generally $\X^\top (\y - \mu) = \X^\top (\y - g^{-1}(\eeta))$
+* Hessian: $- \X^\top \W \X$
+
+## Newton step
+
+* **iteratively reweighted least squares**
+
+
+$$
+\beta
+$$
+
+
+https://bbolker.github.io/stat4c03/notes/glm_deriv.pdf
+
+## Families
+
+Quasi-likelihood
+
+
+## Regularized versions
+
+

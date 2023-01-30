@@ -19,6 +19,7 @@ library(broom)
 ## data viz
 library(ggplot2); theme_set(theme_bw())
 library(directlabels)
+library(patchwork)
 
 ## glmnet needs X matrix
 ## all vars in mtcars are numeric, not expanding bases, so
@@ -28,11 +29,16 @@ X <- as.matrix(subset(mtcars, select = -mpg))
 p <- ncol(X)  ## not counting intercept
 
 y <- mtcars$mpg
-ridge1 <- glmnet(X, y, family = gaussian, alpha = 0,
+## lvec <- 10^seq(-1, 3, length = 101)
+ridge1 <- glmnet(X, scale(y), family = gaussian, alpha = 0,
              standardize = TRUE,  ## default
              intercept = TRUE     ## default
+             ## lambda = lvec
              )
 
+lm1 <- lm.fit(cbind(1,scale(X)), y)
+coef(lm1)
+drop(coef(ridge1, s = 0))
 ## methods(class = "glmnet")
 
 plot(ridge1)
@@ -44,7 +50,7 @@ legend("topleft", legend = rownames(coef(ridge1))[-1], lty = 1, col = 1:p)
 ## 't' for 'tidy'
 ridge1t <- (
     tidy(ridge1)
-    |> filter(term != "(Intercept)")
+    |> filter(term != "(I`ntercept)")
     |> group_by(step)
     |> mutate(L1_norm = sum(abs(estimate)))
     |> ungroup() ## clean up
@@ -65,7 +71,7 @@ pcrfits <- lapply(1:p,
                data = mtcars)
 
 ## what can we do with these objects?
-(cc <- class(fits[[1]]))
+(cc <- class(pcrfits[[1]]))
 methods(class = cc)
 
 ## pls:::coef.mvr
@@ -105,8 +111,12 @@ pcr1t <- (coefmat
 gg2 <- ggplot(pcr1t, aes(ncomp, estimate, col = term)) +
     geom_line()
 
+print(gg2 + scale_x_continuous(breaks = 1:10))
+gg1 + (gg2 + scale_x_continuous(breaks = 1:10))
 ## use L1_norm on x-axis instead
 print(gg2 + aes(x=L1_norm))
+
+gg1 + (gg2 + aes(x=L1_norm))
 
 ridge1_cv <- cv.glmnet(X, y, family = gaussian, alpha = 0,
              standardize = TRUE,  ## default
@@ -115,6 +125,8 @@ ridge1_cv <- cv.glmnet(X, y, family = gaussian, alpha = 0,
 
 
 plot(ridge1_cv)
+## deviance increases with increasing lambda, i.e. unpenalized is best
+
 stopifnot(all(ridge1$lambda == ridge1_cv$lambda))
 ss_ridge <- ridge1t |> select(lambda, L1_norm) |> unique()
 ## n.b. ?tidy.cv.glmnet is misleading. 'estimate' is
@@ -134,6 +146,7 @@ gg3 <- ggplot(ridge1_cvt, aes(L1_norm, mse)) +
 gg3A <- gg3 + geom_linerange(aes(ymin = conf.low, ymax = conf.high))
 
 print(gg3A)
+## same range of values, reversed x-axis (small lambda == large L1_norm)
 ## or use geom_line(), geom_ribbon() ?
 
 ## extract validation info from pcr fit?
