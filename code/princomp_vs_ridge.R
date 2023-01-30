@@ -29,12 +29,12 @@ X <- as.matrix(subset(mtcars, select = -mpg))
 p <- ncol(X)  ## not counting intercept
 
 y <- mtcars$mpg
-## lvec <- 10^seq(-1, 3, length = 101)
+lvec <- 10^seq(-1, 3, length = 101)
 ridge1 <- glmnet(X, scale(y), family = gaussian, alpha = 0,
-             standardize = TRUE,  ## default
-             intercept = TRUE     ## default
-             ## lambda = lvec
-             )
+                standardize = TRUE,  ## default
+                intercept = TRUE     ## default
+                ## lambda = lvec
+                )
 
 lm1 <- lm.fit(cbind(1,scale(X)), y)
 coef(lm1)
@@ -50,7 +50,7 @@ legend("topleft", legend = rownames(coef(ridge1))[-1], lty = 1, col = 1:p)
 ## 't' for 'tidy'
 ridge1t <- (
     tidy(ridge1)
-    |> filter(term != "(I`ntercept)")
+    |> filter(term != "(Intercept)")
     |> group_by(step)
     |> mutate(L1_norm = sum(abs(estimate)))
     |> ungroup() ## clean up
@@ -105,7 +105,7 @@ pcr1t <- (coefmat
     |> set_dimnames(list(term = term_names, ncomp = 1:p))
     |> reshape2::melt(value.name = "estimate")
     |> group_by(ncomp)
-    |> mutate(L1_norm = sum(abs(estimate)))
+    |> mutate(L1_norm = mean(abs(estimate)))
 )
 
 gg2 <- ggplot(pcr1t, aes(ncomp, estimate, col = term)) +
@@ -114,13 +114,13 @@ gg2 <- ggplot(pcr1t, aes(ncomp, estimate, col = term)) +
 print(gg2 + scale_x_continuous(breaks = 1:10))
 gg1 + (gg2 + scale_x_continuous(breaks = 1:10))
 ## use L1_norm on x-axis instead
-print(gg2 + aes(x=L1_norm))
-
 gg1 + (gg2 + aes(x=L1_norm))
+
 
 ridge1_cv <- cv.glmnet(X, y, family = gaussian, alpha = 0,
              standardize = TRUE,  ## default
-             intercept = TRUE     ## default
+             intercept = TRUE,
+             lambda = ridge1$lambda     ## default
              )
 
 

@@ -1,5 +1,5 @@
 ---
-title: "Non-Gaussian responses (week 2)"
+title: "Non-Gaussian responses (week 3?)"
 reference-location: margin
 citation-location: margin
 bibliography: ../stat790.bib
@@ -11,6 +11,7 @@ date-format: "D MMM YYYY"
 \newcommand{\D}{\mathbf D}
 \newcommand{\GGamma}{\boldsymbol \Gamma}
 \newcommand{\G}{\mathbf G}
+\newcommand{\HH}{\mathbf H}
 \newcommand{\I}{\mathbf I}
 \newcommand{\Q}{\mathbf Q}
 \newcommand{\R}{\mathbf R}
@@ -24,6 +25,7 @@ date-format: "D MMM YYYY"
 \newcommand{\bzero}{\boldsymbol 0}
 \newcommand{\eeta}{\boldsymbol \eta}
 \newcommand{\hatmat}{\mathbf H}
+\newcommand{\grad}{\mathbf g}
 \newcommand{\p}{\mathbf p}
 \newcommand{\uu}{\mathbf u}
 \newcommand{\x}{\mathbf x}
@@ -41,22 +43,23 @@ date-format: "D MMM YYYY"
 ## Some answers
 
 - heteroscedasticity (Gauss-Markov only applies to homog. variance)
-- still unbiased but not minimum variance
+- still unbiased but no longer minimum variance
 - maybe we shouldn't (e.g. **linear probability model** in econometrics)
     - adjust for heteroscedasticity with **robust/sandwich estimators** etc. (White): 
-	
 $$
 \hat \V = (\X^\top \X)^{-1} (\X^\top \G \X) (\X^\top \X)^{-1}
 $$
 where $\G = \textrm{Diag} (\hat \varepsilon_i ^2 )$
 (contrast with $s^2 (\X^\top \X)^{-1}$)
-- if we have **nonlinear** models, MLEs are no longer unbiased
+* if we have 
+* if we have **nonlinear** models, MLEs are no longer unbiased
 
 ## Why not linear?
 
+- actual nonlinear patterns (but can handle these by transformation/basis expansion)
 - unrealistic predictions (e.g. probabilities outside of $[0,1]$
 - varying effects (e.g. effect of a 1-unit change in $x$ on probability must differ depending on baseline probability)
-
+- Why not transform? **poll** ([polleverywhere](https://www.polleverywhere.com/login))
 
 ## Logistic regression (ESL $\S$ 4.4)
 
@@ -64,47 +67,79 @@ where $\G = \textrm{Diag} (\hat \varepsilon_i ^2 )$
 * ESL starts with a *multinomial* model:
 
 $$
-\log \left( \frac{\textrm{Pr}(G=i|X=x)}{\textrm{Pr}(G=K|X=x)} = \beta_{i0} + \beta_i^\top x, \quad $i \in 1 \ldots K-1$
+\log \left( \frac{\textrm{Pr}(G=i|X=x)}{\textrm{Pr}(G=K|X=x)}\right) = \beta_{i0} + \beta_i^\top x, \quad i \in 1 \ldots K-1
 $$
-(and so $\textrm{Pr}(G=K|X=x) = 1/\left(1 + \sum_{i=1}^{K-1} \exp(\beta_{i0} + \eta_i^\top x)\right)$)
+(and so $\textrm{Pr}(G=K|X=x) = 1/\left(1 + \sum_{i=1}^{K-1} \exp(\beta_{i0} + \beta_i^\top x)\right)$)
 
 * independent of baseline/reparameterization
-* log-likelihood $\sum \log p__i(x_i; \theta)$ where $\theta$ is the complete set of parameters
+* log-likelihood $\sum \log p_i(x_i; \theta)$ where $\theta$ is the complete set of parameters
 
 ## Log-likelihood
 
 * for two categories, log-likelihood simplifies to
 $$
 \begin{split}
- & \sum\left( y_i \beta^\top x_i - \log \left( 1+ e^{\beta^\top x_i} \right) \right)
-=  &  \sum\left( y_i \eta_i - \log \left( 1+ exp(\eta_i) \right) \right)
+ & \sum\left( y_i \beta^\top x_i - \log \left( 1+ e^{\beta^\top x_i} \right) \right) \\
+=  &  \sum\left( y_i \eta_i - \log \left( 1+ \exp(\eta_i) \right) \right)
 \end{split}
 $$
 * **weight matrix** $\W = \textrm{Diag}(p(1-p))$
     * more generally, $\textrm{Diag}(1/\textrm{Var}(\mu))$
 * score equation: 
-   * $\sum x_i(y_i - p(x_i; \beta))$
-   * $\X^\top (\y - \p)$
+   * $\sum_i=1^N x_i(y_i - p(x_i; \beta))$
+   * Newton update is $\beta^* - \HH^{-1} \grad$
+   * gradient: $\X^\top (\y - \p)$
    * generally $\X^\top (\y - \mu) = \X^\top (\y - g^{-1}(\eeta))$
 * Hessian: $- \X^\top \W \X$
+* solution is $(\X^\top \W \X)^{-1} \X^\top \W \z$
+* where $\z = \X \beta_0 + \W^{-1}(\y - \p)$ is the adjusted response
 
 ## Newton step
 
 * **iteratively reweighted least squares**
-
+* solve 
+$$
+\X^\top \W \X \\beta^* = \X^\top \W 
+$$
 
 $$
 \beta
 $$
 
 
-https://bbolker.github.io/stat4c03/notes/glm_deriv.pdf
+- [4C03 notes](https://bbolker.github.io/stat4c03/notes/glm_deriv.pdf)
+- [4C03 notes 2](https://bbolker.github.io/stat4c03/notes/glm_comp.pdf)
+
+## Newton vs IRLS
+
+* Newton vs *Fisher scoring* (expected value of the Hessian); equivalent for the *canonical link*  
+(e.g. logistic for binary data, log for Poisson data
+* link mostly important for interpretation
+* can be disregarded (?) if we are going to handle nonlinearity by basis expansion
+* convergence? [@mountHow2012]
 
 ## Families
 
-Quasi-likelihood
-
+* Gaussian, Poisson, binomial (binary)
+* May need to compute *scale*/*dispersion* parameter
+    * for exponential families, calculate as $\sqrt{D/(n-p)}$ where $D$ is the *deviance* (-2 log likelihood, equal to SSQ for Gaussian)
+	* not exactly the MLE but good enough
+* **over-dispersion**: quasi-likelihood 
+* more complex familes (negative binomial etc.) have an additional, non-collapsible parameters, need to estimate by MLE (or **profiling**)
 
 ## Regularized versions
 
+* lasso, ridge, or elasticnet
+* score equations: $\x^|top (\y - \p) = \lambda \cdot \textrm{sign}(\beta_j)$ for **active** variables (non-zero coeffs)
+* ridge should still be solvable by data expansion
 
+## proximal gradient descent/Newton
+
+* simpler strategies (cyclic coordinate descent) may not work as well
+* **proximal** gradient descent or **proximal** IRLS: 
+
+[glmnet family docs](https://glmnet.stanford.edu/articles/glmnetFamily.html)
+
+
+
+## `makeX`
