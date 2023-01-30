@@ -99,11 +99,7 @@ $$
 * **iteratively reweighted least squares**
 * solve 
 $$
-\X^\top \W \X \\beta^* = \X^\top \W 
-$$
-
-$$
-\beta
+\X^\top \W \X \beta^* = \X^\top \W \z
 $$
 
 
