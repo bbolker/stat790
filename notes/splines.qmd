@@ -133,4 +133,5 @@ $$
 * same data augmentation methods as before except that now we use $\sqrt{\lambda} C$ where $C$ is a matrix
 square root of $\OOmega_N$
 
+See @woodGeneralized2017, @perperogloureview2019a
 

@@ -84,6 +84,25 @@ code span.st { color: #4070a0; }
 code span.va { color: #19177c; } 
 code span.vs { color: #4070a0; } 
 code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } 
+div.csl-bib-body { }
+div.csl-entry {
+clear: both;
+}
+.hanging div.csl-entry {
+margin-left:2em;
+text-indent:-2em;
+}
+div.csl-left-margin {
+min-width:2em;
+float:left;
+}
+div.csl-right-inline {
+margin-left:2em;
+padding-left:1em;
+}
+div.csl-indent {
+margin-left: 2em;
+}
 </style>
 
 
@@ -2610,11 +2629,12 @@ vertical-align: -.125em;
 
 </head>
 
-<body class="fullcontent">
+<body>
 
 <div id="quarto-content" class="page-columns page-rows-contents page-layout-article">
-
-<main class="content" id="quarto-document-content">
+<div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+</div>
+<main class="content page-columns page-full" id="quarto-document-content">
 
 <header id="title-block-header" class="quarto-title-block default">
 <div class="quarto-title">
@@ -2757,7 +2777,7 @@ $Boundary.knots
 </div>
 </div>
 </section>
-<section id="smoothing-splines" class="level2">
+<section id="smoothing-splines" class="level2 page-columns page-full">
 <h2 class="anchored" data-anchor-id="smoothing-splines">smoothing splines</h2>
 <ul>
 <li>as many knots as data points</li>
@@ -2769,6 +2789,12 @@ $Boundary.knots
 <p><span class="math display">\[
 (\mathbf y- \mathbf N\theta)^\top (\mathbf y- \mathbf N\theta) + \lambda \theta^\top \boldsymbol \Omega_N \theta
 \]</span> with <span class="math inline">\(\{\boldsymbol \Omega_N\}_{jk} = \int N_j&#39;&#39;(t) N_k&#39;&#39;(t) \, dt\)</span> $$ <strong>generalized</strong> ridge regression: penalize by <span class="math inline">\(\lambda \boldsymbol \Omega_N\)</span> rather than <span class="math inline">\(\lambda I\)</span> * same data augmentation methods as before except that now we use <span class="math inline">\(\sqrt{\lambda} C\)</span> where <span class="math inline">\(C\)</span> is a matrix square root of <span class="math inline">\(\boldsymbol \Omega_N\)</span></p>
+<p>See <span class="citation" data-cites="woodGeneralized2017">Wood (<a href="#ref-woodGeneralized2017" role="doc-biblioref">2017</a>)</span>, <span class="citation" data-cites="perperogloureview2019a">Perperoglou et al. (<a href="#ref-perperogloureview2019a" role="doc-biblioref">2019</a>)</span></p>
+<div class="no-row-height column-margin column-container"><div id="ref-woodGeneralized2017" class="csl-entry" role="doc-biblioentry">
+Wood, Simon N. 2017. <em>Generalized <span>Additive</span> <span>Models</span>: <span>An</span> <span>Introduction</span> with <span>R</span></em>. <span>CRC</span> <span>Texts</span> in <span>Statistical</span> <span>Science</span>. Chapman &amp; Hall. <a href="https://www.amazon.com/Generalized-Additive-Models-Introduction-Statistical-ebook/dp/B071Z9L5D5/ref=sr_1_1?ie=UTF8&amp;qid=1511887995&amp;sr=8-1&amp;keywords=wood+additive+models">https://www.amazon.com/Generalized-Additive-Models-Introduction-Statistical-ebook/dp/B071Z9L5D5/ref=sr_1_1?ie=UTF8&amp;qid=1511887995&amp;sr=8-1&amp;keywords=wood+additive+models</a>.
+</div><div id="ref-perperogloureview2019a" class="csl-entry" role="doc-biblioentry">
+Perperoglou, Aris, Willi Sauerbrei, Michal Abrahamowicz, and Matthias Schmid. 2019. <span>“A Review of Spline Function Procedures in <span>R</span>.”</span> <em>BMC Medical Research Methodology</em> 19 (1): 46. <a href="https://doi.org/10.1186/s12874-019-0666-3">https://doi.org/10.1186/s12874-019-0666-3</a>.
+</div></div>
 </section>
 
 </main>
