@@ -227,14 +227,14 @@ corrplot::corrplot.mixed(cor(prostate),
 $$
 \B = \left(
     \begin{array}{c}
-    \X^\top \X \\
+     \X \\
     \sqrt{\lambda} \I
     \end{array}
 \right)
 $$
 
-
 * and $\y^* = (\y \: \bzero)$
+* so that $\B^\top \B = \X^\top \X + \lambda I$ and the residual sum of squares is unchanged
 * and solving $(\B^\top \B) \bbeta = \B \y^*$ by QR decomposition [@atlasQR2013]
 *  ¿¿∃ a trick for solving for successive $\lambda$ values faster ... ?
 
