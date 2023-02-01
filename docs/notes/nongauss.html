@@ -2,11 +2,11 @@
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
 
 <meta charset="utf-8">
-<meta name="generator" content="quarto-1.2.269">
+<meta name="generator" content="quarto-1.2.280">
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
-<meta name="dcterms.date" content="2023-01-30">
+<meta name="dcterms.date" content="2023-01-31">
 
 <title>Non-Gaussian responses (week 3?)</title>
 <style>
@@ -2586,7 +2586,7 @@ vertical-align: -.125em;
     <div>
     <div class="quarto-title-meta-heading">Published</div>
     <div class="quarto-title-meta-contents">
-      <p class="date">30 Jan 2023</p>
+      <p class="date">31 Jan 2023</p>
     </div>
   </div>
   
@@ -2709,19 +2709,113 @@ Mount, John. 2012. <span>“How Robust Is Logistic Regression?”</span> <em>Win
 <ul>
 <li>lasso, ridge, or elasticnet</li>
 <li>score equations: <span class="math inline">\(\mathbf x^|top (\mathbf y- \mathbf p) = \lambda \cdot \textrm{sign}(\beta_j)\)</span> for <strong>active</strong> variables (non-zero coeffs)</li>
-<li>ridge should still be solvable by data expansion</li>
+</ul>
+</section>
+<section id="revisiting-ridge-by-data-augmentation" class="level2">
+<h2 class="anchored" data-anchor-id="revisiting-ridge-by-data-augmentation">revisiting ridge by data augmentation</h2>
+<ul>
+<li>we want to minimize <span class="math inline">\(||\mathbf y- \mathbf X\beta||_2^2 + \lambda ||\beta||_2^2\)</span></li>
+<li>the solution to the original regression equations was <span class="math inline">\(\hat \beta = (\mathbf X^\top \mathbf X)^{-1} \mathbf X^\top \mathbf y\)</span></li>
+<li>Set <span class="math display">\[
+\mathbf B= \left(
+  \begin{array}{c}
+   \mathbf X\\
+  \sqrt{\lambda} \mathbf I
+  \end{array}
+\right)
+\]</span></li>
+<li>ridge regression should still be solvable by data expansion, i.e. in the IRLS loop use <span class="math display">\[
+\mathbf B= \left(
+  \begin{array}{c}
+  \mathbf X^\top \mathbf W\mathbf X\\
+  \sqrt{\lambda} \mathbf I
+  \end{array}
+\right)
+\]</span> and <span class="math display">\[
+\mathbf y^* = (\mathbf y\quad \boldsymbol 0)
+\]</span></li>
+<li>so that <span class="math inline">\(\mathbf B^\top \mathbf B= \mathbf X^\top \mathbf X+ \lambda I\)</span> and the <span class="math inline">\(\mathbf X^\top \mathbf y\)</span> term is unchanged</li>
+</ul>
+</section>
+<section id="ridge-irls" class="level2">
+<h2 class="anchored" data-anchor-id="ridge-irls">ridge + IRLS</h2>
+<ul>
+<li>recall that we need to iteratively solve <span class="math display">\[
+\mathbf X^\top \mathbf W\mathbf X\beta^* = \mathbf X^\top \mathbf W\mathbf z
+\]</span></li>
+<li>if we want to solve the <strong>weighted</strong> least-squares problem from IRLS, we would normally take the QR decomposition of <span class="math inline">\(\mathbf X&#39; = \mathbf X\sqrt{\mathbf W}\)</span> (so that <span class="math inline">\(\mathbf X^\top \mathbf X= \mathbf X^\top \mathbf W\mathbf X\)</span>)</li>
+<li>enhance this by adding <span class="math inline">\(\sqrt{\lambda} I\)</span> to <span class="math inline">\(X\)</span> and zeros to <span class="math inline">\(\mathbf z\)</span> (no longer <span class="math inline">\(\mathbf y\)</span>) as before</li>
+<li>¿ try out <a href="code/myglm.R">enhanced GLM</a> ?</li>
 </ul>
 </section>
 <section id="proximal-gradient-descentnewton" class="level2">
 <h2 class="anchored" data-anchor-id="proximal-gradient-descentnewton">proximal gradient descent/Newton</h2>
 <ul>
+<li>solving the optimization problem for non-differentiable penalties</li>
+<li>previous solution (cyclic coordinate descent)</li>
 <li>simpler strategies (cyclic coordinate descent) may not work as well</li>
 <li><strong>proximal</strong> gradient descent or <strong>proximal</strong> IRLS:</li>
+<li>like the pathwise coordinate descent solution from lasso:</li>
+<li><strong>solution</strong>: <span class="math display">\[
+\tilde \beta_j(\lambda)\leftarrow S\left( \sum_{i=1}^N x_{ij}(y_i - \tilde y_i^{(j)}), \lambda \right)
+\]</span></li>
+<li>where <span class="math inline">\(S(t, \lambda) = \textrm{sign}(t)(|t| - \lambda)\)</span></li>
+<li>except that we can no longer jump straight to the correct solution.</li>
 </ul>
-<p><a href="https://glmnet.stanford.edu/articles/glmnetFamily.html">glmnet family docs</a></p>
 </section>
-<section id="makex" class="level2 unnumbered">
-<h2 class="unnumbered anchored" data-anchor-id="makex"><code>makeX</code></h2>
+<section id="proximal-operator" class="level2">
+<h2 class="anchored" data-anchor-id="proximal-operator">proximal operator</h2>
+<ul>
+<li>separate objective function into <strong>smooth</strong> part (likelihood/RSS/etc., <strong>plus</strong> ridge penalty) and <strong>non-smooth</strong> part (typically an L1 regularization term)</li>
+<li><strong>proximal operator</strong>: <span class="math display">\[
+\textrm{argmin}_u \left(\underbrace{h(u)}_{nonconvex part} + \frac{1}{2} || u - x ||_2^2 \right)
+\]</span></li>
+<li>for <span class="math inline">\(h = \lambda ||\beta||_1\)</span> (lasso penalty), we get the soft-threshold operator <span class="math display">\[
+\begin{cases}
+\beta_i-\lambda &amp; \textrm{if} \: \beta_i &lt; -\lambda \\
+0 &amp; \textrm{if} \: -\lambda &lt; \beta_i &lt; \lambda \\
+\beta_i+\lambda &amp; \textrm{if} \: \beta_i &lt; -\lambda \\
+\end{cases}
+\]</span> (from <a href="https://www.stat.cmu.edu/~ryantibs/convexopt-S15/scribes/08-prox-grad-scribed.pdf">Ryan Tibshirani’s notes on optimization</a>)</li>
+</ul>
+</section>
+<section id="proximal-newton-irls" class="level2 page-columns page-full">
+<h2 class="anchored" data-anchor-id="proximal-newton-irls">proximal Newton (IRLS)</h2>
+<ul>
+<li>take a Newton/IRLS step</li>
+<li>apply the prox operator to soft-threshold</li>
+<li>not going to get into the details! thresholding is more complex than the gradient descent rule <span class="citation" data-cites="leeProximal2014">(<a href="#ref-leeProximal2014" role="doc-biblioref">Lee, Sun, and Saunders 2014</a>)</span></li>
+<li>need to solve <span class="math display">\[
+\textrm{argmin}_u \left(\underbrace{\rlap{$h(u)$}\phantom{\textrm{nonconvex part}}}_{\textrm{nonconvex part}} + \frac{1}{2} (u-x)^\top H (u-x) \right)
+\]</span> i.e. replace <span class="math inline">\(||u-x||_2^2\)</span> with a corresponding quadratic form</li>
+<li>¿ not sure if the solution corresponds easily to soft-thresholding again?</li>
+<li>also need to be careful about backtracking if necessary</li>
+<li>i.e. taking a Newton step <span class="math inline">\(\H^{-1}\mathbf g\)</span> is better than an uninformed gradient step <span class="math inline">\(t \mathbf g\)</span> (where <span class="math inline">\(t\)</span> is the <strong>learning rate</strong>) but might overshoot</li>
+<li>i.e., <strong>don’t try this at home</strong></li>
+</ul>
+<div class="no-row-height column-margin column-container"><div id="ref-leeProximal2014" class="csl-entry" role="doc-biblioentry">
+Lee, Jason D., Yuekai Sun, and Michael A. Saunders. 2014. <span>“Proximal <span>Newton</span>-<span>Type</span> <span>Methods</span> for <span>Minimizing</span> <span>Composite</span> <span>Functions</span>.”</span> <em>SIAM Journal on Optimization</em> 24 (3): 1420–43. <a href="https://doi.org/10.1137/130921428">https://doi.org/10.1137/130921428</a>.
+</div></div><p>(<a href="https://www.stat.cmu.edu/~ryantibs/convexopt-F15/lectures/17-prox-newton.pdf">Ryan Tibshirani again</a>)</p>
+</section>
+<section id="more-computational-details" class="level2">
+<h2 class="anchored" data-anchor-id="more-computational-details">more computational details</h2>
+<ul>
+<li>from <a href="https://glmnet.stanford.edu/articles/glmnetFamily.html">glmnet family docs</a></li>
+<li>using the <em>name</em> of the family (“poisson” etc.) uses hard-coded internal algorithms
+<ul>
+<li>faster (but scaling isn’t too bad??)</li>
+<li>less flexible (alternative families [links, variance functions])</li>
+<li>slightly less robust (doesn’t do backtracking)</li>
+</ul></li>
+</ul>
+</section>
+<section id="sparse-model-matrices-side-note" class="level2">
+<h2 class="anchored" data-anchor-id="sparse-model-matrices-side-note">sparse model matrices (side note)</h2>
+<ul>
+<li>expanding factors (categorical variables) may make <span class="math inline">\(p\)</span> gigantic</li>
+<li>each factor <span class="math inline">\(f_i\)</span> with <span class="math inline">\(n_i\)</span> levels will be expanded via treatment contrasts, so <span class="math inline">\(\mathbf X\)</span> will have (at least) <span class="math inline">\(\sum_i (n_i-1)\)</span> columns</li>
+<li><code>glmnet::makeX</code>, <code>Matrix::sparse.model.matrix()</code></li>
+</ul>
 
 </section>
 

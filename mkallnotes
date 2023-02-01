@@ -1,5 +1,5 @@
 #! /bin/bash
-for i in intro chap1 chap2 nongauss; do
+for i in intro chap1 chap2 nongauss splines; do
     for j in pdf html; do ## html docx pdf slides.html
     	make docs/notes/$i.$j
     done

@@ -31,6 +31,8 @@ date-format: "D MMM YYYY"
 \newcommand{\x}{\mathbf x}
 \newcommand{\y}{\mathbf y}
 \newcommand{\z}{\mathbf z}
+\newcommand{\bkl}{\tilde \beta_k(\lambda)}
+\newcommand{\bjl}{\tilde \beta_j(\lambda)}
 
 <!-- typically renders in docs/ dir  -->
 
@@ -127,15 +129,106 @@ $$
 
 * lasso, ridge, or elasticnet
 * score equations: $\x^|top (\y - \p) = \lambda \cdot \textrm{sign}(\beta_j)$ for **active** variables (non-zero coeffs)
-* ridge should still be solvable by data expansion
+
+## revisiting ridge by data augmentation
+
+* we want to minimize $||\y - \X \beta||_2^2 + \lambda ||\beta||_2^2$
+* the solution to the original regression equations was $\hat \beta = (\X^\top \X)^{-1} \X^\top \y$
+* Set
+$$
+\B = \left(
+    \begin{array}{c}
+     \X \\
+    \sqrt{\lambda} \I
+    \end{array}
+\right)
+$$
+* ridge regression should still be solvable by data expansion, i.e. in the IRLS loop use
+$$
+\B = \left(
+    \begin{array}{c}
+    \X^\top \W \X \\
+    \sqrt{\lambda} \I
+    \end{array}
+\right)
+$$
+and 
+$$
+\y^* = (\y \quad \bzero)
+$$
+* so that $\B^\top \B = \X^\top \X + \lambda I$ and the $\X^\top \y$ term is unchanged
+
+## ridge + IRLS
+
+* recall that we need to iteratively solve
+$$
+\X^\top \W \X \beta^* = \X^\top \W \z
+$$
+* if we want to solve the **weighted** least-squares problem from IRLS, we would normally take
+the QR decomposition of $\X' = \X \sqrt{\W}$ (so that $\X^\top \X = \X^\top \W \X$)
+* enhance this by adding $\sqrt{\lambda} I$ to $X$ and zeros to $\z$ (no longer $\y$) as before
+* ¿ try out [enhanced GLM](code/myglm.R) ?
 
 ## proximal gradient descent/Newton
 
+* solving the optimization problem for non-differentiable penalties
+* previous solution (cyclic coordinate descent)
 * simpler strategies (cyclic coordinate descent) may not work as well
 * **proximal** gradient descent or **proximal** IRLS: 
+* like the pathwise coordinate descent solution from lasso:
+* **solution**:
+$$
+\bjl \leftarrow S\left( \sum_{i=1}^N x_{ij}(y_i - \tilde y_i^{(j)}), \lambda \right)
+$$
+* where $S(t, \lambda) = \textrm{sign}(t)(|t| - \lambda)$
+* except that we can no longer jump straight to the correct solution.
 
-[glmnet family docs](https://glmnet.stanford.edu/articles/glmnetFamily.html)
+## proximal operator
 
+* separate objective function into **smooth** part (likelihood/RSS/etc., **plus** ridge penalty) and **non-smooth** part (typically an L1 regularization term)
+* **proximal operator**: 
+$$
+\textrm{argmin}_u \left(\underbrace{h(u)}_{nonconvex part} + \frac{1}{2} || u - x ||_2^2 \right)
+$$
+* for $h = \lambda ||\beta||_1$ (lasso penalty), we get the soft-threshold operator
+$$
+\begin{cases}
+\beta_i-\lambda & \textrm{if} \: \beta_i < -\lambda \\
+0 & \textrm{if} \: -\lambda < \beta_i < \lambda \\
+\beta_i+\lambda & \textrm{if} \: \beta_i < -\lambda \\
+\end{cases}
+$$
+(from [Ryan Tibshirani's notes on optimization](https://www.stat.cmu.edu/~ryantibs/convexopt-S15/scribes/08-prox-grad-scribed.pdf))
 
+## proximal Newton (IRLS)
 
-## `makeX`
+* take a Newton/IRLS step
+* apply the prox operator to soft-threshold
+* not going to get into the details! thresholding is more complex than the gradient descent rule [@leeProximal2014]
+* need to solve
+$$
+\textrm{argmin}_u \left(\underbrace{\rlap{$h(u)$}\phantom{\textrm{nonconvex part}}}_{\textrm{nonconvex part}} + \frac{1}{2} (u-x)^\top H (u-x) \right)
+$$
+i.e. replace $||u-x||_2^2$ with a corresponding quadratic form
+* ¿ not sure if the solution corresponds easily to soft-thresholding again?
+* also need to be careful about backtracking if necessary
+* i.e. taking a Newton step $\H^{-1}\grad$ is better than an uninformed gradient step $t \grad$ (where $t$ is the **learning rate**)
+but might overshoot
+* i.e., **don't try this at home**
+ 
+([Ryan Tibshirani again](https://www.stat.cmu.edu/~ryantibs/convexopt-F15/lectures/17-prox-newton.pdf))
+
+## more computational details
+
+* from [glmnet family docs](https://glmnet.stanford.edu/articles/glmnetFamily.html)
+* using the *name* of the family ("poisson" etc.) uses hard-coded internal algorithms
+   * faster (but scaling isn't too bad??)
+   * less flexible (alternative families [links, variance functions])
+   * slightly less robust (doesn't do backtracking)
+
+## sparse model matrices (side note)
+
+* expanding factors (categorical variables) may make $p$ gigantic
+* each factor $f_i$ with $n_i$ levels will be expanded via treatment contrasts, so
+$\X$ will have (at least) $\sum_i (n_i-1)$ columns
+* `glmnet::makeX`, `Matrix::sparse.model.matrix()`
