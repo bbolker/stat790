@@ -2729,7 +2729,7 @@ vertical-align: -.125em;
 <section id="truncated-power-basis-1" class="level2">
 <h2 class="anchored" data-anchor-id="truncated-power-basis-1">truncated power basis</h2>
 <ul>
-<li><strong>Kronecker product</strong>: blockwise multiplication (<span class="math inline">\(\mathbf A\bigotimes\mathbf B\)</span> multiplies <span class="math inline">\(\mathbf B\)</span> by each <span class="math inline">\(a_[ij}\)</span>)</li>
+<li><strong>Kronecker product</strong>: blockwise multiplication (<span class="math inline">\(\mathbf A\bigotimes\mathbf B\)</span> multiplies <span class="math inline">\(\mathbf B\)</span> by each <span class="math inline">\(a_{ij}\)</span>)</li>
 <li><strong>Khatri-Rao product</strong>: columnwise Kronecker product
 <ul>
 <li>super-handy for combining indicator variables with</li>
@@ -2854,29 +2854,64 @@ Perperoglou, Aris, Willi Sauerbrei, Michal Abrahamowicz, and Matthias Schmid. 20
 <li><code>stepAIC(..., direction = &quot;backward&quot;)</code></li>
 </ul>
 </section>
-<section id="example" class="level2">
-<h2 class="anchored" data-anchor-id="example">example</h2>
+<section id="phoneme-example" class="level2">
+<h2 class="anchored" data-anchor-id="phoneme-example">phoneme example</h2>
+<ul>
+<li>combination of feature transformation (time to Fourier domain) and regularization</li>
+<li>smooth first, regress afterwards</li>
+</ul>
 </section>
 <section id="degrees-of-freedom-and-smoother-matrix" class="level2">
 <h2 class="anchored" data-anchor-id="degrees-of-freedom-and-smoother-matrix">degrees of freedom and smoother matrix</h2>
 <ul>
 <li>The equivalent of the hat matrix is</li>
 </ul>
+<p><span class="math display">\[
+\mathbf N(\mathbf N^\top \mathbf N+ \lambda \boldsymbol \Omega_N)^{-1} \mathbf N^\top
+\]</span></p>
+<ul>
+<li>“Smoother matrix”</li>
+<li>hat matrix is <em>idempotent</em> (why?), smoother matrix is <em>shrinking</em></li>
+<li>smoother matrix has lower rank</li>
+<li>effective degrees of freedom = trace of hat matrix (again)</li>
+</ul>
+</section>
+<section id="reduced-rank-splines" class="level2">
+<h2 class="anchored" data-anchor-id="reduced-rank-splines">reduced-rank splines</h2>
+<ul>
+<li>We <em>can</em> use as many knots as observations, but do we really need to?</li>
+<li>From <code>?mgcv::s</code>:</li>
+</ul>
+<blockquote class="blockquote">
+<p>… exact choice of ‘k’ is not generally critical: it should be chosen to be large enough that you are reasonably sure of having enough degrees of freedom to represent the underlying <code>truth&#39; reasonably well, but small enough to maintain reasonable computational efficiency. Clearly</code>large’ and `small’ are dependent on the particular problem being addressed.</p>
+</blockquote>
+<blockquote class="blockquote">
+<p>The default basis dimension, ‘k’, is the larger of 10 and ‘m[1]’ (spline order)</p>
+</blockquote>
+</section>
+<section id="generalized-cross-validation" class="level2 page-columns page-full">
+<h2 class="anchored" data-anchor-id="generalized-cross-validation">generalized cross-validation</h2>
+<p><span class="citation" data-cites="larsenGAM2015">Larsen (<a href="#ref-larsenGAM2015" role="doc-biblioref">2015</a>)</span>, <span class="citation" data-cites="golubGeneralized1979">Golub, Heath, and Wahba (<a href="#ref-golubGeneralized1979" role="doc-biblioref">1979</a>)</span></p>
+<div class="no-row-height column-margin column-container"><div id="ref-larsenGAM2015" class="csl-entry" role="doc-biblioentry">
+Larsen, Kim. 2015. <span>“<span>GAM</span>: <span>The Predictive Modeling Silver Bullet</span> | <span>Stitch Fix Technology</span> <span>Multithreaded</span>.”</span> <em>MultiThreaded (StitchFix)</em>. https://multithreaded.stitchfix.com/blog/2015/07/30/gam/.
+</div><div id="ref-golubGeneralized1979" class="csl-entry" role="doc-biblioentry">
+Golub, Gene H., Michael Heath, and Grace Wahba. 1979. <span>“Generalized <span>Cross-Validation</span> as a <span>Method</span> for <span>Choosing</span> a <span>Good Ridge Parameter</span>.”</span> <em>Technometrics</em> 21 (2): 215–23. <a href="https://doi.org/10.1080/00401706.1979.10489751">https://doi.org/10.1080/00401706.1979.10489751</a>.
+</div></div><ul>
+<li>minimize <span class="math inline">\(\textrm{RSS}/(\textrm{Tr}(\mathbf I-\S(\lambda)))^2\)</span></li>
+<li>“a rotation-invariant version of PRESS” (<span class="math inline">\(\sum (e_i/(1-h_ii))^2\)</span>)</li>
+</ul>
 </section>
 <section id="multidimensional-splines" class="level2">
 <h2 class="anchored" data-anchor-id="multidimensional-splines">multidimensional splines</h2>
 </section>
-<section id="tensor-produce" class="level2">
-<h2 class="anchored" data-anchor-id="tensor-produce">tensor produce</h2>
+<section id="tensor-product" class="level2">
+<h2 class="anchored" data-anchor-id="tensor-product">tensor product</h2>
 </section>
 <section id="thin-plate-splines" class="level2">
 <h2 class="anchored" data-anchor-id="thin-plate-splines">thin-plate splines</h2>
 </section>
-<section id="null-space" class="level2">
-<h2 class="anchored" data-anchor-id="null-space">null space</h2>
-</section>
-<section id="reduced-rank" class="level2 unnumbered">
-<h2 class="unnumbered anchored" data-anchor-id="reduced-rank">reduced-rank</h2>
+<section id="null-space" class="level2 unnumbered">
+<h2 class="unnumbered anchored" data-anchor-id="null-space">null space</h2>
 
 </section>
 

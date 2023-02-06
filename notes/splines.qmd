@@ -14,6 +14,7 @@ date-format: "D MMM YYYY"
 \newcommand{\G}{\mathbf G}
 \newcommand{\HH}{\mathbf H}
 \newcommand{\I}{\mathbf I}
+\newcommand{\K}{\mathbf K}
 \newcommand{\N}{\mathbf N}
 \newcommand{\Q}{\mathbf Q}
 \newcommand{\R}{\mathbf R}
@@ -94,7 +95,7 @@ ggplot(yy, aes(x, Freq)) + geom_line() + facet_wrap(~j, scale = "free")
 
 ## truncated power basis
 
-* **Kronecker product**: blockwise multiplication ($\A \kron \B$ multiplies $\B$ by each $a_[ij}$)
+* **Kronecker product**: blockwise multiplication ($\A \kron \B$ multiplies $\B$ by each $a_{ij}$)
 * **Khatri-Rao product**: columnwise Kronecker product
    * super-handy for combining indicator variables with 
 
@@ -197,21 +198,51 @@ See @woodGeneralized2017, @perperogloureview2019a
 * showing p-values (why???)
 * `stepAIC(..., direction = "backward")`
 
-## example
+## phoneme example
+
+* combination of feature transformation (time to Fourier domain) and regularization
+* smooth first, regress afterwards
 
 ## degrees of freedom and smoother matrix
 
 - The equivalent of the hat matrix is 
 
+$$
+\N(\N^\top \N + \lambda \OOmega_N)^{-1} \N^\top
+$$
 
+* "Smoother matrix"
+* hat matrix is *idempotent* (why?), smoother matrix is *shrinking*
+* smoother matrix has lower rank
+* effective degrees of freedom = trace of hat matrix (again)
+
+## reduced-rank splines
+
+* We *can* use as many knots as observations, but do we really need to?
+* From `?mgcv::s`:
+
+> ... exact choice of ‘k’ is not generally critical: it should be 
+chosen to be large enough that you are reasonably sure of having
+enough degrees of freedom to represent the underlying `truth'
+reasonably well, but small enough to maintain reasonable
+computational efficiency. Clearly `large' and `small' are
+dependent on the particular problem being addressed.
+
+> The default basis dimension, ‘k’, is the larger of 10 and ‘m[1]’ (spline order)
+
+## generalized cross-validation
+
+@larsenGAM2015, @golubGeneralized1979
+
+* minimize $\textrm{RSS}/(\textrm{Tr}(\I-\S(\lambda)))^2$
+* "a rotation-invariant version of PRESS" ($\sum (e_i/(1-h_ii))^2$)
 
 ## multidimensional splines
 
-## tensor produce
+## tensor product
 
 ## thin-plate splines
 
 ## null space
 
-## reduced-rank
 
