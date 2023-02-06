@@ -29,27 +29,28 @@ X <- as.matrix(subset(mtcars, select = -mpg))
 p <- ncol(X)  ## not counting intercept
 
 y <- mtcars$mpg
-lvec <- 10^seq(-1, 3, length = 101)
-ridge1 <- glmnet(X, scale(y), family = gaussian, alpha = 0,
-                standardize = TRUE,  ## default
-                intercept = TRUE     ## default
-                ## lambda = lvec
-                )
+lvec <- 10^seq(-8, 3, length = 1001)
+ridge1 <- glmnet(X, y, family = gaussian, alpha = 0,
+                    standardize = TRUE,  ## default
+                    intercept = TRUE,     ## default
+                    lambda = lvec
+                    )
 
-lm1 <- lm.fit(cbind(1,scale(X)), y)
+lm1 <- lm.fit(cbind(1,X), y)
 coef(lm1)
-drop(coef(ridge1, s = 0))
+drop(coef(ridge1, s = 0, exact = TRUE, x = X, y =y))
 ## methods(class = "glmnet")
 
 plot(ridge1)
-legend("topleft", legend = rownames(coef(ridge1))[-1], lty = 1, col = 1:p)
+legend("topleft", legend = rownames(coef(ridge1))[-1], 
+  lty = 1, col = 1:p)
 
 ## ¿how does the plot method for "glmnet" objects work?
 ## specifically, how do we get the L1 norm?
 
 ## 't' for 'tidy'
 ridge1t <- (
-    tidy(ridge1)
+    broom::tidy(ridge1)
     |> filter(term != "(Intercept)")
     |> group_by(step)
     |> mutate(L1_norm = sum(abs(estimate)))

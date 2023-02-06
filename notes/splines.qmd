@@ -36,6 +36,13 @@ date-format: "D MMM YYYY"
 
 <!-- typically renders in docs/ dir  -->
 
+```{r echo=FALSE}
+truncpolyspline <- function(x, df) {
+    knots <- quantile(x, seq(0, 1, length = df - 1))
+    ## cut() + model.matrix to make indicator variables
+    ## Khatri-Rao product with cubc function ...
+
+}
 ## linear basis expansion
 
 * transformations of various kinds 
@@ -50,11 +57,12 @@ Select or regularize from the expanded set.
 * polynomial basis: $y_i = \sum_{j=0}^n \beta_j x_i^j$
 
 ```{r}
+## replicate figure 3.2 from Wood
 library(ggplot2)
 x <- seq(0, 1, length = 101)
 n <- 4
 y <- sapply(0:n, \(j) x^j)
-beta <- c(-1, 1, -1, 1, -1)
+beta <- c(4.31, -10.72, 16.8, 2.22, -10.88)
 y <- cbind(y, fx = y %*% beta)
 dimnames(y) <- list(x = x, j = c(0:n, "f(x)"))
 yy <- as.data.frame(as.table(y))
@@ -135,3 +143,29 @@ square root of $\OOmega_N$
 
 See @woodGeneralized2017, @perperogloureview2019a
 
+## degrees of freedom and smoother matrix
+
+- The equivalent of the hat matrix is 
+
+## multidimensional splines
+
+## tensor produce
+
+## thin-plate splines
+
+## null space
+
+## reduced-rank
+
+```{r}
+library(Matrix)
+dd <- data.frame(x=1:200)
+Xb <- model.matrix(~splines::bs(x, df = 10), data = dd)
+Xn <- model.matrix(~splines::ns(x, df = 10), data = dd)
+gridExtra::grid.arrange(
+               ncol = 2,
+               image(Matrix(Xb), aspect = "fill"),
+               image(Matrix(Xn), aspect = "fill")
+               )
+```
+```
