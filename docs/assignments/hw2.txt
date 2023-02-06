@@ -1,0 +1,16 @@
+1. Derive/show how to compute linear regression coefficients (for general choice of y and X) using the following four methods: naive linear algebra; QR decomposition; SVD; and Cholesky decomposition.
+
+Optionally, look up the computational (time) complexity of each of these methods as a function of $p$ (number of predictors/columns of X) and $n$ (number of observations/length of y/rows of X)
+
+Pick three of the four algorithms and implement them in the language of your choice. Benchmark your algorithms for a range of magnitudes of $p$ and $n$ covering at least one order of magnitude in $p$ and at least two orders of magnitude in $n$.  Plot your results on a log-log scale. Fit a log-log model to the average times (you can leave out some points if they mess up the scaling relationship).
+
+2. Implement ridge regression by data augmentation in the language of your choice.  Compare results and timing with a native implementation of ridge regression.
+
+Ex 3.6
+
+Ex 3.19 (ridge and lasso only)
+
+Ex 3.28
+
+Ex 3.30
+

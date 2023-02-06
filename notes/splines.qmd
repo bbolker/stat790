@@ -7,6 +7,7 @@ date: today
 date-format: "D MMM YYYY"
 ---
 
+\newcommand{\A}{\mathbf A}
 \newcommand{\B}{\mathbf B}
 \newcommand{\D}{\mathbf D}
 \newcommand{\GGamma}{\boldsymbol \Gamma}
@@ -33,16 +34,10 @@ date-format: "D MMM YYYY"
 \newcommand{\x}{\mathbf x}
 \newcommand{\y}{\mathbf y}
 \newcommand{\z}{\mathbf z}
+\newcommand{\kron}{\bigotimes}
 
 <!-- typically renders in docs/ dir  -->
 
-```{r echo=FALSE}
-truncpolyspline <- function(x, df) {
-    knots <- quantile(x, seq(0, 1, length = df - 1))
-    ## cut() + model.matrix to make indicator variables
-    ## Khatri-Rao product with cubc function ...
-
-}
 ## linear basis expansion
 
 * transformations of various kinds 
@@ -97,6 +92,40 @@ ggplot(yy, aes(x, Freq)) + geom_line() + facet_wrap(~j, scale = "free")
 * $X^0 \ldots X^{n}$
 * remaining columns are $(x-\xi_\ell)+^{M-1}$ where $\ell$ are the *interior knots*
 
+## truncated power basis
+
+* **Kronecker product**: blockwise multiplication ($\A \kron \B$ multiplies $\B$ by each $a_[ij}$)
+* **Khatri-Rao product**: columnwise Kronecker product
+   * super-handy for combining indicator variables with 
+
+
+```{r echo=FALSE}
+truncpolyspline <- function(x, df) {
+    if (!require("Matrix")) stop("need Matrix package")
+    knots <- quantile(x, seq(0, 1, length = df - 1))
+    ## should probably use seq() instead of `:`
+    ## dim: n x (df-2)
+    X <- Matrix(sapply(knots[1:(df-2)], \(k) (x>k)*(x-k)))
+    ## dim: n x 1
+    J <- matrix(x^3, ncol = 1)
+    ## dim: n x (df-2)
+    S <- t(KhatriRao(t(X), t(J)))
+    ## dim: n x df
+    S <- cbind(x, x^2, S)
+    return(S)
+}
+xvec <- seq(0, 1, length = 101)
+tS <- truncpolyspline(xvec, df = 7)
+image(tS, aspect = "fill")
+matplot(scale(tS), type = "l")
+```
+
+```{r truncpoly}
+set.seed(101)
+beta <- rnorm(8)
+plot(xvec, cbind(1, tS) %*% beta)
+```
+
 ## B-spline basis
 
 * splines of a given order with *minimal support* (i.e., local)
@@ -121,6 +150,20 @@ matplot(ns(1:20, df = 5), type = "l", main = "natural spline")
 matplot(bs(1:20, df = 5), type = "l", main = "B-spline")
 ```
 
+## sparsity patterns
+
+```{r}
+library(Matrix)
+dd <- data.frame(x=1:200)
+Xb <- model.matrix(~splines::bs(x, df = 10), data = dd)
+Xn <- model.matrix(~splines::ns(x, df = 10), data = dd)
+gridExtra::grid.arrange(
+               ncol = 2,
+               image(Matrix(Xb), aspect = "fill"),
+               image(Matrix(Xn), aspect = "fill")
+               )
+```
+
 ## smoothing splines
 
 * as many knots as data points
@@ -143,9 +186,24 @@ square root of $\OOmega_N$
 
 See @woodGeneralized2017, @perperogloureview2019a
 
+## examples: South African heart disease
+
+* use splines in a GLM with no additional effort
+* fit splines to all continuous variables
+* ESL says "use four natural spline bases" (... elements??)
+* i.e. `df = 4` (no intercept)
+* stepwise deletion via AIC
+* why??
+* showing p-values (why???)
+* `stepAIC(..., direction = "backward")`
+
+## example
+
 ## degrees of freedom and smoother matrix
 
 - The equivalent of the hat matrix is 
+
+
 
 ## multidimensional splines
 
@@ -157,15 +215,3 @@ See @woodGeneralized2017, @perperogloureview2019a
 
 ## reduced-rank
 
-```{r}
-library(Matrix)
-dd <- data.frame(x=1:200)
-Xb <- model.matrix(~splines::bs(x, df = 10), data = dd)
-Xn <- model.matrix(~splines::ns(x, df = 10), data = dd)
-gridExtra::grid.arrange(
-               ncol = 2,
-               image(Matrix(Xb), aspect = "fill"),
-               image(Matrix(Xn), aspect = "fill")
-               )
-```
-```
