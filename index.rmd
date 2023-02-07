@@ -81,8 +81,8 @@ mk_url <- function(x) {
                  x,x))
 }
 
-invisible(read_csv("sched.csv")
-          |> mutate(across(start_date, format, "%d %b %Y"))
+invisible(read_csv("sched.csv", show_col_types = FALSE)
+          |> mutate(across(start_date, \(x) format(x, "%d %b %Y")))
           |> rename(Week = "week", `Start date` = "start_date",
                     Topic = "topic", Assignments = "assignments")
           |> hux()
