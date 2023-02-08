@@ -32,6 +32,7 @@ date-format: "D MMM YYYY"
 \newcommand{\grad}{\mathbf g}
 \newcommand{\p}{\mathbf p}
 \newcommand{\uu}{\mathbf u}
+\newcommand{\w}{\mathbf w}
 \newcommand{\x}{\mathbf x}
 \newcommand{\y}{\mathbf y}
 \newcommand{\z}{\mathbf z}
@@ -52,7 +53,7 @@ Select or regularize from the expanded set.
 
 * polynomial basis: $y_i = \sum_{j=0}^n \beta_j x_i^j$
 
-```{r}
+```{r wood_poly}
 ## replicate figure 3.2 from Wood
 library(ggplot2)
 x <- seq(0, 1, length = 101)
@@ -100,17 +101,15 @@ ggplot(yy, aes(x, Freq)) + geom_line() + facet_wrap(~j, scale = "free")
    * super-handy for combining indicator variables with 
 
 
-```{r echo=FALSE}
+```{r truncpolyspline}
 truncpolyspline <- function(x, df) {
     if (!require("Matrix")) stop("need Matrix package")
     knots <- quantile(x, seq(0, 1, length = df - 1))
     ## should probably use seq() instead of `:`
     ## dim: n x (df-2)
-    X <- Matrix(sapply(knots[1:(df-2)], \(k) (x>k)*(x-k)))
-    ## dim: n x 1
-    J <- matrix(x^3, ncol = 1)
-    ## dim: n x (df-2)
-    S <- t(KhatriRao(t(X), t(J)))
+    trunc_fun <- function(k) (x>=k)*(x-k)^3
+    S <- sapply(knots[1:(df-2)], trunc_fun)
+    S <- as(S, "CsparseMatrix")
     ## dim: n x df
     S <- cbind(x, x^2, S)
     return(S)
@@ -125,6 +124,55 @@ matplot(scale(tS), type = "l")
 set.seed(101)
 beta <- rnorm(8)
 plot(xvec, cbind(1, tS) %*% beta)
+```
+
+Alternatively: create directly in sparse format.
+
+- `d`: numeric (double-precision), vs `l` (logical), `n` (position)
+- `g`: general, vs. `t` (triangular), `s` (symmetric)
+- `C`: compressed sparse column form, vs. `R` (row form); `T` (triplet form)
+
+## compressed sparse column form
+
+- `@i`: vector of row-**i**ndices (0-indexed??)
+- `@p`: (0-indexed) vector of **p**ointers to starting elements of each column
+- `@x`: values
+
+e.g. `M@i[M@p[4]+1]` is the row-index of the first non-zero element in the fourth column;
+`M@x[M@p[4]+1]` is the value of the first non-zero element in the fourth column
+
+```{r tps2}
+truncpolyspline2 <- function(x, df) {
+    knots <- quantile(x, seq(0, 1, length = df - 1))
+    nx <- length(x)
+    iL <- list()
+    pL <- list()
+    xL <- list()
+    n <- 3
+    j <- 0
+    pL[[1]] <- 0L
+    for (i in 1:(n-1)) {
+        j <- j+1
+        xL[[j]] <- x^i
+        iL[[j]] <- seq(nx)-1L
+        pL[[j+1]] <- i*nx
+    }
+    for  (i in 1:(df-2)) {
+        j <- j+1
+        ## figure out number of non-zero elements
+        ## (could squeeze out a bit more here by counting up)
+        nzk <- sum(x < knots[i])
+        pos <- (nzk+1):nx
+        xL[[j]] <- (x[pos]-knots[i])^3
+        iL[[j]] <- pos-1L
+        pL[[j+1]] <- pL[[length(pL)]]+(nx-nzk)
+    }
+    new("dgCMatrix", i = unlist(iL), p = unlist(pL), x = unlist(xL),
+        Dim = c(nx, as.integer(df)))
+}
+tS2 <- truncpolyspline2(xvec, df = 7)
+all.equal(unname(tS), tS2) ## TRUE
+identical(unname(matrix(tS)), matrix(tS2))  ## TRUE
 ```
 
 ## B-spline basis
@@ -151,6 +199,14 @@ matplot(ns(1:20, df = 5), type = "l", main = "natural spline")
 matplot(bs(1:20, df = 5), type = "l", main = "B-spline")
 ```
 
+## variance of predictions
+
+* suppose $\V$ = variance of coefficient $\beta$
+* then covariance matrix of predictions $\X \beta$ is $\X \V \X^\top$
+* Variance of predictions, brute force: $\textrm{Diag}(\X \V \X^\top)$
+* Clever: compute diagonal directly 
+    * `emulator::quad.diag` (`colSums(crossprod(M, Conj(tx)) * tx)`)
+
 ## sparsity patterns
 
 ```{r}
@@ -164,6 +220,22 @@ gridExtra::grid.arrange(
                image(Matrix(Xn), aspect = "fill")
                )
 ```
+
+## examples: South African heart disease
+
+* use splines in a GLM with no additional effort
+* fit splines to all continuous variables
+* ESL says "use four natural spline bases" (... elements??)
+* i.e. `df = 4` (no intercept)
+* stepwise deletion via AIC
+* why??
+* showing p-values (why???)
+* `stepAIC(..., direction = "backward")`
+
+## phoneme example
+
+* combination of feature transformation (time to Fourier domain) and regularization
+* smooth first, regress afterwards
 
 ## smoothing splines
 
@@ -182,26 +254,10 @@ $$
 with $\{\OOmega_N\}_{jk} = \int N_j''(t) N_k''(t) \, dt$
 $$
 **generalized** ridge regression: penalize by $\lambda \OOmega_N$ rather than $\lambda I$
-* same data augmentation methods as before except that now we use $\sqrt{\lambda} C$ where $C$ is a matrix
-square root of $\OOmega_N$
+* same data augmentation methods as before except that now we use $\sqrt{\lambda} C$ where $C$ is a matrix, and the "square root" of $\OOmega_N$
+
 
 See @woodGeneralized2017, @perperogloureview2019a
-
-## examples: South African heart disease
-
-* use splines in a GLM with no additional effort
-* fit splines to all continuous variables
-* ESL says "use four natural spline bases" (... elements??)
-* i.e. `df = 4` (no intercept)
-* stepwise deletion via AIC
-* why??
-* showing p-values (why???)
-* `stepAIC(..., direction = "backward")`
-
-## phoneme example
-
-* combination of feature transformation (time to Fourier domain) and regularization
-* smooth first, regress afterwards
 
 ## degrees of freedom and smoother matrix
 
@@ -230,6 +286,40 @@ dependent on the particular problem being addressed.
 
 > The default basis dimension, ‘k’, is the larger of 10 and ‘m[1]’ (spline order)
 
+## fitting additive models (more than one): backfitting
+
+@hastieGeneralized1987a
+
+* scatterplot smoother ($S()$: **any** smoothing method, e.g. local linear or kernel estimation)
+* **backfitting**
+   - take partial residuals: $r_{ij} = y_i - \hat \alpha - \sum_{k \neq j} \hat f_k(X_{ki})$
+   - smooth them ($\hat f_j(x_{ji}) = S(r_j|x_{ji})$)
+* either do a *cyclic* fit (backfitting), fitting on partial residuals each time
+* can do *semiparametric* fitting (some regular linear terms, some smoothed terms)
+* **local scoring**
+
+$$
+\begin{split}
+\hat \eta &  = \hat \alpha + \sum \hat f_j \\
+\hat \mu & = g^{-1}(\hat \eta) \\
+\z & = \hat \eta + (y-\mu)/V(\mu) \\
+\w & = \textrm{Diag}(1/V(\mu))
+\end{split}
+$$
+
+Now do back-fitting (instead of weighted least squares) on $\z$ with weights $\w$
+
+## historical note
+
+* Backfitting was developed in the context of **alternating conditional expectations** [@breimanEstimating1985]; finding optimal transformations for the response and each of the variables in a multivariate regression.
+* Univariate ACE is like backfitting but alternating between transformations for $y$ and $x$ rather than among the different predictor variables
+* `acepack` package for R
+
+## fitting additive models: alternative
+
+* stuff the whole thing into one giant GLM with appropriate penalization
+* 
+
 ## generalized cross-validation
 
 @larsenGAM2015, @golubGeneralized1979
@@ -237,7 +327,20 @@ dependent on the particular problem being addressed.
 * minimize $\textrm{RSS}/(\textrm{Tr}(\I-\S(\lambda)))^2$
 * "a rotation-invariant version of PRESS" ($\sum (e_i/(1-h_ii))^2$)
 
+## REML criterion
+
+* @reissSmoothing2009, @woodFast2011
+* less likely to overfit than GCV
+* reduced tendency to multiple minima
+
+![](../pix/wood_reml_fig1.png)
+
+## computing the REML criterion
+
+* **Laplace approximation**
+
 ## multidimensional splines
+
 
 ## tensor product
 
