@@ -955,7 +955,7 @@ Murtaugh (2009) recently illustrated that all subsets variable selection is very
   month = jul,
   journal = {MultiThreaded (StitchFix)},
   abstract = {Imagine that you step into a room of data scientists; the dress code is casual and the scent of strong coffee is hanging in the air. You ask the data scienti...},
-  howpublished = {https://multithreaded.stitchfix.com/blog/2015/07/30/gam/},
+  url = {https://multithreaded.stitchfix.com/blog/2015/07/30/gam/},
   file = {/home/bolker/Zotero/storage/5XYN6F7U/gam.html}
 }
 
@@ -1017,7 +1017,7 @@ Murtaugh (2009) recently illustrated that all subsets variable selection is very
 	number = {2},
 	urldate = {2023-02-07},
 	journal = {Journal of the Royal Statistical Society: Series B (Statistical Methodology)},
-	author = {Reiss, Philip T. and Todd Ogden, R.},
+	author = {Reiss, Philip T. and Ogden, R. Todd},
 	year = {2009},
 	note = {\_eprint: https://onlinelibrary.wiley.com/doi/pdf/10.1111/j.1467-9868.2008.00695.x},
 	keywords = {B-splines, Functional linear model, Functional principal component regression, Generalized cross-validation, Linear mixed model, Roughness penalty},
@@ -1062,4 +1062,45 @@ Murtaugh (2009) recently illustrated that all subsets variable selection is very
 	keywords = {ACE, Smoothing},
 	pages = {580--598},
 	file = {Full Text PDF:/home/bolker/Documents/zotero_new/storage/UEE5F44K/Breiman and Friedman - 1985 - Estimating Optimal Transformations for Multiple Re.pdf:application/pdf},
+}
+
+
+@article{eilersFlexible1996,
+	title = {Flexible smoothing with {B}-splines and penalties},
+	volume = {11},
+	issn = {0883-4237, 2168-8745},
+	url = {https://projecteuclid.org/journals/statistical-science/volume-11/issue-2/Flexible-smoothing-with-B-splines-and-penalties/10.1214/ss/1038425655.full},
+	doi = {10.1214/ss/1038425655},
+	abstract = {B-splines are attractive for nonparametric modelling, but choosing the optimal number and positions of knots is a complex task. Equidistant knots can be used, but their small and discrete number allows only limited control over smoothness and fit. We propose to use a relatively large number of knots and a difference penalty on coefficients of adjacent B-splines. We show connections to the familiar spline penalty on the integral of the squared second derivative. A short overview of B-splines, of their construction and of penalized likelihood is presented. We discuss properties of penalized B-splines and propose various criteria for the choice of an optimal penalty parameter. Nonparametric logistic regression, density estimation and scatterplot smoothing are used as examples. Some details of the computations are presented.},
+	number = {2},
+	urldate = {2023-02-12},
+	journal = {Statistical Science},
+	author = {Eilers, Paul H. C. and Marx, Brian D.},
+	month = may,
+	year = {1996},
+	note = {Publisher: Institute of Mathematical Statistics},
+	keywords = {Density estimation, generalized linear models, nonparametric models, smoothing, splines},
+	pages = {89--121},
+	file = {Full Text PDF:/home/bolker/Documents/zotero_new/storage/YHR93PJA/Eilers and Marx - 1996 - Flexible smoothing with B-splines and penalties.pdf:application/pdf},
+}
+
+
+@article{woodPsplines2017,
+	title = {P-splines with derivative based penalties and tensor product smoothing of unevenly distributed data},
+	volume = {27},
+	issn = {0960-3174, 1573-1375},
+	url = {http://arxiv.org/abs/1605.02446},
+	doi = {10.1007/s11222-016-9666-x},
+	abstract = {The P-splines of Eilers and Marx (1996) combine a B-spline basis with a discrete quadratic penalty on the basis coefﬁcients, to produce a reduced rank spline like smoother. P-splines have three properties that make them very popular as reduced rank smoothers: i) the basis and the penalty are sparse, enabling efﬁcient computation, especially for Bayesian stochastic simulation; ii) it is possible to ﬂexibly ‘mix-and-match’ the order of B-spline basis and penalty, rather than the order of penalty controlling the order of the basis as in spline smoothing; iii) it is very easy to set up the Bspline basis functions and penalties. The discrete penalties are somewhat less interpretable in terms of function shape than the traditional derivative based spline penalties, but tend towards penalties proportional to traditional spline penalties in the limit of large basis size. However part of the point of P-splines is not to use a large basis size. In addition the spline basis functions arise from solving functional optimization problems involving derivative based penalties, so moving to discrete penalties for smoothing may not always be desirable. The purpose of this note is to point out that the three properties of basis-penalty sparsity, mix-and-match penalization and ease of setup are readily obtainable with B-splines subject to derivative based penalization. The penalty setup typically requires a few lines of code, rather than the two lines typically required for P-splines, but this one off disadvantage seems to be the only one associated with using derivative based penalties. As an example application, it is shown how basis-penalty sparsity enables efﬁcient computation with tensor product smoothers of scattered data.},
+	language = {en},
+	number = {4},
+	urldate = {2023-02-12},
+	journal = {Statistics and Computing},
+	author = {Wood, Simon N.},
+	month = jul,
+	year = {2017},
+	note = {arXiv:1605.02446 [stat]},
+	keywords = {Statistics - Computation},
+	pages = {985--989},
+	file = {Wood - 2017 - P-splines with derivative based penalties and tens.pdf:/home/bolker/Documents/zotero_new/storage/PNFIMTZ5/Wood - 2017 - P-splines with derivative based penalties and tens.pdf:application/pdf},
 }

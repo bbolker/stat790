@@ -18,6 +18,7 @@ date-format: "D MMM YYYY"
 \newcommand{\N}{\mathbf N}
 \newcommand{\Q}{\mathbf Q}
 \newcommand{\R}{\mathbf R}
+\newcommand{\bS}{\mathbf S}
 \newcommand{\U}{\mathbf U}
 \newcommand{\V}{\mathbf V}
 \newcommand{\W}{\mathbf W}
@@ -39,6 +40,22 @@ date-format: "D MMM YYYY"
 \newcommand{\kron}{\bigotimes}
 
 <!-- typically renders in docs/ dir  -->
+
+```{r utils}
+## use help("image-methods", "Matrix")
+## lattice graphics: ?lattice:xyplot for details on scales
+ifun <- function(x, title = "", ck = FALSE, raster = TRUE) {
+    image(Matrix(x),
+          sub = "", xlab = "", ylab = "",
+          colorkey = ck,
+          aspect = "fill",
+          scales = list(x = list(draw = FALSE),
+                        y = list(draw = FALSE)),
+          main = title,
+          useRaster = raster
+          )
+}
+```
 
 ## linear basis expansion
 
@@ -216,8 +233,8 @@ Xb <- model.matrix(~splines::bs(x, df = 10), data = dd)
 Xn <- model.matrix(~splines::ns(x, df = 10), data = dd)
 gridExtra::grid.arrange(
                ncol = 2,
-               image(Matrix(Xb), aspect = "fill"),
-               image(Matrix(Xn), aspect = "fill")
+               ifun(Xb, "b-spline"),
+               ifun(Xn, "natural spline")
                )
 ```
 
@@ -256,8 +273,45 @@ $$
 **generalized** ridge regression: penalize by $\lambda \OOmega_N$ rather than $\lambda I$
 * same data augmentation methods as before except that now we use $\sqrt{\lambda} C$ where $C$ is a matrix, and the "square root" of $\OOmega_N$
 
-
 See @woodGeneralized2017, @perperogloureview2019a
+
+## constructing smoothing penalties
+
+* @eilersFlexible1996: use (products of) finite differences as approximation to squared second derivative penalty
+
+```{r showpen}
+library(splines)
+b <- bs(1:20, df = 20)
+m <- diag(-2, nrow = 20)
+m[row(m) == col(m) -1 ] <- 1
+m[row(m) == col(m) +1 ] <- 1
+gridExtra::grid.arrange(
+              nrow = 1,
+              ifun(b, "b-spline"),
+              ifun(m, "differences"),
+              ifun(m %*% b, "penalty")
+           )
+```
+
+Eilers and Marx:
+
+> This system has a banded structure because of the limited overlap of the B-splines. It is seldom worth the trouble to exploit this special structure, as the number of equations is equal to the number of splines, which is generally moderate (10–20).
+
+@woodPsplines2017: it's not that hard (if you're Simon Wood!) to generate the banded matrix $\OOmega$ from the derivatives of the B-spline basis 
+
+```{r mgcv, message = FALSE}
+library(mgcv)
+set.seed(101)
+x <- sort(runif(30))
+sm <- smoothCon(s(x, bs = "bs", k = 10), data.frame(x=x))
+names(sm[[1]])
+gridExtra::grid.arrange(
+               nrow = 1,
+               ifun(sm[[1]]$X, "X"),
+               ifun(sm[[1]]$S[[1]], "smoother"),
+               ifun(sm[[1]]$D[[1]], "chol(smoother)")
+               )
+```
 
 ## degrees of freedom and smoother matrix
 
@@ -267,11 +321,13 @@ $$
 \N(\N^\top \N + \lambda \OOmega_N)^{-1} \N^\top
 $$
 
-* "Smoother matrix"
+* Also called the **smoother matrix**
 * hat matrix is *idempotent* (why?), smoother matrix is *shrinking*
 * smoother matrix has lower rank
 * effective degrees of freedom = trace of hat matrix (again)
-
+* can write as $(\I + \lambda \K)^{-1}$
+* similarly to ridge regression, eigenvectors are shrunk by a factor $1/(1+\lambda d_k)$ where $d_k$ s an eigenvector of $\K$.
+ 
 ## reduced-rank splines
 
 * We *can* use as many knots as observations, but do we really need to?
@@ -279,14 +335,14 @@ $$
 
 > ... exact choice of ‘k’ is not generally critical: it should be 
 chosen to be large enough that you are reasonably sure of having
-enough degrees of freedom to represent the underlying `truth'
+enough degrees of freedom to represent the underlying 'truth'
 reasonably well, but small enough to maintain reasonable
-computational efficiency. Clearly `large' and `small' are
+computational efficiency. Clearly 'large' and 'small' are
 dependent on the particular problem being addressed.
 
 > The default basis dimension, ‘k’, is the larger of 10 and ‘m[1]’ (spline order)
 
-## fitting additive models (more than one): backfitting
+## fitting additive models (more than one smooth term): backfitting
 
 @hastieGeneralized1987a
 
@@ -296,7 +352,7 @@ dependent on the particular problem being addressed.
    - smooth them ($\hat f_j(x_{ji}) = S(r_j|x_{ji})$)
 * either do a *cyclic* fit (backfitting), fitting on partial residuals each time
 * can do *semiparametric* fitting (some regular linear terms, some smoothed terms)
-* **local scoring**
+* **local scoring** (the same as an IRLS step)
 
 $$
 \begin{split}
@@ -318,14 +374,21 @@ Now do back-fitting (instead of weighted least squares) on $\z$ with weights $\w
 ## fitting additive models: alternative
 
 * stuff the whole thing into one giant GLM with appropriate penalization
-* 
 
 ## generalized cross-validation
 
 @larsenGAM2015, @golubGeneralized1979
 
-* minimize $\textrm{RSS}/(\textrm{Tr}(\I-\S(\lambda)))^2$
+* minimize $\textrm{RSS}/(\textrm{Tr}(\I-\bS(\lambda)))^2$
 * "a rotation-invariant version of PRESS" ($\sum (e_i/(1-h_ii))^2$)
+* replace RSS with approximation of deviance,
+$$
+|| \sqrt{\W} (\z - \X \bbeta)||^2
+$$
+for generalized (non-Gaussian) models
+* also very close to AIC
+* minimize in **outer loop**
+   * can find $\partial \beta/\partial(\log \lambda)$ and the derivative of the trace of the hat matrix by algebra (Wood 1st ed. $\S$4.7.1) and use Newton or quasi-Newton to optimize GCV
 
 ## REML criterion
 
@@ -337,15 +400,102 @@ Now do back-fitting (instead of weighted least squares) on $\z$ with weights $\w
 
 ## computing the REML criterion
 
-* **Laplace approximation**
+* treat spline smoothing as a *mixed model* problem
+* spline (penalized) parameters are $\uu$
+* $y|u \sim N(\X\bbeta + \Z \u, \sigma^2 \I)$; $\u \sim N(0, (\sigma^2/\lambda) \W^{-1})$
+* where the $\W$ is the penalty matrix
+* corresponds to minimizing $||\y - \X\bbeta - \Z \u||^2 + \lambda \u^\top \W \u$
+* "fixed effects are viewed as random effects with improper uniform priors and are integrated out" (Wood 2011)
+* **Laplace approximation**: may be imprecise for binary or low-mean Poisson data ...
+
 
 ## multidimensional splines
 
-
 ## tensor product
+
+- $g_{jk}(X) = \sum j h_{1j}(X_1) h_{2k}(X_2)$
+- if we have a model matrix written out as `expand.grid(xvec, yvec)`
+```{r te}
+dd <- expand.grid(x = 1:20, y = 1:20)
+sm <- smoothCon(te(x, y, k = c(5,5), bs = "bs"), data = dd) 
+gridExtra::grid.arrange(
+               nrow = 1,
+               ifun(sm[[1]]$X, "X"),
+               ifun(sm[[1]]$S[[1]], "penalty")
+               )
+```
+
+* Tensor product $\X$ is the Kronecker product of the two bases, unpacked properly (ugh)
 
 ## thin-plate splines
 
+* tensor product smooth
+* Impose a wiggliness penalty on the **cross-second-derivatives**
+* $\int \partial^2 f/\partial x_1^2 +  \partial^2 f/\partial x_2^2 + \partial^2 f/\partial x_1 x_2$
+* results in an **isotropic** smooth (may or may not be desirable)
+* full thin-plate spline gets big fast
+* **reduced-rank** TPRS: **Lanczos iteration** to find the rank-$k$ truncated eigendecomposition of a symmetric matrix in ${\cal O}(k n^2)$ operations
+
+
 ## null space
 
+* Space of functions that are **not** exposed to shrinkage
+* Typically functions linear in $x$ (i.e., spline shrinks to a linear term as $\lambda \to \infty$.
+* e.g. for ridge the null space is the intercept term.
+* From `?mgcv::smooth.construct.cs.smooth.spec`:
 
+> The shrinkage version of the smooth [i.e. bs = "cs"], eigen-decomposes the
+wiggliness penalty matrix, and sets its 2 zero eigenvalues to
+small multiples of the smallest strictly positive eigenvalue. The
+penalty is then set to the matrix with eigenvectors corresponding
+to those of the original penalty, but eigenvalues set to the
+pe[r]turbed versions. This penalty matrix has full rank and shrinks
+the curve to zero at high enough smoothing parameters.
+
+## 
+
+```{r}
+apropos("smooth.construct") |>
+    gsub(pattern = "(smooth.construct.)|(.smooth.spec)", replacement = "")
+```
+
+```{r}
+xvec <- sort(runif(101))
+mfun <- function(bs) {
+    sm <- smoothCon(s(x, bs = bs), data.frame(x=xvec))
+    matplot(xvec, sm[[1]]$X, type = "l", lty = 1, main = bs, xlab = "", ylab = "")
+}
+par(mfrow = c(2,3), las = 1, bty = "l")
+svec <- c("bs", "cc", "cs", "cr", "ps", "tp")
+invisible(sapply(svec, mfun))
+```
+
+Consider:
+
+* cost of setting up the basis in the first place
+* sparsity (¿ not that important ?)
+* mean-squared error for a given $k$
+
+## other languages
+
+* Julia doesn't seem to have much (discussion [here](https://discourse.julialang.org/t/generalized-additive-models-in-julia/10041/5), [beginning of a package](https://github.com/hendersontrent/GAM.jl)
+
+```{julia eval=FALSE}
+using Pkg
+Pkg.add(url="https://github.com/hendersontrent/GAM.jl.git")
+using Random, RDatasets, GAM
+
+mtcars = dataset("datasets", "mtcars");
+X = Matrix(mtcars[:, [:AM, :Cyl, :WT, :HP]]);
+y = mtcars[:, :MPG];
+model = fit_gam(X, y, :gaussian)
+```
+
+(fails almost immediately!)
+
+Python: `pyGAM` [here]()
+
+## project possibilities
+
+* grouped lasso with spline penalties for spline selection?
+* other combinations of spline/elastic net machinery? [@marraPractical2011]

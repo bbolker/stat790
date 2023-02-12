@@ -4,7 +4,7 @@ week, start_date, topic, readings, assignments, notes
 3,2023-01-23,Regression with non-Gaussian outcomes,ESL 4.4,,[ridge/pcr code](code/princomp_vs_ridge.R); [notes](notes/nongauss.pdf); [myglm.R](code/myglm.R)
 4,2023-01-30,Basis expansion and regularization: GAMs,ESL 5,[notes](notes/splines.pdf); [South Africa ex](code/southafrica.R),
 5,2023-02-06,Model assessment and selection,,[HW 2 (13 Feb)](assignments/hw2.md),
-6,2023-02-13,Assessing uncertainty,,HW 3,
+6,2023-02-13,Assessing uncertainty,,HW 3 (27 Feb),
 ,2023-02-20,Midterm recess,,,
 7,2023-02-27,Tree-based methods (CART/MARS/etc.),,,
 8,2023-03-06,"Random forests, boosting",,HW 4,
