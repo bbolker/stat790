@@ -499,3 +499,18 @@ Python: `pyGAM` [here]()
 
 * grouped lasso with spline penalties for spline selection?
 * other combinations of spline/elastic net machinery? [@marraPractical2011]
+
+## wavelets
+
+```{r}
+url <- "http://ms.mcmaster.ca/~bolker/measdata/ewcitmeas.dat"
+download.file(url, dest = "meas.dat")
+dd <- read.table("meas.dat", na.strings = "*", header = TRUE, comment = "")
+plot(dd$London, type = "l")
+library(wavethresh)
+time <- with(dd, as.Date(sprintf("19%d-%d-%d", YY, MM, X.DD)))
+## skip (first) NA value: power-of-2 length
+w <- wd(dd$London[2:2049], type = "station")
+plot(w)
+ii <- image(w)
+```
