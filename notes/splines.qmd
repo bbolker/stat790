@@ -202,7 +202,7 @@ identical(unname(matrix(tS)), matrix(tS2))  ## TRUE
 
 * linear constraints beyond boundary knots (so 2d and 3d derivatives are 0 at the boundaries)
 
-```{r}
+```{r spline_knots}
 library(splines)
 bb <- bs(1:20, df = 5)
 attributes(bb)[c("degree", "knots", "Boundary.knots")]
@@ -210,7 +210,7 @@ nn <- ns(1:20, df = 7)
 attributes(nn)[c("degree", "knots", "Boundary.knots")]
 ```
 
-```{r fig.width = 8}
+```{r spfig1, fig.width = 8}
 par(mfrow = c(1,2),las =1, bty ="l")
 matplot(ns(1:20, df = 5), type = "l", main = "natural spline")
 matplot(bs(1:20, df = 5), type = "l", main = "B-spline")
@@ -567,4 +567,6 @@ reconstruct(ww)
 * compression: drop smallest components
 * **or** soft-threshold as for lasso (SURE)
 * as penalized component: @wandPenalized2011
+
+
 
