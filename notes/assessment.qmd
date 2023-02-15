@@ -1,0 +1,89 @@
+---
+title: "Model assessment"
+reference-location: margin
+citation-location: margin
+bibliography: ../stat790.bib
+date: today
+date-format: "D MMM YYYY"
+---
+
+\newcommand{\A}{\mathbf A}
+\newcommand{\B}{\mathbf B}
+\newcommand{\D}{\mathbf D}
+\newcommand{\GGamma}{\boldsymbol \Gamma}
+\newcommand{\G}{\mathbf G}
+\newcommand{\HH}{\mathbf H}
+\newcommand{\I}{\mathbf I}
+\newcommand{\K}{\mathbf K}
+\newcommand{\N}{\mathbf N}
+\newcommand{\Q}{\mathbf Q}
+\newcommand{\R}{\mathbf R}
+\newcommand{\bS}{\mathbf S}
+\newcommand{\U}{\mathbf U}
+\newcommand{\V}{\mathbf V}
+\newcommand{\W}{\mathbf W}
+\newcommand{\X}{\mathbf X}
+\newcommand{\Y}{\mathbf Y}
+\newcommand{\Z}{\mathbf Z}
+\newcommand{\bbeta}{\boldsymbol \beta}
+\newcommand{\bzero}{\boldsymbol 0}
+\newcommand{\eeta}{\boldsymbol \eta}
+\newcommand{\OOmega}{\boldsymbol \Omega}
+\newcommand{\hatmat}{\mathbf H}
+\newcommand{\grad}{\mathbf g}
+\newcommand{\p}{\mathbf p}
+\newcommand{\uu}{\mathbf u}
+\newcommand{\w}{\mathbf w}
+\newcommand{\x}{\mathbf x}
+\newcommand{\y}{\mathbf y}
+\newcommand{\z}{\mathbf z}
+\newcommand{\kron}{\bigotimes}
+
+<!-- typically renders in docs/ dir  -->
+
+```{r utils}
+## use help("image-methods", "Matrix")
+## lattice graphics: ?lattice:xyplot for details on scales
+ifun <- function(x, title = "", ck = FALSE, raster = TRUE) {
+    image(Matrix(x),
+          sub = "", xlab = "", ylab = "",
+          colorkey = ck,
+          aspect = "fill",
+          scales = list(x = list(draw = FALSE),
+                        y = list(draw = FALSE)),
+          main = title,
+          useRaster = raster
+          )
+}
+```
+
+## loss functions
+
+* continuous: L2, L1
+* test error (generalization error): prediction error over a **fixed** independent sample
+* **expected** prediction error: test error averaged over test sets
+* training error (within-sample): expectation
+
+## classification loss functions
+
+* 0-1
+* $-2 \sum I(G=k) \log \hat p_k$ = -2 log-likelihood (deviance)
+* (generalizes to other distributions)
+
+## selection vs assessment
+
+## train-validation-test
+
+$$E[f(x_0) - x_0^\top \beta^*]^2 + E[x_0^\top \beta^* - E x_0^\top \hat \beta_\alpha]^2$$
+
+* estimation bias = 0 for linear regression etc., positive for ridge etc.
+
+![](../pix/modelspace.png)
+
+
+* in-sample error: 
+  * $C_p$ = err + 2 $d/N \sigma^2_\epsilon$
+  
+* leakage:
+    * non-independence
+	* data-dependence of training

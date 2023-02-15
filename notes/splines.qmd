@@ -429,6 +429,7 @@ gridExtra::grid.arrange(
 
 ## thin-plate splines
 
+* @woodThin2003
 * tensor product smooth
 * Impose a wiggliness penalty on the **cross-second-derivatives**
 * $\int \partial^2 f/\partial x_1^2 +  \partial^2 f/\partial x_2^2 + \partial^2 f/\partial x_1 x_2$
@@ -436,6 +437,8 @@ gridExtra::grid.arrange(
 * full thin-plate spline gets big fast
 * **reduced-rank** TPRS: **Lanczos iteration** to find the rank-$k$ truncated eigendecomposition of a symmetric matrix in ${\cal O}(k n^2)$ operations
 
+
+> The default basis dimension for this class is ‘k=M+k.def’ where ‘M’ is the null space dimension (dimension of unpenalized function space) and ‘k.def’ is 8 for dimension 1, 27 for dimension 2 and 100 for higher dimensions.  This is essentially arbitrary, and should be checked, but as with all penalized regression smoothers, results are statistically insensitive to the exact choi[c]e
 
 ## null space
 
@@ -502,15 +505,66 @@ Python: `pyGAM` [here]()
 
 ## wavelets
 
+![](../pix/wavelets.png)
+* time and frequency localization
+* Haar, symlet
+* **fast wavelet transform**: ${\cal O}(n)$ or ${\cal O}(n \log n)$ depending on details/version
+
+@donohoWavelet1995
+
 ```{r}
 url <- "http://ms.mcmaster.ca/~bolker/measdata/ewcitmeas.dat"
 download.file(url, dest = "meas.dat")
 dd <- read.table("meas.dat", na.strings = "*", header = TRUE, comment = "")
 plot(dd$London, type = "l")
 library(wavethresh)
-time <- with(dd, as.Date(sprintf("19%d-%d-%d", YY, MM, X.DD)))
+dd$date <- with(dd, as.Date(sprintf("19%d-%d-%d", YY, MM, X.DD)))
 ## skip (first) NA value: power-of-2 length
 w <- wd(dd$London[2:2049], type = "station")
 plot(w)
-ii <- image(w)
 ```
+
+```{r friendly_wave, message = FALSE, results = "hide", cache = TRUE}
+library(WaveletComp)
+library(viridisLite)
+dd$log_London <- log10(dd$London)
+dd$log_Bristol <- log10(dd$Bristol+1)
+dd$log_Bristol[1290]  <- 0  ## replace NA
+any(is.na(dd$log_Bristol))
+ww <- analyze.wavelet(dd[-1,], "log_London",
+                loess.span = 0,
+                dt = 1/52,
+                dj = 1/100,
+                lowerPeriod = 0.1,
+                upperPeriod = 10)
+ww_b <- analyze.wavelet(dd[-1,], "log_Bristol",
+                loess.span = 0,
+                dt = 1/52,
+                dj = 1/100,
+                lowerPeriod = 0.1,
+                upperPeriod = 10)
+```
+
+```{r wpix1}
+library(WaveletComp)
+library(viridisLite)
+wt.image(ww, show.date = TRUE,
+         color.palette = "viridis(n.levels, direction = -1)")
+```
+
+```{r wpix2}
+wt.image(ww_b, show.date = TRUE,
+         color.palette = "viridis(n.levels, direction = -1)")
+```
+
+```{r wpix3}
+par(las=1, bty = "l")
+reconstruct(ww)
+```
+
+(R wavelet packages: `wavethresh`, `wsyn`, `WaveletComp`, `Rwave`, ...)
+
+* compression: drop smallest components
+* **or** soft-threshold as for lasso (SURE)
+* as penalized component: @wandPenalized2011
+
