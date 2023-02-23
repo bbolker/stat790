@@ -57,18 +57,48 @@ ifun <- function(x, title = "", ck = FALSE, raster = TRUE) {
 }
 ```
 
-## loss functions
+## loss functions (regression/quantitative outcome)
 
-* continuous: L2, L1
+* continuous: L2, L1, **Huber loss**:
+
+```{r}
+par(las = 1, bty = "l", lwd = 2)
+huber <- function(x, d) ifelse(abs(x)<d, x^2/2, d*abs(x)-d/2)
+curve(x^2/2, from = -3, to = 3, ylab = "loss")
+curve(abs(x), add = TRUE, col = 2)
+curve(huber(x, 1), add = TRUE, col = 4)
+legend("top", c("L2", "L1", "Huber"), col = c(1, 2, 4), lty = 1)
+```
+
+## loss functions (classification)
+
+* 0-1
+* **deviance**: $-2 \sum I(G=k) \log \hat p_k$ = -2 log-likelihood
+* deviance generalizes to other distributions
+* not a loss function, but worth introducing AUC (area under the curve)
+    * may be problematic in terms of implied misclassification costs? [@handMeasuring2009]
+
+![](../pix/auc.png)
+
+## a short rant about loss functions
+
+* 0-1 scoring dichotomizes prematurely
+* leads to lots of confusing discussion about balancing data sets
+* lots of discussion of what to do about imbalanced data sets (SMOTE etc.) [@vandengoorberghharm2022]
+* when **should** we balance?
+    * when we have to use 0-1 scoring for some technical reason
+	* when we have too **much** data (downsampling, i.e., throw away majority class)
+* (cf. discussion of variable selection)
+
+
+![](../pix/calibration.png)
+
+## 
+
 * test error (generalization error): prediction error over a **fixed** independent sample
 * **expected** prediction error: test error averaged over test sets
 * training error (within-sample): expectation
 
-## classification loss functions
-
-* 0-1
-* $-2 \sum I(G=k) \log \hat p_k$ = -2 log-likelihood (deviance)
-* (generalizes to other distributions)
 
 ## selection vs assessment
 
@@ -87,3 +117,8 @@ $$E[f(x_0) - x_0^\top \beta^*]^2 + E[x_0^\top \beta^* - E x_0^\top \hat \beta_\a
 * leakage:
     * non-independence
 	* data-dependence of training
+
+* jackknife, bootstrap etc.
+
+## calibration
+
