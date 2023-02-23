@@ -6,7 +6,7 @@ week, start_date, topic, readings, assignments, notes
 5,2023-02-06,Model assessment and selection,,[HW 2 (13 Feb)](assignments/hw2.md),
 6,2023-02-13,Catch-up
 ,2023-02-20,Midterm recess,,,
-7,2023-02-27,Assessing uncertainty,,[notes](notes/assessment.pdf),HW 3 (3 Mar),
+7,2023-02-27,Assessing uncertainty,,[notes](notes/assessment.pdf), [HW 3 (3 Mar)](assignments/hw3.md),
 8,2023-03-06,Tree-based methods (CART/MARS/etc.),,,
 9,2023-03-13,"Random forests, boosting",,HW 4,
 10,2023-03-20,Optimization and scalability,,Project proposal,

@@ -358,12 +358,12 @@ pre code {
 </div>
 
 
-<div id="hw-3" class="section level2">
-<h2>hw 3</h2>
+<div id="hw-3-due-3-march-midnight" class="section level2">
+<h2>hw 3 (due 3 March, midnight)</h2>
 <ul>
 <li>Replicate a figure from ESL chapter 5</li>
 <li>Using the South Africa coronary heart disease data (see <a href="../code/southafrica.R">code file</a>); construct b-spline, natural spline, and truncated polynomial spline bases (all with 6 knots: you can use the <code>splines</code> package or equivalents, you don’t have to do this part “from scratch”). Fit a logistic regression using each of these bases. Compute the predicted value and the predicted variance for the <em>linear predictor</em> (i.e. on the log-odds scale), without using the built-in <code>predict(..., se.fit = TRUE)</code> methods. Plot the predictions ± 1 SE for each of the three bases.</li>
-<li>Extend the truncated polynomial basis function presented in the notes (or write your own) and add a natural spline constraint by using the constraint equations described <a href="https://stats.stackexchange.com/questions/172217/why-are-the-basis-functions-for-natural-cubic-splines-expressed-as-they-are-es">here</a>.</li>
+<li>Write a function (in R/Julia/Python/whatever), starting from the truncated polynomial basis function presented in the notes (or write your own), that adds a natural spline constraint by using the constraint equations described <a href="https://stats.stackexchange.com/questions/172217/why-are-the-basis-functions-for-natural-cubic-splines-expressed-as-they-are-es">here</a>. In addition to the <code>x</code>, <code>df</code> arguments your function should take a <code>natural</code> argument that is true or false (<code>TRUE</code> or <code>FALSE</code> in R) to decide whether to impose the constraint. Plot an example of regular and natural bases side-by-side (e.g. using <code>matplot()</code> as in the notes).</li>
 <li><ol style="list-style-type: lower-alpha">
 <li>Write a function to simulate data drawn from a smooth two-dimensional surface on the unit square with Gaussian noise. You could use (for example) a reasonably high-order bivariate polynomial, or a kernel function/mixture model (i.e. <span class="math inline">\(f(x,y) = \sum_j w_j \exp(((x-x_j)^2 + (y-y_j)^2)/s_j^2)\)</span>), or using a 2D spline.</li>
 </ol></li>
