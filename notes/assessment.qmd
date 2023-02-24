@@ -75,12 +75,8 @@ legend("top", c("L2", "L1", "Huber"), col = c(1, 2, 4), lty = 1)
 * 0-1
 * **deviance**: $-2 \sum I(G=k) \log \hat p_k$ = -2 log-likelihood
 * deviance generalizes to other distributions
-* not a loss function, but worth introducing AUC (area under the curve)
-    * may be problematic in terms of implied misclassification costs? [@handMeasuring2009]
 
-![](../pix/auc.png)
-
-## a short rant about loss functions
+## a short rant about categorical loss functions
 
 * 0-1 scoring dichotomizes prematurely
 * leads to lots of confusing discussion about balancing data sets
@@ -90,14 +86,73 @@ legend("top", c("L2", "L1", "Huber"), col = c(1, 2, 4), lty = 1)
 	* when we have too **much** data (downsampling, i.e., throw away majority class)
 * (cf. discussion of variable selection)
 
+## from loss functions to model quality metrics
 
-![](../pix/calibration.png)
+* categorical predictors:
+* accuracy (total fraction correct); same problems as 0-1 classification
+* AUC (area under the curve)
+    * may be problematic in terms of implied misclassification costs? [@handMeasuring2009]
 
-## 
+![](../pix/auc.png)
+
+## quality metrics
+
+* some combination of loss functions per point
+* scaled for **interpretability**
+   * how good is good enough?
+   * how much difference in model predictions matters?
+   * e.g. [Netflix prize](https://en.wikipedia.org/wiki/Netflix_Prize)
+* $R^2$
+* MSE $\to$ RMSE $\to$ scaled RMSE (or mean-squared log error?)
+* always a **business** or **scientific** decision (*value of information*)
+
+```{r netflix, echo=FALSE}
+dd <- read.table(sep = "|", header = TRUE, text  = "
+result | RMSE
+naive | 1.0540
+Cinematch | 0.9514
+2007 | 0.8712
+2008 | 0.8616
+2009 | 0.8567
+")
+prize <- 0.8572
+dd <- transform(dd,
+                result = factor(result, levels = result))
+par(las = 1, bty = "l")
+plot(RMSE ~ as.numeric(result), data = dd, axes = FALSE, ylim = c(0, 1.1),
+     xlab = "result", type = "b")
+axis(side = 2, at = c(0,8:11)/10)
+axis(side = 1, at = 1:5, labels = dd$result)                     
+abline(h = prize, lty = 2)
+par(xpd = NA)
+with(dd, text(as.numeric(result), RMSE-0.05, labels = RMSE))
+box()
+```
+
+## within- and out-of-sample error
+
+- within-sample: $R^2$
+- out-of-sample: adjusted $R^2$ (scaled by $n-p$), PRESS (predicted out-of-sample error) = LOOCV SSQ, AIC ($-2 \log L + 2 p$),
+Mallows' $C_p$ ($\frac{\textrm{RSS} + 2 p \hat \sigma^2}{n}$). AIC and $C_p$ equivalent for Gaussian models. AIC asymptotically $\to$ LOOCV for linear models.
+- ESL gives a weird/unusual (scaled-by-$N$) definition of AIC
+- GCV, AUC
+- BIC: $-2 \log L + (\log N) p$; higher penalty for $N > e^2$ (almost always)
+     * derived from a **Laplace approximation** to the **Bayes factor** (quadratic approx; $\approx$ multivariate normal posterior) given equal priors on models
+- BIC is **consistent**, AIC is **predictive** [@yangCan2005]
+
+## effective number of parameters
+
+- (generalized, penalized) linear models: trace(Hat)
+- additive-error models: $\sum(\textrm{Cov}(\hat y_i, y)/\sigma^2_\epsilon)$
+
+## errors
 
 * test error (generalization error): prediction error over a **fixed** independent sample
 * **expected** prediction error: test error averaged over test sets
 * training error (within-sample): expectation
+
+![](../pix/calibration.png)
+
 
 
 ## selection vs assessment
