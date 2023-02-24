@@ -41,7 +41,7 @@ date-format: "D MMM YYYY"
 
 <!-- typically renders in docs/ dir  -->
 
-```{r utils}
+```{r utils, echo = FALSE}
 ## use help("image-methods", "Matrix")
 ## lattice graphics: ?lattice:xyplot for details on scales
 ifun <- function(x, title = "", ck = FALSE, raster = TRUE) {
@@ -61,7 +61,7 @@ ifun <- function(x, title = "", ck = FALSE, raster = TRUE) {
 
 * continuous: L2, L1, **Huber loss**:
 
-```{r}
+```{r lossfuns, fig.height = 5}
 par(las = 1, bty = "l", lwd = 2)
 huber <- function(x, d) ifelse(abs(x)<d, x^2/2, d*abs(x)-d/2)
 curve(x^2/2, from = -3, to = 3, ylab = "loss")
@@ -73,14 +73,14 @@ legend("top", c("L2", "L1", "Huber"), col = c(1, 2, 4), lty = 1)
 ## loss functions (classification)
 
 * 0-1
-* **deviance**: $-2 \sum I(G=k) \log \hat p_k$ = -2 log-likelihood
+* **deviance**: $-2 \sum I(G=k) \log \hat p_k$ = -2 $\times$ log-likelihood
 * deviance generalizes to other distributions
 
 ## a short rant about categorical loss functions
 
 * 0-1 scoring dichotomizes prematurely
 * leads to lots of confusing discussion about balancing data sets
-* lots of discussion of what to do about imbalanced data sets (SMOTE etc.) [@vandengoorberghharm2022]
+* lots of discussion of what to do about imbalanced data sets (SMOTE etc.) [@chawlaSMOTE2002;@vandengoorberghharm2022]
 * when **should** we balance?
     * when we have to use 0-1 scoring for some technical reason
 	* when we have too **much** data (downsampling, i.e., throw away majority class)
@@ -106,7 +106,7 @@ legend("top", c("L2", "L1", "Huber"), col = c(1, 2, 4), lty = 1)
 * MSE $\to$ RMSE $\to$ scaled RMSE (or mean-squared log error?)
 * always a **business** or **scientific** decision (*value of information*)
 
-```{r netflix, echo=FALSE}
+```{r netflix, echo=FALSE, fig.height = 5}
 dd <- read.table(sep = "|", header = TRUE, text  = "
 result | RMSE
 naive | 1.0540
@@ -129,51 +129,142 @@ with(dd, text(as.numeric(result), RMSE-0.05, labels = RMSE))
 box()
 ```
 
-## within- and out-of-sample error
+## what error are we trying to estimate?
+
+\newcommand{\errt}{\xspace{\ensuremath{\textrm{Err}_{\cal T}}}}
+* training error (within-sample): average error within sample
+* test error (generalization error), $\errt$: expected prediction error for a **fixed** training sample
+* **expected** prediction error: test error *averaged over training sets* = $E[\errt]$
+
+## bias/variance etc.
+
+$$E[f(x_0) - x_0^\top \beta^*]^2 + E[x_0^\top \beta^* - E x_0^\top \hat \beta_\alpha]^2$$
+
+* estimation bias = 0 for linear regression etc., positive for ridge etc. **given correct model**
+
+![](../pix/modelspace.png)
+
+## train/validate/test
+
+* training to estimate parameters
+* validation: select models/tune hyperparameters
+* test: evaluate; **must be independent**, don't snoop!
+* select models based on **estimated test error**: only need to get relative values right
+
+## within- (training) and out-of-sample (test) error
 
 - within-sample: $R^2$
 - out-of-sample: adjusted $R^2$ (scaled by $n-p$), PRESS (predicted out-of-sample error) = LOOCV SSQ, AIC ($-2 \log L + 2 p$),
 Mallows' $C_p$ ($\frac{\textrm{RSS} + 2 p \hat \sigma^2}{n}$). AIC and $C_p$ equivalent for Gaussian models. AIC asymptotically $\to$ LOOCV for linear models.
+- finite-size corrections for AIC (AICc): more conservative for smaller samples
 - ESL gives a weird/unusual (scaled-by-$N$) definition of AIC
 - GCV, AUC
 - BIC: $-2 \log L + (\log N) p$; higher penalty for $N > e^2$ (almost always)
      * derived from a **Laplace approximation** to the **Bayes factor** (quadratic approx; $\approx$ multivariate normal posterior) given equal priors on models
-- BIC is **consistent**, AIC is **predictive** [@yangCan2005]
+	 * (¿ what is $N$ for non-iid data ?)
+- BIC is **consistent**, AIC is **predictive** [@yangCan2005]; M-closed vs M-complete vs M-open [@clarkeStatistical2014]
 
 ## effective number of parameters
 
 - (generalized, penalized) linear models: trace(Hat)
 - additive-error models: $\sum(\textrm{Cov}(\hat y_i, y)/\sigma^2_\epsilon)$
 
-## errors
+![](../pix/train_test_err.png)
 
-* test error (generalization error): prediction error over a **fixed** independent sample
-* **expected** prediction error: test error averaged over test sets
-* training error (within-sample): expectation
+## cross-validation
 
-![](../pix/calibration.png)
+- typical used for **hyperparameter tuning** (e.g. ridge/lasso/spline penalty, elasticnet $\alpha$)
+- LOOCV
+   - sometimes easy/closed-form solution
+   - expensive otherwise
+- $k$-fold   
+   
+## bias vs variance in CV
+
+* more folds = smaller folds = larger training sets
+* training error decreases with training set size (i.e. **decreasing** bias in error estimate)
+* high variance because training sets are highly correlated (i.e., we're estimating $\errt$)
+
+## one-standard-error rule
+
+- account for uncertainty in cross-validation error estimate; choose a slightly more **parsimonious** (i.e. higher penalty/lower complexity) model than min-CV
+- ¿ not on strong foundations ? "Occam's razor": is there a general trend toward overoptimism?
+- [CrossValidated q.](https://stats.stackexchange.com/questions/80268/empirical-justification-for-the-one-standard-error-rule-when-using-cross-validat)
+- @chenOne2021
 
 
+## data leakage
 
-## selection vs assessment
+* inadmissible predictors (e.g. palliative care in @cyguComparing2023)
+* ESL $\S$ 7.10.2
+   * example: screen predictors first
+   * then use CV to tune the model
+   * the **full** 'training' sequence must be done on every CV training set
+       * can do **unsupervised** model reduction (i.e., not looking at predictions), e.g. select PCA components or high-variance predictors
+	   
+## dependent data
 
-## train-validation-test
+* blocking factors: patient, space, time, etc. [@wengerAssessing2012; @bussolaAI2020]
 
-$$E[f(x_0) - x_0^\top \beta^*]^2 + E[x_0^\top \beta^* - E x_0^\top \hat \beta_\alpha]^2$$
+![](../pix/wenger_glmm.png)
 
-* estimation bias = 0 for linear regression etc., positive for ridge etc.
+![](../pix/wenger_rf.png)
 
-![](../pix/modelspace.png)
+## solutions
+
+* consider admissibility of predictors
+* stratify CV folds
+* organize spatially blocked or buffered test/train splits [@robertsCrossvalidation2017; @valaviblockCV2019; @milaNearest2022]
+* account for blocking/correlation in the model (mixed models, spatial correlation models ...?)
+
+![](../pix/harris-mistnet.png)
+
+## bootstrapping
+
+\newcommand{\errboot}{\widehat{\textrm{Err}}_{\textrm{\small boot}}}
+
+* we can also use bootstrapping
+* $\errboot = \frac{1}{B} \frac{1}{N} \sum_b \sum_i L(y_i, {\hat f}^{*b}(x_i))$  
+(applies bootstrap estimate to *training data*: overlap of $\phi_b = \approx 1-e^{-1}$
+* **leave-one-out bootstrap error**: $\errboot^{(1)}$: only average $L(i)$ over bootstrap replicates not containing $i$
+* bias correction for smallness of bootstrap set: $(1-\phi_b) \cdot \textrm{sample error} + \phi_b \cdot \errboot^{(1)}$
+
+## nested cross-validation 
+
+@kuhnNested2017
+
+![](../pix/nested.png)
+
+> Nested resampling does an additional layer of resampling that separates the tuning activities from the process used to estimate the efficacy of the model. ... For example, if 10-fold cross-validation is used on the outside and 5-fold cross-validation on the inside, a total of 500 models will be fit. The parameter tuning will be conducted 10 times and the best parameters are determined from the average of the 5 assessment sets.
+
+> Once the tuning results are complete, a model is fit to each of the outer resampling splits using the best parameter associated with that resample. The average of the outer method's assessment sets are a unbiased estimate of the model. 
+
+* maybe overkill for practical purposes [@wainerNested2021] ?
+
+## from model assessment to uncertainty estimation
+
+\newcommand{\rloo}{R_i^{\textrm{\small LOO}}}
+
+* RMSE is the *average* inaccuracy; use it as a standard error?
+* conformal prediction [@shaferTutorial2008a]
+* jackknife [@barberPredictive2021; @efronLeisurely1983a]
+   * $\rloo$ is the leave-one-out residual for point $i$
+   * jackknife pred interval: quantiles of $\hat \mu(X_{n+1}) \pm \rloo$
+   * jackknife+: quantiles of $\hat\mu_{-i}(X_{n+1}) \pm \rloo$
+   * **or** $K$-fold CV+ intervals [@taquetMAPIE2021]
 
 
-* in-sample error: 
-  * $C_p$ = err + 2 $d/N \sigma^2_\epsilon$
-  
-* leakage:
-    * non-independence
-	* data-dependence of training
+## coverage
 
-* jackknife, bootstrap etc.
+* a measure of the accuracy of confidence intervals
+* do $(1-\alpha)$ CIs include the true value a fraction $\alpha$ of the time?
+* $\approx$ accuracy of model assessment
 
 ## calibration
+
+* for categorical prediction
+* do predicted probabilities match observed probabilities (e.g. fraction of positives)?
+* [@guoCalibration2017a; @mindererRevisiting2021]
+
+![](../pix/calibration.png)
 

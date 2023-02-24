@@ -1241,11 +1241,16 @@ Murtaugh (2009) recently illustrated that all subsets variable selection is very
 	file = {Full Text PDF:/home/bolker/Documents/zotero_new/storage/ZH9C3XRX/Efron and Gong - 1983 - A Leisurely Look at the Bootstrap, the Jackknife, .pdf:application/pdf},
 }
 
-@article{shaferTutorial,
+
+@article{shaferTutorial2008a,
 	title = {A {Tutorial} on {Conformal} {Prediction}},
+	volume = {9},
 	abstract = {Conformal prediction uses past experience to determine precise levels of conﬁdence in new predictions. Given an error probability ε, together with a method that makes a prediction yˆ of a label y, it produces a set of labels, typically containing yˆ, that also contains y with probability 1 − ε. Conformal prediction can be applied to any method for producing yˆ: a nearest-neighbor method, a support-vector machine, ridge regression, etc.},
 	language = {en},
+	journal = {Journal of Machine Learning Research},
 	author = {Shafer, Glenn and Vovk, Vladimir},
+	year = {2008},
+	pages = {371--421},
 	file = {Shafer and Vovk - A Tutorial on Conformal Prediction.pdf:/home/bolker/Documents/zotero_new/storage/RZ6HW86E/Shafer and Vovk - A Tutorial on Conformal Prediction.pdf:application/pdf},
 }
 
@@ -1267,7 +1272,7 @@ Murtaugh (2009) recently illustrated that all subsets variable selection is very
 	abstract = {Methods to correct class imbalance (imbalance between the frequency of outcome events and nonevents) are receiving increasing interest for developing prediction models. We examined the effect of imbalance correction on the performance of logistic regression models.Prediction models were developed using standard and penalized (ridge) logistic regression under 4 methods to address class imbalance: no correction, random undersampling, random oversampling, and SMOTE. Model performance was evaluated in terms of discrimination, calibration, and classification. Using Monte Carlo simulations, we studied the impact of training set size, number of predictors, and the outcome event fraction. A case study on prediction modeling for ovarian cancer diagnosis is presented.The use of random undersampling, random oversampling, or SMOTE yielded poorly calibrated models: the probability to belong to the minority class was strongly overestimated. These methods did not result in higher areas under the ROC curve when compared with models developed without correction for class imbalance. Although imbalance correction improved the balance between sensitivity and specificity, similar results were obtained by shifting the probability threshold instead.Imbalance correction led to models with strong miscalibration without better ability to distinguish between patients with and without the outcome event. The inaccurate probability estimates reduce the clinical utility of the model, because decisions about treatment are ill-informed.Outcome imbalance is not a problem in itself, imbalance correction may even worsen model performance.},
 	urldate = {2022-06-10},
 	journal = {Journal of the American Medical Informatics Association},
-	author = {van den Goorbergh, Ruben and van Smeden, Maarten and Timmerman, Dirk and Van Calster, Ben},
+	author = {{van den Goorbergh}, Ruben and van Smeden, Maarten and Timmerman, Dirk and Van Calster, Ben},
 	month = jun,
 	year = {2022},
 	pages = {ocac093},
@@ -1311,4 +1316,295 @@ Murtaugh (2009) recently illustrated that all subsets variable selection is very
 	year = {2005},
 	pages = {937--950},
 	file = {HighWire Full Text PDF:/home/bolker/Documents/zotero_new/storage/JBGMQWCJ/Yang - 2005 - Can the strengths of AIC and BIC be shared A conf.pdf:application/pdf;HighWire Snapshot:/home/bolker/Documents/zotero_new/storage/SX3JIZDN/937.html:text/html},
+}
+
+
+
+@article{chawlaSMOTE2002,
+	title = {{SMOTE}: {Synthetic} {Minority} {Over}-sampling {Technique}},
+	volume = {16},
+	copyright = {Copyright (c)},
+	issn = {1076-9757},
+	shorttitle = {{SMOTE}},
+	url = {https://www.jair.org/index.php/jair/article/view/10302},
+	doi = {10.1613/jair.953},
+	abstract = {An approach to the construction of classifiers from    imbalanced datasets is described. A dataset is imbalanced if the    classification categories are not approximately equally    represented. Often real-world data sets are predominately composed of    ``normal'' examples with only a small percentage of ``abnormal'' or    ``interesting'' examples. It is also the case that the cost of    misclassifying an abnormal (interesting) example as a normal example    is often much higher than the cost of the reverse    error. Under-sampling of the majority (normal) class has been proposed    as a good means of increasing the sensitivity of a classifier to the    minority class. This paper shows that a combination of our method of    over-sampling the minority (abnormal) class and under-sampling the    majority (normal) class can achieve better classifier performance (in    ROC space) than only under-sampling the majority class.  This paper    also shows that a combination of our method of over-sampling the    minority class and under-sampling the majority class can achieve    better classifier performance (in ROC space) than varying the loss    ratios in Ripper or class priors in Naive Bayes. Our method of    over-sampling the minority class involves creating synthetic minority    class examples.  Experiments are performed using C4.5, Ripper and a    Naive Bayes classifier. The method is evaluated using the area under    the Receiver Operating Characteristic curve (AUC) and the ROC convex    hull strategy.},
+	language = {en},
+	urldate = {2023-02-24},
+	journal = {Journal of Artificial Intelligence Research},
+	author = {Chawla, N. V. and Bowyer, K. W. and Hall, L. O. and Kegelmeyer, W. P.},
+	month = jun,
+	year = {2002},
+	pages = {321--357},
+	file = {Full Text PDF:/home/bolker/Documents/zotero_new/storage/3E8RDDS7/Chawla et al. - 2002 - SMOTE Synthetic Minority Over-sampling Technique.pdf:application/pdf},
+}
+
+
+@article{clarkeStatistical2014,
+	title = {Statistical {Problem} {Classes} and {Their} {Links} to {Information} {Theory}},
+	volume = {33},
+	issn = {0747-4938},
+	url = {https://doi.org/10.1080/07474938.2013.807190},
+	doi = {10.1080/07474938.2013.807190},
+	abstract = {We begin by recalling the tripartite division of statistical problems into three classes, M-closed, M-complete, and M-open and then reviewing the key ideas of introductory Shannon theory. Focusing on the related but distinct goals of model selection and prediction, we argue that different techniques for these two goals are appropriate for the three different problem classes. For M-closed problems we give relative entropy justification that the Bayes information criterion (BIC) is appropriate for model selection and that the Bayes model average is information optimal for prediction. For M-complete problems, we discuss the principle of maximum entropy and a way to use the rate distortion function to bypass the inaccessibility of the true distribution. For prediction in the M-complete class, there is little work done on information based model averaging so we discuss the Akaike information criterion (AIC) and its properties and variants. For the M-open class, we argue that essentially only predictive criteria are suitable. Thus, as an analog to model selection, we present the key ideas of prediction along a string under a codelength criterion and propose a general form of this criterion. Since little work appears to have been done on information methods for general prediction in the M-open class of problems, we mention the field of information theoretic learning in certain general function spaces.},
+	number = {1-4},
+	urldate = {2020-10-09},
+	journal = {Econometric Reviews},
+	author = {Clarke, Bertrand and Clarke, Jennifer and Yu, Chi Wai},
+	month = feb,
+	year = {2014},
+	note = {Publisher: Taylor \& Francis
+\_eprint: https://doi.org/10.1080/07474938.2013.807190},
+	keywords = {Bayesian, C52, C53, Codelength, Entropy, Information theory, M-closed, M-complete, M-open, Model selection, Mutual information, Prediction, Rate distortion, Relative entropy},
+	pages = {337--371},
+	file = {Snapshot:/home/bolker/Documents/zotero_new/storage/ZR4HGYXW/07474938.2013.html:text/html},
+}
+
+
+@article{chenOne2021,
+	title = {The {One} {Standard} {Error} {Rule} for {Model} {Selection}: {Does} {It} {Work}?},
+	volume = {4},
+	copyright = {http://creativecommons.org/licenses/by/3.0/},
+	issn = {2571-905X},
+	shorttitle = {The {One} {Standard} {Error} {Rule} for {Model} {Selection}},
+	url = {https://www.mdpi.com/2571-905X/4/4/51},
+	doi = {10.3390/stats4040051},
+	abstract = {Previous research provided a lot of discussion on the selection of regularization parameters when it comes to the application of regularization methods for high-dimensional regression. The popular “One Standard Error Rule” (1se rule) used with cross validation (CV) is to select the most parsimonious model whose prediction error is not much worse than the minimum CV error. This paper examines the validity of the 1se rule from a theoretical angle and also studies its estimation accuracy and performances in applications of regression estimation and variable selection, particularly for Lasso in a regression framework. Our theoretical result shows that when a regression procedure produces the regression estimator converging relatively fast to the true regression function, the standard error estimation formula in the 1se rule is justified asymptotically. The numerical results show the following: 1. the 1se rule in general does not necessarily provide a good estimation for the intended standard deviation of the cross validation error. The estimation bias can be 50–100\% upwards or downwards in various situations; 2. the results tend to support that 1se rule usually outperforms the regular CV in sparse variable selection and alleviates the over-selection tendency of Lasso; 3. in regression estimation or prediction, the 1se rule often performs worse. In addition, comparisons are made over two real data sets: Boston Housing Prices (large sample size n, small/moderate number of variables p) and Bardet–Biedl data (large p, small n). Data guided simulations are done to provide insight on the relative performances of the 1se rule and the regular CV.},
+	language = {en},
+	number = {4},
+	urldate = {2023-02-24},
+	journal = {Stats},
+	author = {Chen, Yuchen and Yang, Yuhong},
+	month = dec,
+	year = {2021},
+	note = {Number: 4
+Publisher: Multidisciplinary Digital Publishing Institute},
+	keywords = {estimation accuracy, regression estimation, subsampling, tuning parameter selection, variable selection},
+	pages = {868--892},
+	file = {Full Text PDF:/home/bolker/Documents/zotero_new/storage/EK2RTTGI/Chen and Yang - 2021 - The One Standard Error Rule for Model Selection D.pdf:application/pdf},
+}
+
+
+@misc{bussolaAI2020,
+	title = {{AI} slipping on tiles: data leakage in digital pathology},
+	shorttitle = {{AI} slipping on tiles},
+	url = {http://arxiv.org/abs/1909.06539},
+	doi = {10.48550/arXiv.1909.06539},
+	abstract = {Reproducibility of AI models on biomedical data still stays as a major concern for their acceptance into the clinical practice. Initiatives for reproducibility in the development of predictive biomarkers as the MAQC Consortium already underlined the importance of appropriate Data Analysis Plans (DAPs) to control for different types of bias, including data leakage from the training to the test set. In the context of digital pathology, the leakage typically lurks in weakly designed experiments not accounting for the subjects in their data partitioning schemes. This issue is then exacerbated when fractions or subregions of slides (i.e. "tiles") are considered. Despite this aspect is largely recognized by the community, we argue that it is often overlooked. In this study, we assess the impact of data leakage on the performance of machine learning models trained and validated on multiple histology data collection. We prove that, even with a properly designed DAP (10x5 repeated cross-validation), predictive scores can be inflated up to 41\% when tiles from the same subject are used both in training and validation sets by deep learning models. We replicate the experiments for \$4\$ classification tasks on 3 histopathological datasets, for a total of 374 subjects, 556 slides and more than 27,000 tiles. Also, we discuss the effects of data leakage on transfer learning strategies with models pre-trained on general-purpose datasets or off-task digital pathology collections. Finally, we propose a solution that automates the creation of leakage-free deep learning pipelines for digital pathology based on histolab, a novel Python package for histology data preprocessing. We validate the solution on two public datasets (TCGA and GTEx).},
+	urldate = {2023-02-24},
+	publisher = {arXiv},
+	author = {Bussola, Nicole and Marcolini, Alessia and Maggio, Valerio and Jurman, Giuseppe and Furlanello, Cesare},
+	month = nov,
+	year = {2020},
+	note = {arXiv:1909.06539 [eess, q-bio]},
+	keywords = {Electrical Engineering and Systems Science - Image and Video Processing, Quantitative Biology - Quantitative Methods},
+	file = {arXiv Fulltext PDF:/home/bolker/Documents/zotero_new/storage/4SX8J7WC/Bussola et al. - 2020 - AI slipping on tiles data leakage in digital path.pdf:application/pdf;arXiv.org Snapshot:/home/bolker/Documents/zotero_new/storage/XH6QD7DJ/1909.html:text/html},
+}
+
+
+@article{wengerAssessing2012,
+	title = {Assessing transferability of ecological models: an underappreciated aspect of statistical validation},
+	volume = {3},
+	issn = {2041210X},
+	shorttitle = {Assessing transferability of ecological models},
+	url = {http://doi.wiley.com/10.1111/j.2041-210X.2011.00170.x},
+	doi = {10.1111/j.2041-210X.2011.00170.x},
+	number = {2},
+	urldate = {2013-06-29},
+	journal = {Methods in Ecology and Evolution},
+	author = {Wenger, Seth J. and Olden, Julian D.},
+	month = apr,
+	year = {2012},
+	pages = {260--267},
+	file = {Wenger_Olden_MEE2012.pdf:/home/bolker/Documents/zotero_new/storage/JHTX2G5N/Wenger_Olden_MEE2012.pdf:application/pdf},
+}
+
+
+@article{harrisGenerating2015,
+	title = {Generating realistic assemblages with a joint species distribution model},
+	volume = {6},
+	issn = {2041-210X},
+	url = {http://onlinelibrary.wiley.com/doi/10.1111/2041-210X.12332/abstract},
+	doi = {10.1111/2041-210X.12332},
+	abstract = {* Species distribution models (SDMs) represent important analytical and predictive tools for ecologists. Until now, these models have either assumed (i) that species' occurrence probabilities are uncorrelated or (ii) that species respond linearly to preselected environmental variables. These two assumptions currently prevent ecologists from modelling assemblages with realistic co-occurrence and species richness properties.
+
+
+* This paper introduces a stochastic feedforward neural network, called ‘mistnet’, which makes neither assumption. Thus, unlike most SDMs, mistnet can account for non-independent co-occurrence patterns driven by unobserved environmental heterogeneity. And unlike several recently proposed joint SDMs, the model can also learn nonlinear functions relating species' occurrence probabilities to environmental predictors.
+
+
+* Mistnet makes more accurate predictions about the North American bird communities found along Breeding Bird Survey transects than several alternative methods tested. In particular, typical assemblages held out of sample for validation were each tens of thousands of times more likely under the mistnet model than under independent combinations of single-species predictions.
+
+
+* Apart from improved accuracy, mistnet shows two other important benefits for ecological research and management. First: by analysing co-occurrence data, mistnet can identify unmeasured – and perhaps unanticipated – environmental variables that drive species turnover. For example, the model identified a strong grassland/forest gradient, even though only temperature and precipitation were given as model inputs. Second: mistnet is able to take advantage of outside information to guide its predictions towards more realistic assemblages. For example, mistnet automatically adjusts its expectations to include more forest-associated species in response to a stray observation of a forest-dwelling warbler.},
+	language = {en},
+	number = {4},
+	urldate = {2017-05-08},
+	journal = {Methods in Ecology and Evolution},
+	author = {Harris, David J.},
+	month = apr,
+	year = {2015},
+	keywords = {Birds, species distribution model, breeding bird survey, neural network, probabilistic graphical model, species assemblages},
+	pages = {465--473},
+	file = {Full Text PDF:/home/bolker/Documents/zotero_new/storage/9B2C3UKF/Harris - 2015 - Generating realistic assemblages with a joint spec.pdf:application/pdf;Snapshot:/home/bolker/Documents/zotero_new/storage/I9EVGAZ6/abstract.html:text/html},
+}
+
+
+@article{robertsCrossvalidation2017,
+	title = {Cross-validation strategies for data with temporal, spatial, hierarchical, or phylogenetic structure},
+	volume = {40},
+	issn = {09067590},
+	url = {http://doi.wiley.com/10.1111/ecog.02881},
+	doi = {10.1111/ecog.02881},
+	language = {en},
+	number = {8},
+	urldate = {2017-09-13},
+	journal = {Ecography},
+	author = {Roberts, David R. and Bahn, Volker and Ciuti, Simone and Boyce, Mark S. and Elith, Jane and Guillera-Arroita, Gurutzeta and Hauenstein, Severin and Lahoz-Monfort, José J. and Schröder, Boris and Thuiller, Wilfried and Warton, David I. and Wintle, Brendan A. and Hartig, Florian and Dormann, Carsten F.},
+	month = aug,
+	year = {2017},
+	pages = {913--929},
+	file = {ecog2881.pdf:/home/bolker/Documents/zotero_new/storage/REZ7BUNJ/ecog2881.pdf:application/pdf},
+}
+
+
+@article{valaviblockCV2019,
+	title = {{blockCV}: {An} r package for generating spatially or environmentally separated folds for k-fold cross-validation of species distribution models},
+	volume = {10},
+	issn = {2041-210X},
+	shorttitle = {{blockCV}},
+	url = {https://onlinelibrary.wiley.com/doi/abs/10.1111/2041-210X.13107},
+	doi = {10.1111/2041-210X.13107},
+	abstract = {When applied to structured data, conventional random cross-validation techniques can lead to underestimation of prediction error, and may result in inappropriate model selection. We present the r package blockCV, a new toolbox for cross-validation of species distribution modelling. Although it has been developed with species distribution modelling in mind, it can be used for any spatial modelling. The package can generate spatially or environmentally separated folds. It includes tools to measure spatial autocorrelation ranges in candidate covariates, providing the user with insights into the spatial structure in these data. It also offers interactive graphical capabilities for creating spatial blocks and exploring data folds. Package blockCV enables modellers to more easily implement a range of evaluation approaches. It will help the modelling community learn more about the impacts of evaluation approaches on our understanding of predictive performance of species distribution models.},
+	language = {en},
+	number = {2},
+	urldate = {2023-02-24},
+	journal = {Methods in Ecology and Evolution},
+	author = {Valavi, Roozbeh and Elith, Jane and Lahoz-Monfort, José J. and Guillera-Arroita, Gurutzeta},
+	year = {2019},
+	note = {\_eprint: https://onlinelibrary.wiley.com/doi/pdf/10.1111/2041-210X.13107},
+	keywords = {block cross-validation, environmental blocking, model evaluation, spatial autocorrelation, spatial blocking, spatial leave-one-out, species distribution modelling, structured environment},
+	pages = {225--232},
+	file = {Full Text PDF:/home/bolker/Documents/zotero_new/storage/5V8LQLC5/Valavi et al. - 2019 - blockCV An r package for generating spatially or .pdf:application/pdf;Snapshot:/home/bolker/Documents/zotero_new/storage/CAK7DWYG/2041-210X.html:text/html},
+}
+
+
+@article{cyguComparing2023,
+	title = {Comparing machine learning approaches to incorporate time-varying covariates in predicting cancer survival time},
+	volume = {13},
+	copyright = {2023 The Author(s)},
+	issn = {2045-2322},
+	url = {https://www.nature.com/articles/s41598-023-28393-7},
+	doi = {10.1038/s41598-023-28393-7},
+	abstract = {The Cox proportional hazards model is commonly used in evaluating risk factors in cancer survival data. The model assumes an additive, linear relationship between the risk factors and the log hazard. However, this assumption may be too simplistic. Further, failure to take time-varying covariates into account, if present, may lower prediction accuracy. In this retrospective, population-based, prognostic study of data from patients diagnosed with cancer from 2008 to 2015 in Ontario, Canada, we applied machine learning-based time-to-event prediction methods and compared their predictive performance in two sets of analyses: (1) yearly-cohort-based time-invariant and (2) fully time-varying covariates analysis. Machine learning-based methods—gradient boosting model (gbm), random survival forest (rsf), elastic net (enet), lasso and ridge—were compared to the traditional Cox proportional hazards (coxph) model and the prior study which used the yearly-cohort-based time-invariant analysis. Using Harrell’s C index as our primary measure, we found that using both machine learning techniques and incorporating time-dependent covariates can improve predictive performance. Gradient boosting machine showed the best performance on test data in both time-invariant and time-varying covariates analysis.},
+	language = {en},
+	number = {1},
+	urldate = {2023-02-24},
+	journal = {Scientific Reports},
+	author = {Cygu, Steve and Seow, Hsien and Dushoff, Jonathan and Bolker, Benjamin M.},
+	month = jan,
+	year = {2023},
+	note = {Number: 1
+Publisher: Nature Publishing Group},
+	keywords = {Breast cancer, Cancer models, Computational science, Gastrointestinal cancer, Lung cancer},
+	pages = {1370},
+	file = {Full Text PDF:/home/bolker/Documents/zotero_new/storage/NZDFT58B/Cygu et al. - 2023 - Comparing machine learning approaches to incorpora.pdf:application/pdf},
+}
+
+
+
+@article{milaNearest2022,
+	title = {Nearest neighbour distance matching {Leave}-{One}-{Out} {Cross}-{Validation} for map validation},
+	volume = {13},
+	issn = {2041-210X},
+	url = {https://onlinelibrary.wiley.com/doi/abs/10.1111/2041-210X.13851},
+	doi = {10.1111/2041-210X.13851},
+	abstract = {Several spatial and non-spatial Cross-Validation (CV) methods have been used to perform map validation when additional sampling for validation purposes is not possible, yet it is unclear in which situations one CV method might be preferred over the other. Three factors have been identified as determinants of the performance of CV methods for map validation: the prediction area (geographical interpolation vs. extrapolation), the sampling pattern and the landscape spatial autocorrelation. In this study, we propose a new CV strategy that takes the geographical prediction space into account, and test how the new method compares with other established CV methods under different configurations of these three factors. We propose a variation of Leave-One-Out (LOO) CV for map validation, called Nearest Neighbour Distance Matching (NNDM) LOO CV, in which the nearest neighbour distance distribution function between the test and training data during the CV process is matched to the nearest neighbour distance distribution function between the target prediction and training points. Using random forest as a machine learning algorithm, we then examine the suitability of NNDM LOO CV as well as the established LOO (non-spatial) and buffered-LOO (bLOO, spatial) CV methods in two simulations with varying prediction areas, landscape autocorrelation and sampling distributions. LOO CV provided good map accuracy estimates in landscapes with short autocorrelation ranges, or when estimating geographical interpolation map accuracy with randomly distributed samples. bLOO CV yielded realistic error estimates when estimating map accuracy in new prediction areas, but generally overestimated geographical interpolation errors. NNDM LOO CV returned reliable estimates in all scenarios we considered. While LOO and bLOO CV provided reliable map accuracy estimates only in certain situations, our newly proposed NNDM LOO CV method returned robust estimates and generalised to LOO and bLOO CV whenever these methods were the most appropriate approach. Our work recognises the necessity of considering the geographical prediction space when designing CV-based methods for map validation.},
+	language = {en},
+	number = {6},
+	urldate = {2023-02-24},
+	journal = {Methods in Ecology and Evolution},
+	author = {Milà, Carles and Mateu, Jorge and Pebesma, Edzer and Meyer, Hanna},
+	year = {2022},
+	note = {\_eprint: https://onlinelibrary.wiley.com/doi/pdf/10.1111/2041-210X.13851},
+	keywords = {Cross-Validation, map accuracy estimation, map validation, spatial point patterns, spatial prediction},
+	pages = {1304--1316},
+	file = {Full Text PDF:/home/bolker/Documents/zotero_new/storage/NQLA46XL/Milà et al. - 2022 - Nearest neighbour distance matching Leave-One-Out .pdf:application/pdf;Snapshot:/home/bolker/Documents/zotero_new/storage/EHE9MIDV/2041-210X.html:text/html},
+}
+
+
+@misc{kuhnNested2017,
+	title = {Nested Resampling with rsample},
+	url = {http://appliedpredictivemodeling.com/blog/2017/9/2/njdc83d01pzysvvlgik02t5qnaljnd},
+	language = {en-US},
+	urldate = {2023-02-24},
+	journal = {Applied Predictive Modeling},
+	author = {Kuhn, Max},
+	month = sep,
+	year = {2017}
+}
+
+
+@article{wainerNested2021,
+	title = {Nested cross-validation when selecting classifiers is overzealous for most practical applications},
+	volume = {182},
+	issn = {0957-4174},
+	url = {https://www.sciencedirect.com/science/article/pii/S0957417421006540},
+	doi = {10.1016/j.eswa.2021.115222},
+	abstract = {When selecting a classification algorithm to be applied to a particular problem, one has to simultaneously select the best algorithm for that dataset and the best set of hyperparameters for the chosen model. The usual approach is to apply a nested cross-validation procedure: hyperparameter selection is performed in the inner cross-validation, while the outer cross-validation computes an unbiased estimate of the expected accuracy of the algorithm with cross-validation based hyperparameter tuning. The alternative approach, which we shall call “flat cross-validation”, uses a single cross-validation step both to select the optimal hyperparameter values and to provide an estimate of the expected accuracy of the algorithm that, while biased, may nevertheless still be used to select the best learning algorithm. We tested both procedures using 12 different algorithms on 115 real-life binary datasets and conclude that using the less computationally costly flat cross-validation procedure will generally result in the selection of an algorithm that is, for all practical purposes, of similar quality to that selected via nested cross-validation, provided the learning algorithms have relatively few hyperparameters to be optimised.},
+	language = {en},
+	urldate = {2023-02-24},
+	journal = {Expert Systems with Applications},
+	author = {Wainer, Jacques and Cawley, Gavin},
+	month = nov,
+	year = {2021},
+	keywords = {Classification, cross-validation, Hyperparameters, Model selection, Nested cross-validation},
+	pages = {115222},
+	file = {ScienceDirect Full Text PDF:/home/bolker/Documents/zotero_new/storage/R523ASSB/Wainer and Cawley - 2021 - Nested cross-validation when selecting classifiers.pdf:application/pdf},
+}
+
+
+
+@inproceedings{guoCalibration2017a,
+	title = {On {Calibration} of {Modern} {Neural} {Networks}},
+	url = {https://proceedings.mlr.press/v70/guo17a.html},
+	abstract = {Confidence calibration – the problem of predicting probability estimates representative of the true correctness likelihood – is important for classification models in many applications. We discover that modern neural networks, unlike those from a decade ago, are poorly calibrated. Through extensive experiments, we observe that depth, width, weight decay, and Batch Normalization are important factors influencing calibration. We evaluate the performance of various post-processing calibration methods on state-of-the-art architectures with image and document classification datasets. Our analysis and experiments not only offer insights into neural network learning, but also provide a simple and straightforward recipe for practical settings: on most datasets, temperature scaling – a single-parameter variant of Platt Scaling – is surprisingly effective at calibrating predictions.},
+	language = {en},
+	urldate = {2023-02-24},
+	booktitle = {Proceedings of the 34th {International} {Conference} on {Machine} {Learning}},
+	publisher = {PMLR},
+	author = {Guo, Chuan and Pleiss, Geoff and Sun, Yu and Weinberger, Kilian Q.},
+	month = jul,
+	year = {2017},
+	note = {ISSN: 2640-3498},
+	pages = {1321--1330},
+	file = {Full Text PDF:/home/bolker/Documents/zotero_new/storage/4VNITLZ2/Guo et al. - 2017 - On Calibration of Modern Neural Networks.pdf:application/pdf;Supplementary PDF:/home/bolker/Documents/zotero_new/storage/G57IRQN7/Guo et al. - 2017 - On Calibration of Modern Neural Networks.pdf:application/pdf},
+}
+
+@inproceedings{mindererRevisiting2021,
+	title = {Revisiting the {Calibration} of {Modern} {Neural} {Networks}},
+	volume = {34},
+	url = {https://proceedings.neurips.cc/paper/2021/hash/8420d359404024567b5aefda1231af24-Abstract.html},
+	abstract = {Accurate estimation of predictive uncertainty (model calibration) is essential for the safe application of neural networks. Many instances of miscalibration in modern neural networks have been reported, suggesting a trend that newer, more accurate models produce poorly calibrated predictions. Here, we revisit this question for recent state-of-the-art image classification models. We systematically relate model calibration and accuracy, and find that the most recent models, notably those not using convolutions, are among the best calibrated. Trends observed in prior model generations, such as decay of calibration with distribution shift or model size, are less pronounced in recent architectures. We also show that model size and amount of pretraining do not fully explain these differences, suggesting that architecture is a major determinant of calibration properties.},
+	urldate = {2023-02-24},
+	booktitle = {Advances in {Neural} {Information} {Processing} {Systems}},
+	publisher = {Curran Associates, Inc.},
+	author = {Minderer, Matthias and Djolonga, Josip and Romijnders, Rob and Hubis, Frances and Zhai, Xiaohua and Houlsby, Neil and Tran, Dustin and Lucic, Mario},
+	year = {2021},
+	pages = {15682--15694},
+	file = {Full Text PDF:/home/bolker/Documents/zotero_new/storage/QVDDTAU2/Minderer et al. - 2021 - Revisiting the Calibration of Modern Neural Networ.pdf:application/pdf},
+}
+
+
+
+@misc{taquetMAPIE2021,
+	title = {With {MAPIE}, uncertainties are back in machine learning !},
+	url = {https://towardsdatascience.com/with-mapie-uncertainties-are-back-in-machine-learning-882d5c17fdc3},
+	abstract = {Presenting MAPIE, a scikit-learn-compatible package that allows you to easily estimate uncertainties associated with your favourite ML…},
+	language = {en},
+	urldate = {2023-02-24},
+	journal = {Medium},
+	author = {Taquet, Vianney},
+	month = sep,
+	year = {2021},
+	file = {Snapshot:/home/bolker/Documents/zotero_new/storage/HPC32RTJ/with-mapie-uncertainties-are-back-in-machine-learning-882d5c17fdc3.html:text/html},
 }
