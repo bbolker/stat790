@@ -39,3 +39,10 @@ plot(t_model, scheme = 2)
 plot(t_model, scheme = 1)
 
 t_model2 <- gam(chd ~ te(obesity, age, ldl), family = binomial, data = dd)
+
+
+## 
+url <- "http://www-stat.stanford.edu/~tibs/ElemStatLearn/datasets/SAheart.data"
+fn <- "SAheart.txt"
+if (!file.exists(fn)) download.file(url, destfile = fn)
+dd <- read.csv(fn, row.names = 1)
