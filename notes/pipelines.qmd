@@ -1,0 +1,151 @@
+---
+title: "Pipelines"
+reference-location: margin
+citation-location: margin
+bibliography: ../stat790.bib
+date: today
+date-format: "D MMM YYYY"
+---
+
+\newcommand{\A}{\mathbf A}
+\newcommand{\B}{\mathbf B}
+\newcommand{\D}{\mathbf D}
+\newcommand{\GGamma}{\boldsymbol \Gamma}
+\newcommand{\G}{\mathbf G}
+\newcommand{\HH}{\mathbf H}
+\newcommand{\I}{\mathbf I}
+\newcommand{\K}{\mathbf K}
+\newcommand{\N}{\mathbf N}
+\newcommand{\Q}{\mathbf Q}
+\newcommand{\R}{\mathbf R}
+\newcommand{\bS}{\mathbf S}
+\newcommand{\U}{\mathbf U}
+\newcommand{\V}{\mathbf V}
+\newcommand{\W}{\mathbf W}
+\newcommand{\X}{\mathbf X}
+\newcommand{\Y}{\mathbf Y}
+\newcommand{\Z}{\mathbf Z}
+\newcommand{\bbeta}{\boldsymbol \beta}
+\newcommand{\bzero}{\boldsymbol 0}
+\newcommand{\eeta}{\boldsymbol \eta}
+\newcommand{\OOmega}{\boldsymbol \Omega}
+\newcommand{\hatmat}{\mathbf H}
+\newcommand{\grad}{\mathbf g}
+\newcommand{\p}{\mathbf p}
+\newcommand{\uu}{\mathbf u}
+\newcommand{\w}{\mathbf w}
+\newcommand{\x}{\mathbf x}
+\newcommand{\y}{\mathbf y}
+\newcommand{\z}{\mathbf z}
+\newcommand{\kron}{\bigotimes}
+
+<!-- typically renders in docs/ dir  -->
+
+```{r utils, echo = FALSE}
+## use help("image-methods", "Matrix")
+## lattice graphics: ?lattice:xyplot for details on scales
+ifun <- function(x, title = "", ck = FALSE, raster = TRUE) {
+    image(Matrix(x),
+          sub = "", xlab = "", ylab = "",
+          colorkey = ck,
+          aspect = "fill",
+          scales = list(x = list(draw = FALSE),
+                        y = list(draw = FALSE)),
+          main = title,
+          useRaster = raster
+          )
+}
+```
+
+Materials from [Modeling in R and Python](https://rwward.github.io/etf2021-r-py-modeling/)
+
+- `tidymodels`: meta-package for 'tidy' modeling in R
+- `scikit-learn`: modeling in Python
+
+## `parsnip`
+
+- `parsnip` package (CART → `caret` → `parsnip`)
+- unify modeling interfaces (`lm`, `glmnet`, `randomForest`, etc etc etc)
+- model (algorithm), mode (classification/regression), engine (implementation/package)
+
+## `rsample`
+
+- resampling, cross-validation, bootstrapping, holdout sets ...
+- train/test split (`initial_split()`/`training()`/`testing()`)
+- cross-validation (`vfold_cv()`), bootstrap (`bootstrap`)
+- blocked/grouped methods! `group_vfold_cv`, `group_bootstraps()`
+
+## `recipes`
+
+- feature engineering
+- preprocessing (centering/scaling, imputation, dimension reduction, etc.)
+
+## more 
+
+- `workflows`: bundle preprocessing/modeling/post-processing
+- `tune`: hyperparameter tuning
+- `yardstick`: assessment
+
+## example
+
+```{r message=FALSE}
+library(tidyverse)
+library(tidymodels)
+historical <- (read_csv("../code/historical_baseball.csv")
+    |> mutate(across(inducted, ~fct_rev(factor(.))))
+    |> filter(ab > 250)
+)
+data_split <- initial_split(historical, prop = 2/3, strata = inducted)
+train_data <- training(data_split)
+testing_data <- testing(data_split)
+```
+
+```{r}
+b_recipe  <- (
+    recipe(inducted ~ ., data = train_data)
+    |> step_rm("last_year")
+    |> update_role(player_id, new_role = "ID") ## not predictor or outcome
+    |> step_center(all_numeric())
+    |> step_scale(all_numeric())
+    |> step_nzv(all_numeric())
+    |> prep()
+)
+```
+
+```{r}
+data(iris)
+svm.model <- e1071::svm(Species ~ ., data = iris, probability = TRUE)
+pred <- predict(svm.model, iris, probability = TRUE)
+prob <- attr(pred, "probabilities")
+spmat <- matrix(0, ncol = length(levels(iris$Species)),
+                nrow = length(iris$Species))
+spmat[cbind(1:nrow(prob), as.numeric(iris$Species))] <- 1
+-1 * mean(sapply(1:nrow(prob),
+                 \(i) dmultinom(x = spmat[i,], size = 1, prob[i,], log = TRUE)))
+yardstick::mn_log_loss_vec(truth = iris$Species, estimate = prob)
+```
+
+```{r}
+b_recipe |> bake(train_data) |> rsample::vfold_cv()
+```
+
+```{r}
+lr_mod <-
+    logistic_reg(mode = "classification", penalty = tune(), mixture = 1) %>% 
+    set_engine(engine = "glmnet")
+```
+
+```{r}
+tt <- tune_grid(
+     object = lr_mod,
+     preprocessor = b_recipe,
+     resamples = vfold_cv(train_data),
+     metrics   = metric_set(mn_log_loss)
+)
+```
+
+
+
+
+
+

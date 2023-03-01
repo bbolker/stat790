@@ -46,3 +46,5 @@ url <- "http://www-stat.stanford.edu/~tibs/ElemStatLearn/datasets/SAheart.data"
 fn <- "SAheart.txt"
 if (!file.exists(fn)) download.file(url, destfile = fn)
 dd <- read.csv(fn, row.names = 1)
+library(splines)
+m <- glm(chd ~ bs(tobacco, df = 9, intercept = FALSE), family = binomial, data = dd)
