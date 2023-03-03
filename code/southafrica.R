@@ -48,3 +48,8 @@ if (!file.exists(fn)) download.file(url, destfile = fn)
 dd <- read.csv(fn, row.names = 1)
 library(splines)
 m <- glm(chd ~ bs(tobacco, df = 9, intercept = FALSE), family = binomial, data = dd)
+
+###
+m1 <- glm(chd ~ splines::bs(tobacco, 5), data = dd, family = binomial())
+head(predict(m1, type = "response"))
+head(splines::bs(dd$tobacco, 5))
