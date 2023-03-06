@@ -223,6 +223,7 @@ saveRDS(tt, "tune_grid.rds")
 ```
 
 ```{r metrics}
+## readRDS(tt)
 cc <- collect_metrics(tt)
 gg0 <- ggplot(cc, aes(penalty, mixture)) + geom_point() + scale_x_log10()
 sfun <- function(x, log = FALSE, n = 61) {
@@ -276,6 +277,62 @@ spmat[cbind(1:nrow(prob), as.numeric(iris$Species))] <- 1
 yardstick::mn_log_loss_vec(truth = iris$Species, estimate = prob)
 ```
 
+## conclusions?
 
+(select final model)
 
+## Python
 
+initial 
+```{python split}
+from sklearn.model_selection import train_test_split
+import pandas as pd
+import numpy as np
+historical = pd.read_csv("../code/historical_baseball.csv").query("ab>250")
+
+## index var
+historical_pidindex = historical.set_index('player_id')
+X = historical_pidindex.drop(['inducted', 'last_year'], axis = 1)
+y = historical_pidindex.inducted
+X_train, X_test, y_train, y_test = train_test_split(X, y, random_state=0, test_size = 1/3)
+```
+
+```{python imports}
+from sklearn import preprocessing
+from sklearn.linear_model import LogisticRegression
+from sklearn.linear_model import LogisticRegressionCV
+from sklearn.model_selection import train_test_split
+from sklearn.pipeline import make_pipeline
+from sklearn.preprocessing import StandardScaler
+from sklearn.feature_selection import VarianceThreshold
+```
+
+```{python setup}
+pipe_scale_lr_lasso = make_pipeline(StandardScaler(),
+                                    VarianceThreshold(),
+                                    LogisticRegressionCV(Cs = 10,
+                                                         penalty = "elasticnet",
+                                                         solver = "saga",
+                                                         scoring = "neg_log_loss",
+                                                         l1_ratios = np.linspace(0, 1, 6),
+                                                         cv = 10,
+                                                         max_iter = 2000,
+                                                         n_jobs = 4))
+```
+
+```{python fit, cache = TRUE}
+pipe_scale_lr_lasso.fit(X_train, y_train)  # apply scaling on training data
+```
+
+```{python output}
+coefs = pipe_scale_lr_lasso.named_steps['logisticregressioncv'].coef_
+coef_summary = pd.DataFrame(coefs.transpose(), columns = ['coefs'], index = X_train.columns)
+print(coef_summary)
+pipe_scale_lr_lasso.score(X_test, y_test)
+```
+
+**to do**: 
+
+* selected penalty, mixture parameters? (expect v. unstable)
+* predictions?
+* uncertainty of predictions?

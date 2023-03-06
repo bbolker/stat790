@@ -259,6 +259,7 @@ Mallows' $C_p$ ($\frac{\textrm{RSS} + 2 p \hat \sigma^2}{n}$). AIC and $C_p$ equ
 * a measure of the accuracy of confidence intervals
 * do $(1-\alpha)$ CIs include the true value a fraction $\alpha$ of the time?
 * $\approx$ accuracy of model assessment
+* [MAPIE](https://mapie.readthedocs.io/en/latest/quick_start.html)
 
 ## calibration
 
