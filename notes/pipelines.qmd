@@ -57,16 +57,33 @@ ifun <- function(x, title = "", ck = FALSE, raster = TRUE) {
 }
 ```
 
+## workflow systems
+
+- want to *abstract* details of statistical modeling/machine learning
+- benefits of abstraction
+    - reduce cognitive load
+	- shorter code
+- costs of abstraction
+    - more 'magic'
+    - learning another system
+	- harder to dig down for details
+	- loss of flexibility/harder to modify in ways not foreseen by designers
+
+## R/python
+
 Materials from [Modeling in R and Python](https://rwward.github.io/etf2021-r-py-modeling/)
 
 - `tidymodels`: meta-package for 'tidy' modeling in R
 - `scikit-learn`: modeling in Python
 
+## tidymodels
+
 ## `parsnip`
 
-- `parsnip` package (CART → `caret` → `parsnip`)
+- `parsnip` package (CART → `caret` → "carrot"  → `parsnip`)
 - unify modeling interfaces (`lm`, `glmnet`, `randomForest`, etc etc etc)
-- model (algorithm), mode (classification/regression), engine (implementation/package)
+- specify **model** (algorithm), **mode** (classification or regression), **engine** (implementation/package)
+- in principle (???) 
 
 ## `rsample`
 
@@ -88,10 +105,15 @@ Materials from [Modeling in R and Python](https://rwward.github.io/etf2021-r-py-
 
 ## example
 
-```{r message=FALSE}
+```{r load-pkgs, message=FALSE}
 library(tidyverse)
 library(tidymodels)
+library(glmnet)
+```
+
+```{r data-split}
 historical <- (read_csv("../code/historical_baseball.csv")
+    ## should these be done in the 'prep' process?
     |> mutate(across(inducted, ~fct_rev(factor(.))))
     |> filter(ab > 250)
 )
@@ -100,19 +122,148 @@ train_data <- training(data_split)
 testing_data <- testing(data_split)
 ```
 
-```{r}
+## build preprocessing recipe
+
+- Basics here.  
+- Could also do PCA selection, collapse rare factor levels (`step_other()`, other filtering ... (see [recipes docs](https://recipes.tidymodels.org/reference/index.html))
+
+```{r recipe}
 b_recipe  <- (
+    ## (? why does recipe need data?)
     recipe(inducted ~ ., data = train_data)
+    ## no '-' operator in formulas
+    ## could use e.g. all_numeric_predictors()
     |> step_rm("last_year")
-    |> update_role(player_id, new_role = "ID") ## not predictor or outcome
+    ## set player_id to be neither predictor or outcome
+    |> update_role(player_id, new_role = "ID")
+    ## center, scale, remove zero-variance variables
     |> step_center(all_numeric())
     |> step_scale(all_numeric())
     |> step_nzv(all_numeric())
-    |> prep()
 )
+print(b_recipe)
 ```
 
-```{r}
+## 'prep' step
+
+* Set any *data-dependent* filtering steps based on the full training data set
+* Avoid data leakage
+
+```{r prep}
+b_prepped <- prep(b_recipe)
+print(b_prepped)
+```
+
+## 'bake' step (and sampling)
+
+* apply prep to new (maybe) data; sample
+* can use `strata` to help balance data, and to avoid data leakage
+
+```{r bake}
+b_prepped |> bake(train_data) |> rsample::vfold_cv(v=10)
+```
+
+## logistic regression
+
+```{r lrc}
+lrc_mod <- (
+    logistic_reg(mode = "classification",
+                 penalty = tune(),
+                 mixture = tune())
+    |> set_engine(engine = "glmnet")
+)
+print(lrc_mod)
+```
+
+## digression: experimental design
+
+* sample over a multidimensional space?
+* grids (easy, inflexible)
+* random samples (too clustered)
+* **space-filling**
+   * Latin hypercube
+   * *Sobol sequences*
+   
+```{r grids, echo = FALSE}
+## grid, random, LHS, Sobol
+par(mfrow = c(2,2), mar = c(1,1,3,1))
+n <- 400
+n2 <- sqrt(n)+2
+s <- seq(0, 1, length.out = n2)[-c(1,n2)]
+pfun <- function(x, y, lab, ...) {
+    plot(x, y, axes = FALSE, ann = FALSE, pch = 16, ...)
+    box()
+    mtext(side = 3, at = 0.5, lab, line=1, cex  = 2)
+}
+pfun(rep(s, sqrt(n)), rep(s, each = sqrt(n)), "grid")
+pfun(runif(n), runif(n), "random")
+## lhs
+s2 <- seq(0, 1, length.out = n+2)[-c(1,n+2)]
+pfun(s2, sample(s2), "Latin hypercube")
+ss <- randtoolbox::sobol(n, dim = 2)
+pfun(ss[,1], ss[,2],
+     "quasirandom (Sobol)",
+     col = viridisLite::viridis(n))
+```
+
+```{r parallel}
+doMC::registerDoMC(cores = 4)
+```
+
+```{r tune_grid, cache=TRUE}
+tt <- tune_grid(
+    grid = 100,
+    object = lrc_mod,
+    preprocessor = b_prepped,
+    resamples = vfold_cv(train_data),
+    metrics   = metric_set(mn_log_loss)
+    ## , control = control_grid(verbose = TRUE)
+)
+saveRDS(tt, "tune_grid.rds")
+```
+
+```{r metrics}
+cc <- collect_metrics(tt)
+gg0 <- ggplot(cc, aes(penalty, mixture)) + geom_point() + scale_x_log10()
+sfun <- function(x, log = FALSE, n = 61) {
+    if (log) x <- log(x)
+    s <- seq(min(x), max(x), length.out = n)
+    if (log) exp(s) else s
+}
+dd <- with(cc,
+           expand.grid(penalty = sfun(penalty, TRUE),
+                       mixture = sfun(mixture))
+           )
+if (FALSE) gg0 %+% dd
+m1 <- mgcv::gam(mean ~ te(penalty, mixture), data = cc)
+dd$pred <- as.numeric(predict(m1, newdata = dd))
+gg1 <- ggplot(dd, aes(penalty, mixture)) + 
+    scale_fill_viridis_c() +
+    geom_tile(aes(fill = pred)) +
+    geom_contour(aes(z = pred), colour = "red") +
+    scale_x_log10() +
+    geom_point(data = cc, colour = "cyan")
+print(gg1)
+```
+
+## sanity check
+
+```{r glmnet_check, cache=TRUE}
+c1 <- cv.glmnet(y = train_data$inducted,
+                x = model.matrix(~ . - inducted -player_id, train_data),
+                family = binomial(),
+                relax = TRUE,
+                data = train_data,
+                parallel = TRUE)
+```
+
+```{r glmnet_plot}
+plot(c1)
+```
+
+## tangent: testing the `mn_log_loss` rule
+
+```{r mn_log_loss}
 data(iris)
 svm.model <- e1071::svm(Species ~ ., data = iris, probability = TRUE)
 pred <- predict(svm.model, iris, probability = TRUE)
@@ -124,27 +275,6 @@ spmat[cbind(1:nrow(prob), as.numeric(iris$Species))] <- 1
                  \(i) dmultinom(x = spmat[i,], size = 1, prob[i,], log = TRUE)))
 yardstick::mn_log_loss_vec(truth = iris$Species, estimate = prob)
 ```
-
-```{r}
-b_recipe |> bake(train_data) |> rsample::vfold_cv()
-```
-
-```{r}
-lr_mod <-
-    logistic_reg(mode = "classification", penalty = tune(), mixture = 1) %>% 
-    set_engine(engine = "glmnet")
-```
-
-```{r}
-tt <- tune_grid(
-     object = lr_mod,
-     preprocessor = b_recipe,
-     resamples = vfold_cv(train_data),
-     metrics   = metric_set(mn_log_loss)
-)
-```
-
-
 
 
 

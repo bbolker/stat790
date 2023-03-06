@@ -53,3 +53,5 @@ m <- glm(chd ~ bs(tobacco, df = 9, intercept = FALSE), family = binomial, data =
 m1 <- glm(chd ~ splines::bs(tobacco, 5), data = dd, family = binomial())
 head(predict(m1, type = "response"))
 head(splines::bs(dd$tobacco, 5))
+plot(predict(m1, newdata =
+                     data.frame(tobacco = seq(min(dd$tobacco), max(dd$tobacco), length.out = 101))))

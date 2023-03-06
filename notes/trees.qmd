@@ -1,0 +1,135 @@
+---
+title: "Tree-based methods"
+reference-location: margin
+citation-location: margin
+bibliography: ../stat790.bib
+date: today
+date-format: "D MMM YYYY"
+---
+
+\newcommand{\A}{\mathbf A}
+\newcommand{\B}{\mathbf B}
+\newcommand{\D}{\mathbf D}
+\newcommand{\GGamma}{\boldsymbol \Gamma}
+\newcommand{\G}{\mathbf G}
+\newcommand{\HH}{\mathbf H}
+\newcommand{\I}{\mathbf I}
+\newcommand{\K}{\mathbf K}
+\newcommand{\N}{\mathbf N}
+\newcommand{\Q}{\mathbf Q}
+\newcommand{\R}{\mathbf R}
+\newcommand{\bS}{\mathbf S}
+\newcommand{\U}{\mathbf U}
+\newcommand{\V}{\mathbf V}
+\newcommand{\W}{\mathbf W}
+\newcommand{\X}{\mathbf X}
+\newcommand{\Y}{\mathbf Y}
+\newcommand{\Z}{\mathbf Z}
+\newcommand{\bbeta}{\boldsymbol \beta}
+\newcommand{\bzero}{\boldsymbol 0}
+\newcommand{\eeta}{\boldsymbol \eta}
+\newcommand{\OOmega}{\boldsymbol \Omega}
+\newcommand{\hatmat}{\mathbf H}
+\newcommand{\grad}{\mathbf g}
+\newcommand{\p}{\mathbf p}
+\newcommand{\uu}{\mathbf u}
+\newcommand{\w}{\mathbf w}
+\newcommand{\x}{\mathbf x}
+\newcommand{\y}{\mathbf y}
+\newcommand{\z}{\mathbf z}
+\newcommand{\kron}{\bigotimes}
+
+<!-- typically renders in docs/ dir  -->
+
+```{r utils, echo = FALSE}
+## use help("image-methods", "Matrix")
+## lattice graphics: ?lattice:xyplot for details on scales
+ifun <- function(x, title = "", ck = FALSE, raster = TRUE) {
+    image(Matrix(x),
+          sub = "", xlab = "", ylab = "",
+          colorkey = ck,
+          aspect = "fill",
+          scales = list(x = list(draw = FALSE),
+                        y = list(draw = FALSE)),
+          main = title,
+          useRaster = raster
+          )
+}
+```
+
+## Tree-based methods
+
+- trees are a basic building block of modelign methods ($\sim$ linear regression)
+- **greedy** partitioning of parameter space
+- efficient updating rules instead of linear algebra
+- better at categorical predictors, interactions, missing data
+- bias-variance tradeoff, curse of dimensionality, need for hyperparameter tuning ... **still apply**
+
+## Classification and regression trees
+
+- recursive *binary* splitting
+- builds basis of rectangular regions
+    - predictions homogeneous within regions
+    - could be expressed as indicator variables
+	
+## CART: machinery
+
+- splitting rule
+   - regression: improve SSQ, deviance, ...
+   - improve misclassification error, Gini coefficient, deviance
+   - Gini coefficient: $\sum_k \hat p_{mk} (1-\hat p_{mk})$ (weighted average ($1-p$) loss)
+   - deviance: $\sum \hat p_{mk} (-\log \hat p_{mk})$ (weighted average $-\log$ loss)
+
+## tree-splitting rule complexity
+
+- only ${\cal O}(Np)$!
+- (more specifically $\sum (\# \textrm{unique}~x_i)$)
+- splits only happen at data point values
+
+## complexity pruning
+
+- $1/N_m \sum_{x \in R_m} (y_i - \bar y_m)^2 + \alpha |T|$
+- boils down to (total loss) + $\alpha$ \cdot size
+- weakest-link pruning (greedy again): collapse least-useful splits first
+
+## categorical predictors
+
+- to avoid combinatorial splitting problems, order categories by 
+   - frequency falling in outcome 1 (binary output)
+   - mean response value
+   - optimal split for Gini/deviance/cross-entropy/L2 loss
+   - multicategory harder
+- favors categorical vars with many categories ("such variables should be avoided" ... ???)
+
+## loss matrix
+
+- allow weighting of misclassification
+- e.g. cost of false positive/negative, **or** value of sensitivity/specificity
+
+## missing predictor variables
+
+- 'missing' category
+- use **surrogate variables** (algorithm?? effects of other splitting variables are already computed?)
+- is imputation better?
+
+## linear combination splits
+
+- can do generalized discriminant analysis at each split
+- weights, split point for $\sum a_j X_j \le s$
+- seems better [@lohTreeStructured1988] but Breiman and Friedman disagree [@breimanTreeStructured1988]
+- highly empirical!
+
+## spam example
+
+- 4600 messages, 57 predictors (48 word percentages; punctuation percentages; sequences of capitals)
+- earlier: misclassification 7.6% from logistic regression, 5.5% from GAM
+- CART: 9.3%
+- weighted tree does slightly better at high specificity, but still $\ll$ GAM ...
+
+![](../pix/spam_class.png)
+
+## MARS
+
+## random forests
+
+## boosting
