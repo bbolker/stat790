@@ -109,6 +109,7 @@ Materials from [Modeling in R and Python](https://rwward.github.io/etf2021-r-py-
 library(tidyverse)
 library(tidymodels)
 library(glmnet)
+source("../code/utils.R")
 ```
 
 ```{r data-split}
@@ -206,36 +207,37 @@ pfun(ss[,1], ss[,2],
      col = viridisLite::viridis(n))
 ```
 
+Set up parallel processing (`foreach` package)
+
 ```{r parallel}
-doMC::registerDoMC(cores = 4)
+doParallel::registerDoParallel(cores = 4)
 ```
 
 ```{r tune_grid, cache=TRUE}
-tt <- tune_grid(
+system.time(tt <- tune_grid(
     grid = 100,
     object = lrc_mod,
     preprocessor = b_prepped,
     resamples = vfold_cv(train_data),
+    ## decided to use deviance rather than accuracy to train
     metrics   = metric_set(mn_log_loss)
     ## , control = control_grid(verbose = TRUE)
-)
+))
 saveRDS(tt, "tune_grid.rds")
 ```
 
+[obligatory xkcd](https://xkcd.com/303/)
+
 ```{r metrics}
-## readRDS(tt)
+## tt <- readRDS("tune_grid.rds")
 cc <- collect_metrics(tt)
+## not actually a good design for this case ...
 gg0 <- ggplot(cc, aes(penalty, mixture)) + geom_point() + scale_x_log10()
-sfun <- function(x, log = FALSE, n = 61) {
-    if (log) x <- log(x)
-    s <- seq(min(x), max(x), length.out = n)
-    if (log) exp(s) else s
-}
+## make regular grid for plotting
 dd <- with(cc,
            expand.grid(penalty = sfun(penalty, TRUE),
                        mixture = sfun(mixture))
            )
-if (FALSE) gg0 %+% dd
 m1 <- mgcv::gam(mean ~ te(penalty, mixture), data = cc)
 dd$pred <- as.numeric(predict(m1, newdata = dd))
 gg1 <- ggplot(dd, aes(penalty, mixture)) + 
@@ -250,13 +252,17 @@ print(gg1)
 ## sanity check
 
 ```{r glmnet_check, cache=TRUE}
-c1 <- cv.glmnet(y = train_data$inducted,
+system.time(
+    c1 <- cv.glmnet(y = train_data$inducted,
                 x = model.matrix(~ . - inducted -player_id, train_data),
                 family = binomial(),
                 relax = TRUE,
                 data = train_data,
                 parallel = TRUE)
+)
 ```
+
+(Why so much faster?? Warm start etc. ...)
 
 ```{r glmnet_plot}
 plot(c1)
@@ -265,29 +271,38 @@ plot(c1)
 ## tangent: testing the `mn_log_loss` rule
 
 ```{r mn_log_loss}
-data(iris)
-svm.model <- e1071::svm(Species ~ ., data = iris, probability = TRUE)
-pred <- predict(svm.model, iris, probability = TRUE)
-prob <- attr(pred, "probabilities")
-spmat <- matrix(0, ncol = length(levels(iris$Species)),
-                nrow = length(iris$Species))
-spmat[cbind(1:nrow(prob), as.numeric(iris$Species))] <- 1
--1 * mean(sapply(1:nrow(prob),
-                 \(i) dmultinom(x = spmat[i,], size = 1, prob[i,], log = TRUE)))
-yardstick::mn_log_loss_vec(truth = iris$Species, estimate = prob)
+x <- factor(1:4)
+xmat <- diag(4)
+p <- matrix(rgamma(16, shape = 1, scale = 1), 4, 4)
+p <- sweep(p, MARGIN=1, STATS=rowSums(p), FUN ="/")
+stopifnot(all.equal(rowSums(p), rep(1,4)))
+yardstick::mn_log_loss_vec(truth = x, estimate = p)
+-1 * mean(sapply(1:nrow(p),
+                 \(i) dmultinom(x = xmat[i,], size = 1, prob = p[i,], log = TRUE)))
 ```
 
 ## conclusions?
 
-(select final model)
+More to do:
+
+* find best model
+* show variable importance?
+* predictions (with confidence intervals?)
+* partial dependence profiles?
+
+
+```{r eval=FALSE}
+show_best(tt)
+model_profile(select_by_one_std_err(tt, "penalty"))
+```
 
 ## Python
 
 initial 
 ```{python split}
-from sklearn.model_selection import train_test_split
 import pandas as pd
 import numpy as np
+from sklearn.model_selection import train_test_split
 historical = pd.read_csv("../code/historical_baseball.csv").query("ab>250")
 
 ## index var
