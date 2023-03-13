@@ -130,6 +130,125 @@ ifun <- function(x, title = "", ck = FALSE, raster = TRUE) {
 
 ## MARS
 
+* like decision trees but piecewise linear (+ interactions) rather than constant
+* **hinges** (or "reflected pairs"): 'mini-bases' (pairs of truncated linear spline terms) (total $2 Np$)
+* stepwise/stagewise fitting
+* also include possible *interactions*
+    * products of model terms with unused basis elements
+	* at each step $k$ we have $2Np \cdot (2k-1)$ choices to evaluate
+	* each can be evaluated in ${\cal O}(1)$
+	* principle of **marginality**: only add higher-order terms if lower-order term is already present
+* reasonably local basis functions (not as good as B-splines)
+* hyperparameters: max interaction depth
+* then prune greedily using GCV (denominator: $(1-M/N)^2$, $M = r + cK$ where $r$=number of bases, $K$ = number of knots
+
+## MARS on spam example
+
+* still slightly worse than GAM ...
+* GCV chooses model with 60 basis functions
+
+## MARS vs CART
+
+* stepwise vs piecewise linear basis
+* presence of higher-order interactions
+
+## MARS with categorical predictors
+
+* "all possible binary partitions" - really? 
+* (use ordering trick from CART?)
+
+## computational costs
+
+* additive models via backfitting: $p N \log N$ (initial sort) $+ mpN$ (backfitting) 
+   * cf. $N p^2$ [for least-squares](https://math.stackexchange.com/questions/84495/computational-complexity-of-least-square-regression-operation)
+* trees: $p N \log N$ to sort, $p N \log N$ for splits ($\log N$ cycles)
+* MARS: $N m^2 + p m N$ to add a basis function to a model with $m$ terms $\to$ $N M^3 + p M^2 N$ (monitor stopping?)
+
+## missing data (with MARS/CART)
+
+* **danger will robinson**
+* MCAR, MAR, MNAR ...
+* categorical: code as "missing"
+* discard incomplete observations
+* impute beforehand
+* impute/handle as part of learning algorithm
+   * impute based on mean/median
+   * impute conditional on other observations (MICE)
+   * trees: **surrogate splits** (easy to look for next-best split)
+
 ## random forests
 
+* bootstrap sample data
+* grow a tree with a subset of $m$ variables **at each split**
+* average prediction from ensemble (mean prediction, or majority vote)
+* variance of average of correlated variables = $\sigma^2 (\rho + (1-\rho)/B)$
+   * $\rho \approx 0.05$ for bootstrapped **trees**
+* subsetting variables reduces correlations between trees
+
+## tuning parameters
+
+* suggested $m = \sqrt{p}$ for classification, min node size 1 (stopping point) 
+   * $p/3$, min node size 5 for regression
+* min node size/max depth: "our experience is that using full-grown trees seldom costs much, and results in one less tuning parameter"
+* number of trees just needs to be "large enough" (curve flattens quickly)
+    * monitor progression for iterative algorithms?
+* super-easy to parallelize	
+* explore tuning parameters: https://github.com/tidymodels/TMwR/issues/356
+* out-of-bag samples
+
+## comparisons
+
+* with many trees ($B \to \infty$), RF estimation variance shrinks to $\rho(x) \sigma^2(x)$
+* correlation increases with $m$
+
+![](../pix/RFerr.png)
+
+* RF similar to ridge: shrinks strongly correlated variables toward each other
+
+## loss functions
+
+* robustness
+* how to pick???
+
+![](../pix/class_loss.png)
+
 ## boosting
+
+* "deep" methods
+* still an additive model
+* stagewise rather than simultaneous
+
+## boosting: AdaBoost
+
+* using {-1, 1} scores
+* fit a classifier with current weights $w_i$
+* compute **average error** (== avg weights of correct predictions)
+* $\alpha_m$ = log-odds of average correctness
+* weights of *incorrectly predicted* samples multiplied by odds of avg correctness
+* prediction is $\textrm{sign}(\sum \alpha_m G_m(x))$
+* can use probability mapped to [-1, 1] instead of classification
+* corresponds to **exponential loss** $\exp(-y f)$; deviance is $\log(1+\exp(-2yf))$
+
+## boosting (generally)
+
+* "stump" (== "fork" ?)
+* stagewise modeling
+* robust criteria don't give rise to fast algorithms
+
+
+## gradient boosting
+
+* differentiable loss function
+* steepest descent; find gradient, line search
+
+@pressNumerical2007:
+
+![](../pix/steepest_descent.png)
+
+## hyperparameters
+
+* early stopping ($M$) ("how many iterations without an improvement in the objective function occur before training should be halted") [@precheltEarly2012]
+* learning rate/shrinkage
+* stochastic boosting
+
+
