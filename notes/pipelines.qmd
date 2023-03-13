@@ -335,7 +335,7 @@ pipe_scale_lr_lasso = make_pipeline(StandardScaler(),
                                                          n_jobs = 4))
 ```
 
-```{python fit, cache = TRUE}
+```{python fit}
 pipe_scale_lr_lasso.fit(X_train, y_train)  # apply scaling on training data
 ```
 
