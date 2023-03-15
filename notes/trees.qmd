@@ -216,7 +216,8 @@ ifun <- function(x, title = "", ck = FALSE, raster = TRUE) {
 
 * "deep" methods
 * still an additive model
-* stagewise rather than simultaneous
+* **stagewise** rather than simultaneous
+* stagewise $\approx$ stepwise, but not recomputing previous coefficients/models
 
 ## boosting: AdaBoost
 
@@ -231,24 +232,66 @@ ifun <- function(x, title = "", ck = FALSE, raster = TRUE) {
 
 ## boosting (generally)
 
-* "stump" (== "fork" ?)
-* stagewise modeling
+* algorithm (stagewise):
+   * fit a 'weak learner' to *pseudo-residuals*
+   * update model based on the *sum* of the previous model plus the current weak learner
+* pseudo-residuals: $-\partial L/\partial \hat y$ 
+   * = $2 (y - \hat y)$ for MSE
+   * related to *generalized scoring* for GLMs etc.
+   * == **gradient** of loss function
+* weakest tree: "stump" (== "fork" ?)
 * robust criteria don't give rise to fast algorithms
-
 
 ## gradient boosting
 
-* differentiable loss function
+* works for any differentiable loss function
 * steepest descent; find gradient, line search
 
 @pressNumerical2007:
 
 ![](../pix/steepest_descent.png)
 
+## gradient tree boosting algorithm
+
+(ESL, @bujokasGradient2022)
+
+* fit a decision tree (learner) to pseudo-residuals
+* find the step size $\gamma$ to apply to the new learner:
+
+<!-- https://tex.stackexchange.com/questions/5223/command-for-argmin-or-argmax --> 
+
+$$
+\newcommand{\argmin}{\mathop{\mathrm{argmin}}}
+\begin{split}
+F_m(x) & = F_{m-1}(x) + \gamma_m h_m(x) \\
+\gamma_m & = \argmin_{\gamma} \sum L(y_i,F_{m-1}(x) + \gamma h_m(x)
+\end{split}
+$$
+
+* for MSE $\gamma_m = 1/N \sum (h_m(x) (\hat y - y))/\sum (h_m^2)$ 
+
+* for regression trees, $h_m$ is **constant** in each region
+* Friedman 'TreeBoost' optimizes $\gamma$ for each region
+* $F_m = F_{m-1} + \sum_j \gamma_{jm} 1_{Rjm}(x)$
+* $\gamma_{jm}$ reduces to the mean $(\hat y-y)$
+
 ## hyperparameters
 
+* tree size
+    * 2 = 'stump'
+	* stumps == **additive** models
+	* $J$ determines maximum interaction depth
+	* ESL say $4 \le J \le 8$ is good, rarely $>10$, $\approx 6$ usually OK
 * early stopping ($M$) ("how many iterations without an improvement in the objective function occur before training should be halted") [@precheltEarly2012]
-* learning rate/shrinkage
+* learning rate/**shrinkage**
 * stochastic boosting
+
+## extreme gradient boosting
+
+* use a "Newton" step (**elementwise** second-order approximation)
+   * compute gradient and curvature of $L$ wrt $\hat y$
+   * irrelevant for MSE, Huber loss, L1 loss ...
+* [@sigristGradient2018; @choDoes2018]
+* Implementation-dependent stuff?
 
 
