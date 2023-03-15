@@ -247,9 +247,11 @@ ifun <- function(x, title = "", ck = FALSE, raster = TRUE) {
 * works for any differentiable loss function
 * steepest descent; find gradient, line search
 
-@pressNumerical2007:
+<!-- @pressNumerical2007:
 
 ![](../pix/steepest_descent.png)
+
+-->
 
 ## gradient tree boosting algorithm
 
@@ -295,3 +297,4 @@ $$
 * Implementation-dependent stuff?
 
 
+![](../pix/stagewise.png)
