@@ -269,6 +269,7 @@ F_m(x) & = F_{m-1}(x) + \gamma_m h_m(x) \\
 \gamma_m & = \argmin_{\gamma} \sum L(y_i,F_{m-1}(x) + \gamma h_m(x)
 \end{split}
 $$
+where $h_m(x)$ is the new prediction for $x$
 
 * for MSE $\gamma_m = 1/N \sum (h_m(x) (\hat y - y))/\sum (h_m^2)$ 
 
@@ -296,5 +297,19 @@ $$
 * [@sigristGradient2018; @choDoes2018]
 * Implementation-dependent stuff?
 
+## xgboost rules 
+
+* uses penalty term $\gamma T + \frac{\lambda}{2} ||w||^2$
+* loss for leaf $j$ = 
+$$
+\left (\sum_{i \in I_j} g_i\right) w_j + \frac{1}{2}
+$$
+
+## stochastic boosting
+
+* subsample data at each stage (e.g. $\eta = 0.5$)
+## stagewise modeling
 
 ![](../pix/stagewise.png)
+
+## references

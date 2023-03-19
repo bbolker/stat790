@@ -269,3 +269,61 @@ Mallows' $C_p$ ($\frac{\textrm{RSS} + 2 p \hat \sigma^2}{n}$). AIC and $C_p$ equ
 
 ![](../pix/calibration.png)
 
+# Model/parameter interpretation
+
+## goals
+
+* wanting **pure** prediction is very unusual
+* evaluate effects of variables on predictions
+* tell a story/interpret results
+* prioritize data collections
+* counterfactuals (**not** causal inference!)
+   * **danger**: strong assumptions of representative sampling etc.
+   * effects of correlated predictors
+* *conditional* vs *marginal* effects
+    * "marginal" as in "marginal probability"
+	   	* any nonlinearity makes $E(f(\beta)) \neq f(E(\beta))$
+	* "marginal" as in "marginal effect" (**partial derivative** of predictions wrt predictors) ["average" marginal effects]
+
+## by variable: p-values
+
+* de-emphasized/impractical
+* usually parameter-specific
+* usually model-dependent (although permutation test)
+* theory difficult under penalization,
+* measure clarity, not effect size
+* usually messed up by penalization, hyperparameter tuning, etc..
+* multiple-comparisons testing
+    * **false discovery rate** (Benjamini-Hochberg)
+       * rank $p$-values
+	   * critical value $(i/m)Q$
+	   * all $p$-values $<$ crit value are significant
+* **high-dimensional inference**: e.g.
+       * asymptotic assumptions
+ 	   * requires sparsity (e.g. $\log(p)/\sqrt{n} \to 0$
+	   * may require a bound on the smallest non-zero parameter
+	   
+## by variable: "relevance"
+
+* "relevance"
+* single CART: average improvement (decrease of squared loss) over splits that use variable $v$ 
+* boosted trees: average over trees
+* (splits importance between strongly correlated predictors ...)
+* do we have to worry about overfitting (training vs testing)?
+
+## permutation measures
+
+* random forests: permute $j$th variable in OOB samples, compare accuracy
+* can be generalized, but expensive
+* more even: correlated variables can be substituted
+
+## partial dependence
+
+* $S$ = focal variable, $C$ = complement (all other variables)
+* average dependence: $f_S(X_S) = E_{X_C} f(X_S, X_C)$
+* $\to \bar f_S(X_S) = \frac{1}{N} \sum f(X_S, x_{iC})$
+* compare with **individual conditional** expectations
+   * plot predictions for observations $i$ while modifying  $X_S$
+   * could plot effects at **model centre** ('average individual')
+   
+## References
