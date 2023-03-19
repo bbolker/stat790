@@ -317,6 +317,7 @@ Mallows' $C_p$ ($\frac{\textrm{RSS} + 2 p \hat \sigma^2}{n}$). AIC and $C_p$ equ
 * can be generalized, but expensive
 * more even: correlated variables can be substituted
 
+
 ## partial dependence
 
 * $S$ = focal variable, $C$ = complement (all other variables)
@@ -325,5 +326,13 @@ Mallows' $C_p$ ($\frac{\textrm{RSS} + 2 p \hat \sigma^2}{n}$). AIC and $C_p$ equ
 * compare with **individual conditional** expectations
    * plot predictions for observations $i$ while modifying  $X_S$
    * could plot effects at **model centre** ('average individual')
-   
+
+## Shapley values
+
+* Game theoretic
+* *average additive* contributions/decreases in loss rate
+* ... over all possible combinations of previously included variables
+* fast algorithm for trees
+* challenges ... @kumarProblems2020
+
 ## References

@@ -94,10 +94,11 @@ explainer_boost <-
   )
 
 set.seed(101)
-predict_parts(explainer = explainer_boost, new_observation =
-                                               train_data[120,],
+shap_boost <- predict_parts(explainer = explainer_boost, new_observation =
+                         train_data[120,],
               type = "shap",
               B = 20)
+plot(shap_boost)
 
 vip_boost <- model_parts(explainer_boost)
 plot(vip_boost)
