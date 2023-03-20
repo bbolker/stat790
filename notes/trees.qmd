@@ -308,6 +308,7 @@ $$
 ## stochastic boosting
 
 * subsample data at each stage (e.g. $\eta = 0.5$)
+
 ## stagewise modeling
 
 ![](../pix/stagewise.png)
