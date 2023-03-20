@@ -245,7 +245,7 @@ ifun <- function(x, title = "", ck = FALSE, raster = TRUE) {
 ## gradient boosting
 
 * works for any differentiable loss function
-* steepest descent; find gradient, line search
+* find gradient, line search
 
 <!-- @pressNumerical2007:
 
@@ -257,7 +257,7 @@ ifun <- function(x, title = "", ck = FALSE, raster = TRUE) {
 
 (ESL, @bujokasGradient2022)
 
-* fit a decision tree (learner) to pseudo-residuals
+* fit a decision tree (learner) to pseudo-residuals (= modeling the *gradient of the loss*)
 * find the step size $\gamma$ to apply to the new learner:
 
 <!-- https://tex.stackexchange.com/questions/5223/command-for-argmin-or-argmax --> 
@@ -266,17 +266,17 @@ $$
 \newcommand{\argmin}{\mathop{\mathrm{argmin}}}
 \begin{split}
 F_m(x) & = F_{m-1}(x) + \gamma_m h_m(x) \\
-\gamma_m & = \argmin_{\gamma} \sum L(y_i,F_{m-1}(x) + \gamma h_m(x)
+\gamma_m & = \argmin_{\gamma} \sum L(y_i,F_{m-1}(x) + \gamma h_m(x))
 \end{split}
 $$
 where $h_m(x)$ is the new prediction for $x$
 
-* for MSE $\gamma_m = 1/N \sum (h_m(x) (\hat y - y))/\sum (h_m^2)$ 
+* for MSE $\gamma_m = \frac{1/N} \sum (h_m(x) (\hat y - y))/\sum (h_m^2)$ 
 
 * for regression trees, $h_m$ is **constant** in each region
 * Friedman 'TreeBoost' optimizes $\gamma$ for each region
 * $F_m = F_{m-1} + \sum_j \gamma_{jm} 1_{Rjm}(x)$
-* $\gamma_{jm}$ reduces to the mean $(\hat y-y)$
+* $\gamma_{jm}$ reduces to the mean $(\hat y-y)$ for MSE
 
 ## hyperparameters
 
@@ -293,10 +293,12 @@ where $h_m(x)$ is the new prediction for $x$
 
 * use a "Newton" step (**elementwise** second-order approximation)
    * compute gradient and curvature of $L$ wrt $\hat y$
-   * irrelevant for MSE, Huber loss, L1 loss ...
+   * irrelevant/same as gradient descent for MSE, Huber loss, L1 loss ...
 * [@sigristGradient2018; @choDoes2018]
-* Implementation-dependent stuff?
+* Implementation-dependent stuff? Sparsity, out-of-memory implementation, etc.
 
+
+<!--
 ## xgboost rules 
 
 * uses penalty term $\gamma T + \frac{\lambda}{2} ||w||^2$
@@ -304,6 +306,7 @@ where $h_m(x)$ is the new prediction for $x$
 $$
 \left (\sum_{i \in I_j} g_i\right) w_j + \frac{1}{2}
 $$
+-->
 
 ## stochastic boosting
 
@@ -313,4 +316,48 @@ $$
 
 ![](../pix/stagewise.png)
 
-## references
+
+## BART
+
+- @chipmanBART2010
+- again a sum of trees
+- smart, data-informed ("empirical Bayesian") priors
+- fitting procedure is MCMC
+- defaults are good, don't need much tuning
+
+## regularizing priors
+
+- informative but non-biasing
+- shrink toward 'null value', e.g. ridge/lasso penalties
+
+## BART priors
+
+- tree depth, splitting point, overall residual variance
+- componentwise/independent priors on each model
+- tree depth: $\alpha (1 + d)^{-\beta}$ 
+    - $\alpha = 0.95$, $\beta = 2$: modal $d=2$, most $d \le 5$
+- splitting priors: uniform over split points (observed values) and parameters	
+- split point/mean: scaled Normal prior
+    - overall mean prediction is sum of means across $m$ trees
+    - $m\mu_\mu \pm k\sqrt{m}\sigma_\mu = y_{\textrm{min}}$
+	- e.g. $k=2$ for $\approx$ 95% range in (ymin, ymax)
+- residual variance: inverse-chi-squared with scale matching $\sigma$ 
+    - $\hat \sigma$ is marginal std dev *or* linear regression std dev
+	- choose df (3-10) so that upper $q$ quantile is at $\hat \sigma$
+- overfitting is unlikely, so choose $m$ "big enough" ($m=200$)
+
+## MCMC rules
+
+- **Gibbs sampling**
+- draw $\sigma$ from inverse gamma (conjugate prior)
+- $T_j$: grow a terminal node (0.25), prune (0.25), change a nonterminal rule (0.4), swap a rule between parent and child (0.1)
+- resample $M_j$ values from a normal (and recompute residuals)
+- initialize with $m$ stumps
+
+## MCMC stuff
+
+* burn-in (typically 200 steps)
+* sampling
+* single chain (typically 1000 steps)
+
+
