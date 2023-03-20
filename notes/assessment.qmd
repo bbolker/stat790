@@ -335,4 +335,6 @@ Mallows' $C_p$ ($\frac{\textrm{RSS} + 2 p \hat \sigma^2}{n}$). AIC and $C_p$ equ
 * fast algorithm for trees
 * challenges ... @kumarProblems2020
 
+See @burzykowskiExplanatory2020 for more details ...
+
 ## References
