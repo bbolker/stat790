@@ -216,7 +216,8 @@ ifun <- function(x, title = "", ck = FALSE, raster = TRUE) {
 
 * "deep" methods
 * still an additive model
-* stagewise rather than simultaneous
+* **stagewise** rather than simultaneous
+* stagewise $\approx$ stepwise, but not recomputing previous coefficients/models
 
 ## boosting: AdaBoost
 
@@ -231,24 +232,132 @@ ifun <- function(x, title = "", ck = FALSE, raster = TRUE) {
 
 ## boosting (generally)
 
-* "stump" (== "fork" ?)
-* stagewise modeling
+* algorithm (stagewise):
+   * fit a 'weak learner' to *pseudo-residuals*
+   * update model based on the *sum* of the previous model plus the current weak learner
+* pseudo-residuals: $-\partial L/\partial \hat y$ 
+   * = $2 (y - \hat y)$ for MSE
+   * related to *generalized scoring* for GLMs etc.
+   * == **gradient** of loss function
+* weakest tree: "stump" (== "fork" ?)
 * robust criteria don't give rise to fast algorithms
-
 
 ## gradient boosting
 
-* differentiable loss function
-* steepest descent; find gradient, line search
+* works for any differentiable loss function
+* find gradient, line search
 
-@pressNumerical2007:
+<!-- @pressNumerical2007:
 
 ![](../pix/steepest_descent.png)
 
+-->
+
+## gradient tree boosting algorithm
+
+(ESL, @bujokasGradient2022)
+
+* fit a decision tree (learner) to pseudo-residuals (= modeling the *gradient of the loss*)
+* find the step size $\gamma$ to apply to the new learner:
+
+<!-- https://tex.stackexchange.com/questions/5223/command-for-argmin-or-argmax --> 
+
+$$
+\newcommand{\argmin}{\mathop{\mathrm{argmin}}}
+\begin{split}
+F_m(x) & = F_{m-1}(x) + \gamma_m h_m(x) \\
+\gamma_m & = \argmin_{\gamma} \sum L(y_i,F_{m-1}(x) + \gamma h_m(x))
+\end{split}
+$$
+where $h_m(x)$ is the new prediction for $x$
+
+* for MSE $\gamma_m = \frac{1/N} \sum (h_m(x) (\hat y - y))/\sum (h_m^2)$ 
+
+* for regression trees, $h_m$ is **constant** in each region
+* Friedman 'TreeBoost' optimizes $\gamma$ for each region
+* $F_m = F_{m-1} + \sum_j \gamma_{jm} 1_{Rjm}(x)$
+* $\gamma_{jm}$ reduces to the mean $(\hat y-y)$ for MSE
+
 ## hyperparameters
 
+* tree size
+    * 2 = 'stump'
+	* stumps == **additive** models
+	* $J$ determines maximum interaction depth
+	* ESL say $4 \le J \le 8$ is good, rarely $>10$, $\approx 6$ usually OK
 * early stopping ($M$) ("how many iterations without an improvement in the objective function occur before training should be halted") [@precheltEarly2012]
-* learning rate/shrinkage
+* learning rate/**shrinkage**
 * stochastic boosting
+
+## extreme gradient boosting
+
+* use a "Newton" step (**elementwise** second-order approximation)
+   * compute gradient and curvature of $L$ wrt $\hat y$
+   * irrelevant/same as gradient descent for MSE, Huber loss, L1 loss ...
+* [@sigristGradient2018; @choDoes2018]
+* Implementation-dependent stuff? Sparsity, out-of-memory implementation, etc.
+
+
+<!--
+## xgboost rules 
+
+* uses penalty term $\gamma T + \frac{\lambda}{2} ||w||^2$
+* loss for leaf $j$ = 
+$$
+\left (\sum_{i \in I_j} g_i\right) w_j + \frac{1}{2}
+$$
+-->
+
+## stochastic boosting
+
+* subsample data at each stage (e.g. $\eta = 0.5$)
+
+## stagewise modeling
+
+![](../pix/stagewise.png)
+
+
+## BART
+
+- @chipmanBART2010
+- again a sum of trees
+- smart, data-informed ("empirical Bayesian") priors
+- fitting procedure is MCMC
+- defaults are good, don't need much tuning
+
+## regularizing priors
+
+- informative but non-biasing
+- shrink toward 'null value', e.g. ridge/lasso penalties
+
+## BART priors
+
+- tree depth, splitting point, overall residual variance
+- componentwise/independent priors on each model
+- tree depth: $\alpha (1 + d)^{-\beta}$ 
+    - $\alpha = 0.95$, $\beta = 2$: modal $d=2$, most $d \le 5$
+- splitting priors: uniform over split points (observed values) and parameters	
+- split point/mean: scaled Normal prior
+    - overall mean prediction is sum of means across $m$ trees
+    - $m\mu_\mu \pm k\sqrt{m}\sigma_\mu = y_{\textrm{min}}$
+	- e.g. $k=2$ for $\approx$ 95% range in (ymin, ymax)
+- residual variance: inverse-chi-squared with scale matching $\sigma$ 
+    - $\hat \sigma$ is marginal std dev *or* linear regression std dev
+	- choose df (3-10) so that upper $q$ quantile is at $\hat \sigma$
+- overfitting is unlikely, so choose $m$ "big enough" ($m=200$)
+
+## MCMC rules
+
+- **Gibbs sampling**
+- draw $\sigma$ from inverse gamma (conjugate prior)
+- $T_j$: grow a terminal node (0.25), prune (0.25), change a nonterminal rule (0.4), swap a rule between parent and child (0.1)
+- resample $M_j$ values from a normal (and recompute residuals)
+- initialize with $m$ stumps
+
+## MCMC stuff
+
+* burn-in (typically 200 steps)
+* sampling
+* single chain (typically 1000 steps)
 
 
