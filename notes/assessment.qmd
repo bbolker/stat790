@@ -299,9 +299,9 @@ Mallows' $C_p$ ($\frac{\textrm{RSS} + 2 p \hat \sigma^2}{n}$). AIC and $C_p$ equ
 	   * critical value $(i/m)Q$
 	   * all $p$-values $<$ crit value are significant
 * **high-dimensional inference**: e.g.
-       * asymptotic assumptions
- 	   * requires sparsity (e.g. $\log(p)/\sqrt{n} \to 0$
-	   * may require a bound on the smallest non-zero parameter
+    * asymptotic assumptions
+ 	* requires sparsity (e.g. $\log(p)/\sqrt{n} \to 0$
+	* may require a bound on the smallest non-zero parameter
 	   
 ## by variable: "relevance"
 
@@ -337,4 +337,3 @@ Mallows' $C_p$ ($\frac{\textrm{RSS} + 2 p \hat \sigma^2}{n}$). AIC and $C_p$ equ
 
 See @burzykowskiExplanatory2020 for more details ...
 
-## References
