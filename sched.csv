@@ -4,12 +4,12 @@ week, start_date, topic, readings, assignments, notes
 3,2023-01-23,Regression with non-Gaussian outcomes,ESL 4.4,,[ridge/pcr code](code/princomp_vs_ridge.R); [notes](notes/nongauss.pdf); [myglm.R](code/myglm.R)
 4,2023-01-30,Basis expansion and regularization: GAMs,ESL 5,[notes](notes/splines.pdf); [South Africa ex](code/southafrica.R),
 5,2023-02-06,Model assessment and selection,,[HW 2 (13 Feb)](assignments/hw2.md),
-6,2023-02-13,Catch-up
+6,2023-02-13,Catch-up,,,
 ,2023-02-20,Midterm recess,,,
-7,2023-02-27,Assessing uncertainty,,[notes](notes/assessment.pdf), [HW 3 (3 Mar)](assignments/hw3.md),
+7,2023-02-27,Assessing uncertainty,,[notes](notes/assessment.pdf), [HW 3 (3 Mar)](assignments/hw3.md)
 8,2023-03-06,Tree-based methods (CART/MARS/etc.),,[notes](notes/trees.pdf),
 9,2023-03-13,"Random forests, boosting",,HW 4,
-10,2023-03-20,Optimization and scalability,,Project proposal,
+10,2023-03-20,Trees continued; model interpretation/var importance,,Project proposal,[HW 4 (5 Apr)](assignments/hw4.html)
 11,2023-03-27,"Latent structures: factor, mixture, graphical models",,HW 5,
 12,2023-04-03,Data with dependence (temporal/spatial),,,
 13,2023-04-10,Wrap up,,Project draft,
