@@ -1,0 +1,101 @@
+---
+title: "Kernel-based methods"
+reference-location: margin
+citation-location: margin
+bibliography: ../stat790.bib
+date: today
+date-format: "D MMM YYYY"
+---
+
+\newcommand{\A}{\mathbf A}
+\newcommand{\B}{\mathbf B}
+\newcommand{\D}{\mathbf D}
+\newcommand{\GGamma}{\boldsymbol \Gamma}
+\newcommand{\G}{\mathbf G}
+\newcommand{\HH}{\mathbf H}
+\newcommand{\I}{\mathbf I}
+\newcommand{\K}{\mathbf K}
+\newcommand{\N}{\mathbf N}
+\newcommand{\Q}{\mathbf Q}
+\newcommand{\R}{\mathbf R}
+\newcommand{\bS}{\mathbf S}
+\newcommand{\U}{\mathbf U}
+\newcommand{\V}{\mathbf V}
+\newcommand{\W}{\mathbf W}
+\newcommand{\X}{\mathbf X}
+\newcommand{\Y}{\mathbf Y}
+\newcommand{\Z}{\mathbf Z}
+\newcommand{\bbeta}{\boldsymbol \beta}
+\newcommand{\bzero}{\boldsymbol 0}
+\newcommand{\eeta}{\boldsymbol \eta}
+\newcommand{\OOmega}{\boldsymbol \Omega}
+\newcommand{\hatmat}{\mathbf H}
+\newcommand{\grad}{\mathbf g}
+\newcommand{\p}{\mathbf p}
+\newcommand{\uu}{\mathbf u}
+\newcommand{\w}{\mathbf w}
+\newcommand{\x}{\mathbf x}
+\newcommand{\y}{\mathbf y}
+\newcommand{\z}{\mathbf z}
+\newcommand{\kron}{\bigotimes}
+
+<!-- typically renders in docs/ dir  -->
+
+```{r utils, echo = FALSE}
+## use help("image-methods", "Matrix")
+## lattice graphics: ?lattice:xyplot for details on scales
+ifun <- function(x, title = "", ck = FALSE, raster = TRUE) {
+    image(Matrix(x),
+          sub = "", xlab = "", ylab = "",
+          colorkey = ck,
+          aspect = "fill",
+          scales = list(x = list(draw = FALSE),
+                        y = list(draw = FALSE)),
+          main = title,
+          useRaster = raster
+          )
+}
+```
+
+## Kernel-based methods
+
+* depend only on some *distance function* induced between pairs of points 
+* kernel function $k$
+   * classification: $\hat y_i(\x') = textrm{sign} \sum w_i y_i k(\x_i, \x_i')$
+   * regression: (the same but without the \textrm{sign()}!)
+* **low-rank approximations** of $k()$
+
+## Kernel smoothers
+
+* kernel density estimation
+* Nadaraya-Watson kernel regession
+
+## Separating hyperplanes
+
+* ESL section 4.5
+* Regress $\y \in \{-1, 1\}$ on $\x$: solve for $\X \bbeta = 0$  
+(write as $\beta_0 + \beta^\top \x = 0$, i.e. separate intercept)
+* (equivalent to linear discriminant analysis)
+* Rosenblatt's algorithm  
+   * $(\X \bbeta)/||\bbeta||$ is the signed distance to the separating plane
+   * minimize $-\sum{i \in {\cal M}} y_i (\X \beta)$ (sum of misclassified distances)
+   * gradient = $-\sum (y_i x_i)$
+   * stochastic gradient descent* (pointwise): adjust $\bbeta$ by $\rho \y_i X_i$ at each step
+* elegant but not practical (non-unique, slow, non-convergent if not separable)
+* $\to$ penalized version in a larger basis space
+* $\textrm{argmin}(\bbeta) \frac{1}{2} ||\bbeta||^2$ subject to $y_i (\X \beta) \ge 1$
+* "standard" convex optimization problem
+
+![](../pix/sep_hyperplane.png)
+
+   
+## support vector machines for the non-separable case
+
+* ESL chapter 12
+* 
+
+[](../pix/nonsep_hyper.png)
+
+
+## Gaussian processes
+

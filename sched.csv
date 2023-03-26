@@ -10,7 +10,7 @@ week, start_date, topic, readings, assignments, notes
 8,2023-03-06,Tree-based methods (CART/MARS/etc.),,[notes](notes/trees.pdf),
 9,2023-03-13,"Random forests, boosting",,HW 4,
 10,2023-03-20,Trees continued; model interpretation/var importance,,Project proposal,[HW 4 (5 Apr)](assignments/hw4.html)
-11,2023-03-27,"Latent structures: factor, mixture, graphical models",,HW 5,
+11,2023-03-27,Kernel-based methods (SVM/GP),,[notes](notes/kernels.pdf)
 12,2023-04-03,Data with dependence (temporal/spatial),,,
 13,2023-04-10,Wrap up,,Project draft,
 ,2023-04-30,,,Project final version,
