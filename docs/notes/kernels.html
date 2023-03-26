@@ -21,6 +21,25 @@ width: 0.8em;
 margin: 0 0.8em 0.2em -1.6em;
 vertical-align: middle;
 }
+div.csl-bib-body { }
+div.csl-entry {
+clear: both;
+}
+.hanging div.csl-entry {
+margin-left:2em;
+text-indent:-2em;
+}
+div.csl-left-margin {
+min-width:2em;
+float:left;
+}
+div.csl-right-inline {
+margin-left:2em;
+padding-left:1em;
+}
+div.csl-indent {
+margin-left: 2em;
+}
 </style>
 
 
@@ -2547,11 +2566,12 @@ vertical-align: -.125em;
 
 </head>
 
-<body class="fullcontent">
+<body>
 
 <div id="quarto-content" class="page-columns page-rows-contents page-layout-article">
-
-<main class="content" id="quarto-document-content">
+<div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+</div>
+<main class="content page-columns page-full" id="quarto-document-content">
 
 <header id="title-block-header" class="quarto-title-block default">
 <div class="quarto-title">
@@ -2624,12 +2644,51 @@ vertical-align: -.125em;
 <h2 class="anchored" data-anchor-id="support-vector-machines-for-the-non-separable-case">support vector machines for the non-separable case</h2>
 <ul>
 <li>ESL chapter 12</li>
-<li></li>
+<li><span class="math inline">\(y_i (X_i \boldsymbol \beta\ge M(1-\xi_i)\)</span></li>
+<li>linear loss function on misclassification distances + L2 penalty</li>
+<li>or <span class="math inline">\(\textrm{min} \frac{1}{2} ||\beta||^2 + C \sum \xi_i\)</span></li>
+<li><span class="math inline">\(C\)</span> is the hyperparameter</li>
+<li>quadratic programming problem</li>
 </ul>
 <p><a href="../pix/nonsep_hyper.png"></a></p>
 </section>
-<section id="gaussian-processes" class="level2">
+<section id="svms-and-kernels-esl-12.3" class="level2">
+<h2 class="anchored" data-anchor-id="svms-and-kernels-esl-12.3">SVMs and kernels (ESL 12.3)</h2>
+<ul>
+<li>alternative formulation</li>
+</ul>
+<p><span class="math display">\[
+\begin{split}
+f(x_i) &amp; = X_i^\top \beta + \beta_0 \\
+&amp; = \sum \alpha_j y_j \left&lt; h(x_i), h(x_j) \right&gt; + \beta_0
+\end{split}
+\]</span> where <span class="math inline">\(\alpha_i\)</span> is a different parameterization * <span class="math inline">\(\left&lt;h(.), h(.) \right&gt;\)</span> is a <strong>kernel function</strong> * linear SVM finds a separating hyperplane based on distances * polynomial distance: <span class="math inline">\((1 + \left&lt;x_i, x_j \right&gt;)^d\)</span> * polynomial <span class="math inline">\(d\)</span> for <span class="math inline">\(n\)</span> inputs (plus intercept) gives rise to a <span class="math inline">\(C(n+2,d)\)</span>-dimensional space * <strong>radial basis function</strong> <span class="math inline">\(\exp\left(-\gamma ||x_i-x_j||^2\right)\)</span> * infinite-dimensional (think of Taylor expansion) * <strong>length scale</strong> <span class="math inline">\(1/\gamma\)</span></p>
+</section>
+<section id="svms-for-regression" class="level2">
+<h2 class="anchored" data-anchor-id="svms-for-regression">SVMs for regression</h2>
+<ul>
+<li>fits a loss function <span class="math inline">\(\max(0, |r|-\epsilon)\)</span></li>
+</ul>
+</section>
+<section id="kernels" class="level2">
+<h2 class="anchored" data-anchor-id="kernels">kernels</h2>
+<ul>
+<li>“kernel trick” works very generally, but only for L2 penalty</li>
+<li>ESL 12.3.7: cost of optimizing via kernel is <span class="math inline">\({\cal O}(N^2)\)</span> not <span class="math inline">\({\cal O}(MN^2)\)</span> (where <span class="math inline">\(N\)</span> is number of training points, <span class="math inline">\(M\)</span> is dimension of the feature space)</li>
+</ul>
+</section>
+<section id="gaussian-processes" class="level2 page-columns page-full">
 <h2 class="anchored" data-anchor-id="gaussian-processes">Gaussian processes</h2>
+<ul>
+<li><p><span class="citation" data-cites="rasmussenGaussian2005">Rasmussen and Williams (<a href="#ref-rasmussenGaussian2005" role="doc-biblioref">2005</a>)</span></p></li>
+<li><p>motivated by Bayesian context, or from classical <strong>geostatistics</strong> (kriging)</p></li>
+<li><p>interpolation vs. approximation</p></li>
+<li><p>“Under the assumption of Gaussian observation noise the computations needed to make predictions are tractable and are dominated by the inversion of a n × n matrix.”</p></li>
+<li><p>zero-mean Gaussian prior: <span class="math inline">\(\mathbf w\sim {\cal N}(\boldsymbol 0, \Sigma_p)\)</span></p></li>
+</ul>
+<div class="no-row-height column-margin column-container"><div id="ref-rasmussenGaussian2005" class="csl-entry" role="doc-biblioentry">
+Rasmussen, Carl Edward, and Christopher K. I. Williams. 2005. <em>Gaussian <span>Processes</span> for <span>Machine</span> <span>Learning</span></em>. Cambridge, Mass: The MIT Press.
+</div></div>
 </section>
 
 </main>

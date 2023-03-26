@@ -92,10 +92,51 @@ ifun <- function(x, title = "", ck = FALSE, raster = TRUE) {
 ## support vector machines for the non-separable case
 
 * ESL chapter 12
-* 
+* $y_i (X_i \bbeta \ge M(1-\xi_i)$
+* linear loss function on misclassification distances + L2 penalty
+* or $\textrm{min} \frac{1}{2} ||\beta||^2 + C \sum \xi_i$
+* $C$ is the hyperparameter
+* quadratic programming problem
 
 [](../pix/nonsep_hyper.png)
 
+## SVMs and kernels (ESL 12.3)
+
+* alternative formulation
+
+$$
+\begin{split}
+f(x_i) & = X_i^\top \beta + \beta_0 \\
+ & = \sum \alpha_j y_j \left< h(x_i), h(x_j) \right> + \beta_0
+\end{split}
+$$
+where $\alpha_i$ is a different parameterization
+* $\left<h(.), h(.) \right>$ is a **kernel function**
+* linear SVM finds a separating hyperplane based on distances
+* polynomial distance: $(1 + \left<x_i, x_j \right>)^d$
+* polynomial $d$ for $n$ inputs (plus intercept) gives rise to a $C(n+2,d)$-dimensional space
+* **radial basis function** $\exp\left(-\gamma ||x_i-x_j||^2\right)$
+  * infinite-dimensional (think of Taylor expansion)
+  * **length scale** $1/\gamma$
+  
+## SVMs for regression
+
+* fits a loss function $\max(0, |r|-\epsilon)$
+
+## kernels
+
+* "kernel trick" works very generally, but only for L2 penalty
+* ESL 12.3.7: cost of optimizing via kernel is ${\cal O}(N^2)$ 
+not ${\cal O}(MN^2)$ (where $N$ is number of training points, $M$ is dimension of the feature space)
+
 
 ## Gaussian processes
+
+* @rasmussenGaussian2005
+* motivated by Bayesian context, or from classical **geostatistics** (kriging)
+* interpolation vs. approximation
+
+* "Under the assumption of Gaussian observation noise the computations needed to make predictions are tractable and are dominated by the inversion of a n × n matrix."
+
+* zero-mean Gaussian prior: $\w \sim {\cal N}(\bzero, \Sigma_p)$
 
