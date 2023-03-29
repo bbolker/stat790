@@ -5,26 +5,8 @@ library(DALEX)
 library(DALEXtra)
 library(vip)
 library(GGally)
+## wd: /code
 source("../code/utils.R")
-
-
-ggally_hexbin <- function (data, mapping, ...)  {
-    p <- ggplot(data = data, mapping = mapping) + geom_hex(...)
-    p
-}
-
-## https://stackoverflow.com/questions/20872133/using-stat-binhex-with-ggpairs
-ggpairs_hex <- function(df, hexbins = 10) {
-  # REF: https://stackoverflow.com/questions/20872133/using-stat-binhex-with-ggpairs
-  p <- ggpairs(df, lower="blank")
-  seq <- 1:ncol(df)
-  for (x in seq)
-    for (y in seq) 
-      if (y>x) 
-        p <- putPlot(p, ggplot(df, aes_string(x=names(df)[x],y=names(df)[y])) + stat_binhex(bins = hexbins), y,x)
-  
-  return(p)
-}
 
 do_plots <- interactive()
 
@@ -53,6 +35,7 @@ if (do_plots) {
 
 ggplot(housing, aes(longitude, latitude)) + geom_point(alpha = 0.5)
 
+## digression: spatial blocking
 housing_sf <- sf::st_as_sf(
                       housing,
                       coords = c("longitude", "latitude"),

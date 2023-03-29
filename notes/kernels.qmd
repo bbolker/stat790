@@ -60,10 +60,12 @@ ifun <- function(x, title = "", ck = FALSE, raster = TRUE) {
 ## Kernel-based methods
 
 * depend only on some *distance function* induced between pairs of points 
+   * potentially a high (even infinite-dimensional!) space
+   * mapping original values to high dim (e.g. high-order interactions)
 * kernel function $k$
-   * classification: $\hat y_i(\x') = textrm{sign} \sum w_i y_i k(\x_i, \x_i')$
+   * classification: $\hat y_i(\x') = \textrm{sign} \sum w_i y_i k(\x_i, \x')$
    * regression: (the same but without the \textrm{sign()}!)
-* **low-rank approximations** of $k()$
+* for further efficiency can also use **low-rank approximations** of $k()$
 
 ## Kernel smoothers
 
@@ -78,12 +80,12 @@ ifun <- function(x, title = "", ck = FALSE, raster = TRUE) {
 * (equivalent to linear discriminant analysis)
 * Rosenblatt's algorithm  
    * $(\X \bbeta)/||\bbeta||$ is the signed distance to the separating plane
-   * minimize $-\sum{i \in {\cal M}} y_i (\X \beta)$ (sum of misclassified distances)
-   * gradient = $-\sum (y_i x_i)$
-   * stochastic gradient descent* (pointwise): adjust $\bbeta$ by $\rho \y_i X_i$ at each step
+   * minimize $-\sum_{i \in {\cal M}} y_i (\X \beta)$ (sum of misclassified distances)
+	 * gradient wrt $\beta$ = $-\sum (y_i x_i)$
+   * stochastic gradient descent (pointwise): adjust $\bbeta$ by $\rho \y_i X_i$ at each step
 * elegant but not practical (non-unique, slow, non-convergent if not separable)
 * $\to$ penalized version in a larger basis space
-* $\textrm{argmin}(\bbeta) \frac{1}{2} ||\bbeta||^2$ subject to $y_i (\X \beta) \ge 1$
+* $\textrm{argmin}(\bbeta)$ of $\frac{1}{2} ||\bbeta||^2$ subject to $y_i (\X \beta) \ge 1$
 * "standard" convex optimization problem
 
 ![](../pix/sep_hyperplane.png)
@@ -111,6 +113,7 @@ f(x_i) & = X_i^\top \beta + \beta_0 \\
 \end{split}
 $$
 where $\alpha_i$ is a different parameterization
+
 * $\left<h(.), h(.) \right>$ is a **kernel function**
 * linear SVM finds a separating hyperplane based on distances
 * polynomial distance: $(1 + \left<x_i, x_j \right>)^d$
@@ -129,6 +132,41 @@ where $\alpha_i$ is a different parameterization
 * ESL 12.3.7: cost of optimizing via kernel is ${\cal O}(N^2)$ 
 not ${\cal O}(MN^2)$ (where $N$ is number of training points, $M$ is dimension of the feature space)
 
+## kernel PCA
+
+* @scholkopfKernel1997
+* we can do PCA by SVD (works if $p > n$): complexity is ${\cal O}(\min(np^2, n^2p)$ https://mathoverflow.net/a/221216 (`stats:::prcomp.default`)
+* or by computing covariance and then computing eigenvectors (only works for $n<p$): ${\cal O} n^3$
+* kPCA: map $\Phi: \R^n \to F$
+* find $K = \left\langle \Phi(x_i) \Phi(x_j) \right\rangle$
+   * never worse than $n^3$, no matter how big the **feature space** is (even infinite)
+   * better than linear PCA if $p>n$
+
+## kpca example
+
+```{r kpca, message = FALSE}
+library(palmerpenguins)
+library(tidyverse)
+library(kernlab)
+pX <- (penguins
+    |> select(where(is.numeric))
+    |> select(-year)
+    |> as.matrix()
+    |> scale()
+)
+cc <- adjustcolor(palette()[c(1,2,4)], alpha.f = 0.7)
+pfun <- function(k) {
+    plot(rotated(k),col= cc[penguins$species], pch = 16)
+}
+k0 <- kpca(pX, kernel = "vanilladot", kpar = list())
+pfun(k0)
+k1 <- kpca(pX, kernel = "polydot", kpar = list(degree = 2))
+pfun(k1)
+k2 <- kpca(pX, kernel = "rbfdot", kpar = list(sigma = 0.5))
+pfun(k2)
+k3 <- kpca(pX, kernel = "rbfdot", kpar = list(sigma = 1))
+pfun(k3)
+```
 
 ## Gaussian processes
 
@@ -139,4 +177,8 @@ not ${\cal O}(MN^2)$ (where $N$ is number of training points, $M$ is dimension o
 * "Under the assumption of Gaussian observation noise the computations needed to make predictions are tractable and are dominated by the inversion of a n × n matrix."
 
 * zero-mean Gaussian prior: $\w \sim {\cal N}(\bzero, \Sigma_p)$
+
+## conditioning
+
+* joint distribution of $X$ (observed) and $Y$ (to be predicted)
 
