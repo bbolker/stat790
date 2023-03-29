@@ -170,15 +170,43 @@ pfun(k3)
 
 ## Gaussian processes
 
-* @rasmussenGaussian2005
+* @rasmussenGaussian2005; @krasserGaussian; @krasserSparse
 * motivated by Bayesian context, or from classical **geostatistics** (kriging)
 * interpolation vs. approximation
 
 * "Under the assumption of Gaussian observation noise the computations needed to make predictions are tractable and are dominated by the inversion of a n × n matrix."
 
 * zero-mean Gaussian prior: $\w \sim {\cal N}(\bzero, \Sigma_p)$
+* $\Sigma_p$? **positive definite** function of distance
 
-## conditioning
+## GP prior
 
-* joint distribution of $X$ (observed) and $Y$ (to be predicted)
+$$
+\left(
+\begin{array}{c}
+f \\ f_*
+\end{array}
+\right)
+\sim
+{\cal N}
+\left(
+\bzero,
+\left(
+\begin{array}{cc}
+\K & \K_* \\
+\K_*^\top & \K_{**} \\
+\end{array}
+\right)
+\right)
+$$
 
+## conditional distribution
+
+$$
+\begin{split}
+\mu_* & = \K_*^\top \K^{-1} f \\
+\Sigma_* & = \K_{**} - \K_*^\top \K^{-1} \K
+\end{split}
+$$
+
+![](../pix/gauss_proc1.png)
