@@ -178,6 +178,9 @@ pfun(k3)
 
 * zero-mean Gaussian prior: $\w \sim {\cal N}(\bzero, \Sigma_p)$
 * $\Sigma_p$? **positive definite** function of distance
+   * $\x^\top \Sigma \x > 0$ for all $\x \neq 0$
+   * all eigenvalues of $\Sigma$ are positive
+* only certain **autocovariance functions** $f(r)$ satisfy this condition for all possible $\x$: RBF, Matern, ...
 
 ## GP prior
 
@@ -210,3 +213,15 @@ $$
 $$
 
 ![](../pix/gauss_proc1.png)
+
+## hyperparameters
+
+* 'scale' (residual variance)
+* length scale
+* observation variance/measurement error
+* kernel shape (RBF/quadratic vs. ...)
+
+## stationarity and isotropy
+
+* *non-isotropic*: separable kernels
+* *non-stationary*: harder ...
