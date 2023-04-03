@@ -2866,10 +2866,23 @@ f \\ f_*
 <section id="hyperparameters" class="level2">
 <h2 class="anchored" data-anchor-id="hyperparameters">hyperparameters</h2>
 <ul>
-<li>‘scale’ (residual variance)</li>
-<li>length scale</li>
-<li>observation variance/measurement error</li>
+<li>‘scale’ (residual variance)
+<ul>
+<li>level of uncertainty between interpolating points</li>
+<li>can estimate directly from MVN MLE as <span class="math inline">\(y^\top C y\)</span></li>
+</ul></li>
+<li>length scale
+<ul>
+<li>results may not be too sensitive!</li>
+</ul></li>
 <li>kernel shape (RBF/quadratic vs. …)</li>
+</ul>
+</section>
+<section id="observation-variancemeasurement-error" class="level2">
+<h2 class="anchored" data-anchor-id="observation-variancemeasurement-error">observation variance/measurement error</h2>
+<ul>
+<li>allow smoothing rather than interpolation</li>
+<li>cf SVM without complete separation</li>
 </ul>
 </section>
 <section id="stationarity-and-isotropy" class="level2">

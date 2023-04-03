@@ -153,10 +153,12 @@ pX <- (penguins
     |> select(-year)
     |> as.matrix()
     |> scale()
+    |> na.omit()
 )
 cc <- adjustcolor(palette()[c(1,2,4)], alpha.f = 0.7)
 pfun <- function(k) {
-    plot(rotated(k),col= cc[penguins$species], pch = 16)
+    plot(rotated(k),col= cc[penguins$species], pch = 16,
+         xlab = "PC1", ylab = "PC2")
 }
 k0 <- kpca(pX, kernel = "vanilladot", kpar = list())
 pfun(k0)
@@ -166,6 +168,29 @@ k2 <- kpca(pX, kernel = "rbfdot", kpar = list(sigma = 0.5))
 pfun(k2)
 k3 <- kpca(pX, kernel = "rbfdot", kpar = list(sigma = 1))
 pfun(k3)
+```
+
+## expanded PCA
+
+```{r}
+pfun2 <- function(p) {
+    plot(p$score[,1], p$score[,2], col= cc[penguins$species], pch = 16,
+         xlab = "PC1", ylab = "PC2")
+}
+## not working ...
+expand_X <- function(X, sigma = 1, n = 10) {
+    res <- list()
+    for (m in 1:n) {
+        res[[m]] <- apply(X/sigma, 2, function(x) x^m/factorial(m))
+    }
+    do.call("cbind", res)
+}
+eX <- expand_X(pX)
+par(mfrow= c(1,2))
+pfun(k0); pfun2(princomp(pX))
+## not identical but close?
+pfun(k1); pfun2(princomp(~.^2, data = as.data.frame(pX)))
+## pfun(k3); pfun2(princomp(eX))
 ```
 
 ## Gaussian processes
@@ -180,7 +205,7 @@ pfun(k3)
 * $\Sigma_p$? **positive definite** function of distance
    * $\x^\top \Sigma \x > 0$ for all $\x \neq 0$
    * all eigenvalues of $\Sigma$ are positive
-* only certain **autocovariance functions** $f(r)$ satisfy this condition for all possible $\x$: RBF, Matern, ...
+* only certain **autocovariance functions** $f(r)$ satisfy this condition for all possible $\x$: RBF, Matérn, ...
 
 ## GP prior
 
@@ -217,11 +242,37 @@ $$
 ## hyperparameters
 
 * 'scale' (residual variance)
+    * level of uncertainty between interpolating points
+	* can estimate directly from MVN MLE as $y^\top C y$
 * length scale
-* observation variance/measurement error
+    * results may not be too sensitive!
 * kernel shape (RBF/quadratic vs. ...)
+
+## observation variance/measurement error
+
+* **nugget variance**
+* allow smoothing rather than interpolation
+* cf SVM without complete separation
+
 
 ## stationarity and isotropy
 
-* *non-isotropic*: separable kernels
-* *non-stationary*: harder ...
+* **isotropy**: exchangeability of parameters/directions
+   * **separable** priors (different variance for each direction)
+   * could?? model prior correlation as well)
+* **stationarity**: kernel depends only on $||x_i-x_j||$
+   * non-stationary: location-dependent, center at mean?
+   * or model linear covariates + GP
+
+## GPs and splines
+
+* @kammannGeoadditive2003; @rasmussenGaussian2005
+* `?mgcv::smooth.construct.gp.smooth.spec`
+
+## Bayesian model tuning/hyperparameter tuning
+
+* `tune_bayes`
+* https://www.tidymodels.org/learn/work/bayes-opt/
+
+## combining kernels
+

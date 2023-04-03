@@ -20,11 +20,13 @@ nsim <- 100
 Ym <- rmvnorm(nsim, sigma=Sigma)
 matplot(X, t(Ym), type="l", ylab="Y", col = 1, lty = 1)
 
+sc <- 1
+len <- 1
 n <- 8
 X <- matrix(seq(0, 2*pi, length=n), ncol=1)
 y <- sin(X)
-D <- distance(X) 
-Sigma <- exp(-D) + diag(eps, ncol(D))
+D <- distance(X/len) 
+Sigma <- sc*(exp(-D) + diag(eps, ncol(D)))
 
 ns <- 100
 margin <- 5
@@ -38,6 +40,7 @@ DX <- distance(XX, X)
 SX <- exp(-DX)
 
 ## brute force!
+
 Si <- solve(Sigma)
 mup <- SX %*% Si %*% y
 Sigmap <- SXX - SX %*% Si %*% t(SX)
@@ -53,4 +56,5 @@ points(X, y, pch=20, cex=2)
 lines(XX, sin(XX), col="blue")
 lines(XX, mup, lwd=2)
 matlines(XX, cbind(q1, q2), lwd=2, lty=2, col=2)
+
 
