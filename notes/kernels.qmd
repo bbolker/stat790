@@ -155,9 +155,11 @@ pX <- (penguins
     |> scale()
     |> na.omit()
 )
+## want species to match with NA-adjusted matrix!
+ss <- penguins |> drop_na(where(is.numeric)) |> pull(species)
 cc <- adjustcolor(palette()[c(1,2,4)], alpha.f = 0.7)
 pfun <- function(k) {
-    plot(rotated(k),col= cc[penguins$species], pch = 16,
+    plot(rotated(k),col= cc[ss], pch = 16,
          xlab = "PC1", ylab = "PC2")
 }
 k0 <- kpca(pX, kernel = "vanilladot", kpar = list())
@@ -170,29 +172,26 @@ k3 <- kpca(pX, kernel = "rbfdot", kpar = list(sigma = 1))
 pfun(k3)
 ```
 
-## expanded PCA
+## expanded PCA by hand
 
 ```{r}
 pfun2 <- function(p) {
-    plot(p$score[,1], p$score[,2], col= cc[penguins$species], pch = 16,
+    plot(p$scores[,1], p$scores[,2], col= cc[ss], pch = 16,
          xlab = "PC1", ylab = "PC2")
 }
-## not working ...
-expand_X <- function(X, sigma = 1, n = 10) {
-    res <- list()
-    for (m in 1:n) {
-        res[[m]] <- apply(X/sigma, 2, function(x) x^m/factorial(m))
-    }
-    do.call("cbind", res)
-}
-eX <- expand_X(pX)
-par(mfrow= c(1,2))
-pfun(k0); pfun2(princomp(pX))
-## not identical but close?
-pfun(k1); pfun2(princomp(~.^2, data = as.data.frame(pX)))
-## pfun(k3); pfun2(princomp(eX))
+p0 <- princomp( ~ ., data = as.data.frame(pX))
+polyform <- (sprintf("poly(%s, degree = 2)", paste(colnames(pX), collapse = ","))
+    |> reformulate()
+)
+X <- model.matrix(polyform, data = as.data.frame(pX))
+p1 <- princomp( polyform, data = as.data.frame(pX))
+par(mfrow = c(1, 2)); pfun2(p0); pfun(k0)
+par(mfrow = c(1, 2)); pfun2(p1); pfun(k1)
 ```
 
+[how should one choose a kernel?](https://stats.stackexchange.com/questions/131142/how-to-choose-a-kernel-for-kernel-pca)
+   - if kPCA is a step in a pipeline, make the kernel type and parameters (e.g. scale for RBF) part of the tuning process
+   
 ## Gaussian processes
 
 * @rasmussenGaussian2005; @krasserGaussian; @krasserSparse
@@ -202,6 +201,7 @@ pfun(k1); pfun2(princomp(~.^2, data = as.data.frame(pX)))
 * "Under the assumption of Gaussian observation noise the computations needed to make predictions are tractable and are dominated by the inversion of a n × n matrix."
 
 * zero-mean Gaussian prior: $\w \sim {\cal N}(\bzero, \Sigma_p)$
+
 * $\Sigma_p$? **positive definite** function of distance
    * $\x^\top \Sigma \x > 0$ for all $\x \neq 0$
    * all eigenvalues of $\Sigma$ are positive
@@ -228,7 +228,7 @@ f \\ f_*
 \right)
 $$
 
-## conditional distribution
+## conditional posterior distribution
 
 $$
 \begin{split}
@@ -237,16 +237,20 @@ $$
 \end{split}
 $$
 
+**kriging equations**
+
 ![](../pix/gauss_proc1.png)
 
 ## hyperparameters
 
 * 'scale' (residual variance)
+    * *could* estimate by cross-validation etc.
+    * but have MLE, Bayesian estimates immediately available ...
     * level of uncertainty between interpolating points
 	* can estimate directly from MVN MLE as $y^\top C y$
 * length scale
     * results may not be too sensitive!
-* kernel shape (RBF/quadratic vs. ...)
+* kernel shape (RBF/quadratic vs. Matérn vs ...)
 
 ## observation variance/measurement error
 
@@ -274,5 +278,10 @@ $$
 * `tune_bayes`
 * https://www.tidymodels.org/learn/work/bayes-opt/
 
+## sparsity: nearest-neighbour
+
+
 ## combining kernels
+
+`plgp`, `spectralGP`, `GauPro`, `tfprobability`, ...
 
