@@ -313,7 +313,7 @@ $$
 \end{split}
 $$
 
-minimize $||\y - \X \beta + \Z \u||_2^2 + ||\Omega^{-1} u||_2^2$
+minimize $||\y - \X \beta + \Z u||_2^2 + ||\Omega^{-1} u||_2^2$
 
 ## combining kernels
 
