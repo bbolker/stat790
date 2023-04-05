@@ -257,15 +257,23 @@ $$
 
 ![](../pix/gauss_proc2.png)
 
+## estimating hyperparameters
+
+* residual variance is easy
+* length scale and $\sigma^2_f$ **can** be estimated by MLE
+   * derivatives are available, so gradient descent/quasi-Newton methods are OK
+   * ... but ... "Our examples show that this maximization may be fraught with difficulties." @warnesProblems1987
+   
 ## kernel shape
 
-* **smoothness**
+* smoothness
 * RBF is infinitely differentiable
-* Matérn functions
+* **Matérn functions**
    * $\nu = 1/2$, $\exp(-|d|)$
    * $\nu = 3/2$, $(1+\sqrt{3}d) \exp(-\sqrt{3}d)$
    * $\nu = 5/2$, $(1+\sqrt{5}d + 5/3 d^2) \exp(-\sqrt{5}d)$
 * otherwise Bessel function $K_\nu$ (ugh)
+* $\lceil \nu \rceil$-differentiable
 
 ![](../pix/gauss_proc3.png)
 
@@ -273,10 +281,13 @@ $$
 
 @jonesMatern2021
 
+* (also: power-family $\exp(-|d|^p)$, etc. etc. etc.)
+
 ## stationarity and isotropy
 
 * **isotropy**: exchangeability of parameters/directions
-   * **separable** priors (different variance for each direction)
+   * easy fix: **separable** priors (different variance for each direction)
+   * i.e., different length scales in each direction
    * could?? model prior correlation as well)
 * **stationarity**: kernel depends only on $||x_i-x_j||$
    * non-stationary: location-dependent, center at mean?
@@ -286,7 +297,7 @@ $$
 
 ## GPs and splines
 
-* ; @rasmussenGaussian2005
+* @rasmussenGaussian2005
 * `?mgcv::smooth.construct.gp.smooth.spec`
 * @kammannGeoadditive2003
     * choose Matérn with $\nu = 3/2$
@@ -304,15 +315,43 @@ $$
 
 minimize $||\y - \X \beta + \Z \u||_2^2 + ||\Omega^{-1} u||_2^2$
 
+## combining kernels
+
+* can multiply kernels, corresponds to *Kronecker product* of kernel matrices
+* e.g. pick RBF for time, Matérn for space
+* @bourotteflexible2016
+
+> Often, separability is an overly simplified assumption for weather and climate data. Space–time separability is equivalent to conditional independence between $Z(s,t)$ and $Z(s', t')$ given $Z(s, t')$ (or $Z(s', t)$)
+
 ## Bayesian model tuning/hyperparameter tuning
 
 * `tune_bayes`
 * https://www.tidymodels.org/learn/work/bayes-opt/
 
-## sparsity: nearest-neighbour
+## scalable GPs
 
+@banerjeeHighDimensional2017
 
-## combining kernels
+## low-rank representations
+
+* pick a smaller number of knots
+* work with/invert the Gram matrix $K$ over the knots (only)
+* multiply by weights based on knot-to-point kernel values
+* results may oversmooth/underestimate variability in the function/overestimate residual variance (nugget)
+* complexity of ${\cal O}(n r^2)$, but $r$ has to be big then ...
+* (i.e. may break down between $n = 10^4$ and $n = 10^6$)
+
+## covariance tapering
+
+* multiply $K$ by a compactly supported tapering function (also pos def)
+* sets covariance to zero at long distances
+* need efficient sparse linear algebra ...
+
+## nearest-neighbour Gaussian processes
+
+* work with the **precision** matrix instead $K^{-1}$
+* sparse Gaussian graphical models
+* **conditionally independent** points $x_i$, $x_j$ have $K^{-1}_{ij} = 0$
 
 ## packages
 
