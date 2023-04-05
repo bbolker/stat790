@@ -239,25 +239,39 @@ $$
 
 **kriging equations**
 
-![](../pix/gauss_proc1.png)
-
-## hyperparameters
-
-* 'scale' (residual variance)
-    * *could* estimate by cross-validation etc.
-    * but have MLE, Bayesian estimates immediately available ...
-    * level of uncertainty between interpolating points
-	* can estimate directly from MVN MLE as $y^\top C y$
-* length scale
-    * results may not be too sensitive!
-* kernel shape (RBF/quadratic vs. Matérn vs ...)
-
 ## observation variance/measurement error
 
 * **nugget variance**
 * allow smoothing rather than interpolation
 * cf SVM without complete separation
 
+## hyperparameters
+
+* variance of Gaussian process
+* observation variance 'scale' (residual variance)
+    * *could* estimate by cross-validation etc.
+    * but have MLE, Bayesian estimates immediately available ...
+    * level of uncertainty between interpolating points
+	* can estimate directly from MVN MLE as $y^\top C y$
+* length scale
+
+![](../pix/gauss_proc2.png)
+
+## kernel shape
+
+* **smoothness**
+* RBF is infinitely differentiable
+* Matérn functions
+   * $\nu = 1/2$, $\exp(-|d|)$
+   * $\nu = 3/2$, $(1+\sqrt{3}d) \exp(-\sqrt{3}d)$
+   * $\nu = 5/2$, $(1+\sqrt{5}d + 5/3 d^2) \exp(-\sqrt{5}d)$
+* otherwise Bessel function $K_\nu$ (ugh)
+
+![](../pix/gauss_proc3.png)
+
+![](../pix/matern2.png)
+
+@jonesMatern2021
 
 ## stationarity and isotropy
 
@@ -268,10 +282,27 @@ $$
    * non-stationary: location-dependent, center at mean?
    * or model linear covariates + GP
 
+@paciorekNonstationary2003
+
 ## GPs and splines
 
-* @kammannGeoadditive2003; @rasmussenGaussian2005
+* ; @rasmussenGaussian2005
 * `?mgcv::smooth.construct.gp.smooth.spec`
+* @kammannGeoadditive2003
+    * choose Matérn with $\nu = 3/2$
+	* choose scale == max distance between sample points
+	* only need to estimate $\sigma^2_f$
+	* fit linear mixed model 
+
+$$
+\begin{split}
+\Z & = K(||x_i-\kappa_k||/\rho) \\
+\OOmega & = K(||\kappa_k -\kappa_k'||/\rho) \\
+\y & = \X \bbeta + \Z u + \epsilon
+\end{split}
+$$
+
+minimize $||\y - \X \beta + \Z \u||_2^2 + ||\Omega^{-1} u||_2^2$
 
 ## Bayesian model tuning/hyperparameter tuning
 
@@ -283,5 +314,10 @@ $$
 
 ## combining kernels
 
-`plgp`, `spectralGP`, `GauPro`, `tfprobability`, ...
+## packages
+
+`plgp`, `spectralGP`, `GauPro`, `tfprobability`, `mlegp`, ...
+
+sparse GPs: `psgp`
+
 
