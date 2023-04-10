@@ -112,6 +112,8 @@ $$
 
 ## divergences
 
+* energy changes too much
+
 ## centered and non-centered parameters
 
 * funnels

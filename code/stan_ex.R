@@ -67,3 +67,29 @@ for (i in 1:8) {
 }
 
 mod_encp <- stan_model("eight_schools_noncentered.stan", model_name = "ec1")
+
+library(TMB)
+
+treatment_effects <- c(28.39, 7.94, -2.75 , 6.82, -0.64, 0.63, 18.01, 12.16)
+treatment_stddevs <- c(14.9, 10.2, 16.3, 11.0, 9.4, 11.4, 10.4, 17.6)
+e_data <-list(J = 8,
+              y = treatment_effects,
+              sigma = treatment_stddevs)
+
+
+compile("eight_schools_centered.cpp")
+dyn.load(dynlib("eight_schools_centered"))
+obj <- MakeADFun(data = e_data[-1],
+                 parameters = list(mu = 0,
+                                   logtau = 0,
+                                   theta = rep(0, 8)),
+                 random = "theta",
+                 DLL="eight_schools_centered")
+
+
+do.call(optim, obj)
+
+library(glmmTMB)
+g1 <- glmmTMB(y ~ 1 + (1|site),
+        dispformula = ~ 0 + offset(2*log(sigma)),
+        data = with(e_data, data.frame(y, sigma, site = factor(1:8))))
