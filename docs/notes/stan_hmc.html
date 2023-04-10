@@ -2614,6 +2614,12 @@ vertical-align: -.125em;
 </ul>
 <p><a href="https://homepage.divms.uiowa.edu/~luke/classes/STAT7400-2022/slides/mcmc.html#1">Tierney’s notes</a></p>
 <ul>
+<li>standard tricks
+<ul>
+<li>sampling from conjugate priors</li>
+<li>sequential (Gibbs) sampling/conditional distributions</li>
+<li>Metropolis-Hastings</li>
+</ul></li>
 <li><strong>data augmentation</strong>: like E-M but stochastic at both steps:
 <ul>
 <li>sample expected values of missing data/latent variables from their <em>conditional posterior distributions</em> (instead of taking expectation)</li>
@@ -2626,6 +2632,10 @@ vertical-align: -.125em;
 <h2 class="anchored" data-anchor-id="hmc">HMC</h2>
 <ul>
 <li>Radford Neal’s 1995 thesis is <a href="https://web.archive.org/web/20220121204956/http://www.db.toronto.edu/~radford/ftp/thesis.pdf">here</a> (Wayback Machine): also published by Springer <span class="citation" data-cites="nealBayesian2012">(<a href="#ref-nealBayesian2012" role="doc-biblioref">Neal 2012</a>)</span></li>
+<li>augment position (current parameter values) with “momentum”; randomly perturb momentum at each step, integrate dynamics</li>
+<li>leapfrog integration: have to pick stepsize/number of steps</li>
+<li>No-U-Turn sampler: integrate until trajectory starts to turn back</li>
+<li><a href="https://chi-feng.github.io/mcmc-demo/app.html">animations</a></li>
 </ul>
 <div class="no-row-height column-margin column-container"><div id="ref-nealBayesian2012" class="csl-entry" role="doc-biblioentry">
 Neal, Radford M. 2012. <em>Bayesian Learning for Neural Networks</em>. Vol. 118. <span>Springer Science &amp; Business Media</span>.
@@ -2682,6 +2692,21 @@ Lambert, Ben, and Aki Vehtari. 2022. <span>“<span>R</span><span><span class="m
 <ul>
 <li>funnels</li>
 <li>centered is better when groups are well characterized (“informative data”, large <span class="math inline">\(N\)</span> per group), non-centered is better when joint prior contributes a lot (“noninformative data”, small <span class="math inline">\(N\)</span> per group)</li>
+<li>??performance of JAGS/Gibbs on 8-schools problem?</li>
+</ul>
+</section>
+<section id="challenges" class="level2">
+<h2 class="anchored" data-anchor-id="challenges">challenges</h2>
+<ul>
+<li>high dimensionality (<em>always</em> hard)</li>
+<li>documentation</li>
+<li>debugging!</li>
+<li>resolving divergences</li>
+<li>discrete latent variables (“Rao-Blackwellization”, <span class="citation" data-cites="robertRaoBlackwellization2021a">(<a href="#ref-robertRaoBlackwellization2021a" role="doc-biblioref"><strong>robertRaoBlackwellization2021a?</strong></a>)</span>); marginalize/find conditional expectation
+<ul>
+<li>e.g. discrete mixture models</li>
+</ul></li>
+<li>speed</li>
 </ul>
 
 </section>

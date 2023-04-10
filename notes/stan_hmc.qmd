@@ -68,6 +68,11 @@ ifun <- function(x, title = "", ck = FALSE, raster = TRUE) {
 
 [Tierney's notes](https://homepage.divms.uiowa.edu/~luke/classes/STAT7400-2022/slides/mcmc.html#1)
 
+* standard tricks
+   * sampling from conjugate priors
+   * sequential (Gibbs) sampling/conditional distributions
+   * Metropolis-Hastings
+   
 * **data augmentation**: like E-M but stochastic at both steps:
    * sample expected values of missing data/latent variables from their *conditional posterior distributions* (instead of taking expectation)
    * sample parameter values from *their* conditional posterior distribution (instead of maximizing)
@@ -76,6 +81,10 @@ ifun <- function(x, title = "", ck = FALSE, raster = TRUE) {
 ## HMC
 
 * Radford Neal's 1995 thesis is [here](https://web.archive.org/web/20220121204956/http://www.db.toronto.edu/~radford/ftp/thesis.pdf) (Wayback Machine): also published by Springer [@nealBayesian2012]
+* augment position (current parameter values) with "momentum"; randomly perturb momentum at each step, integrate dynamics
+* leapfrog integration: have to pick stepsize/number of steps
+* No-U-Turn sampler: integrate until trajectory starts to turn back
+* [animations](https://chi-feng.github.io/mcmc-demo/app.html)
 
 ## autodiff ("algorithmic")
 
@@ -118,3 +127,14 @@ $$
 
 * funnels
 * centered is better when groups are well characterized ("informative data", large $N$ per group), non-centered is better when joint prior contributes a lot ("noninformative data", small $N$ per group)
+* ??performance of JAGS/Gibbs on 8-schools problem?
+
+## challenges
+
+* high dimensionality (*always* hard)
+* documentation
+* debugging!
+* resolving divergences
+* discrete latent variables ("Rao-Blackwellization", @robertRaoBlackwellization2021a); marginalize/find conditional expectation
+   * e.g. discrete mixture models
+* speed
