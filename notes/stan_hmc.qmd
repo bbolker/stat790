@@ -1,0 +1,118 @@
+---
+title: "Stan, HMC, etc."
+reference-location: margin
+citation-location: margin
+bibliography: ../stat790.bib
+date: today
+date-format: "D MMM YYYY"
+---
+
+\newcommand{\A}{\mathbf A}
+\newcommand{\B}{\mathbf B}
+\newcommand{\D}{\mathbf D}
+\newcommand{\GGamma}{\boldsymbol \Gamma}
+\newcommand{\G}{\mathbf G}
+\newcommand{\HH}{\mathbf H}
+\newcommand{\I}{\mathbf I}
+\newcommand{\K}{\mathbf K}
+\newcommand{\N}{\mathbf N}
+\newcommand{\Q}{\mathbf Q}
+\newcommand{\R}{\mathbf R}
+\newcommand{\bS}{\mathbf S}
+\newcommand{\U}{\mathbf U}
+\newcommand{\V}{\mathbf V}
+\newcommand{\W}{\mathbf W}
+\newcommand{\X}{\mathbf X}
+\newcommand{\Y}{\mathbf Y}
+\newcommand{\Z}{\mathbf Z}
+\newcommand{\bbeta}{\boldsymbol \beta}
+\newcommand{\bzero}{\boldsymbol 0}
+\newcommand{\eeta}{\boldsymbol \eta}
+\newcommand{\OOmega}{\boldsymbol \Omega}
+\newcommand{\hatmat}{\mathbf H}
+\newcommand{\grad}{\mathbf g}
+\newcommand{\p}{\mathbf p}
+\newcommand{\uu}{\mathbf u}
+\newcommand{\w}{\mathbf w}
+\newcommand{\x}{\mathbf x}
+\newcommand{\y}{\mathbf y}
+\newcommand{\z}{\mathbf z}
+\newcommand{\kron}{\bigotimes}
+
+<!-- typically renders in docs/ dir  -->
+
+```{r utils, echo = FALSE}
+## use help("image-methods", "Matrix")
+## lattice graphics: ?lattice:xyplot for details on scales
+ifun <- function(x, title = "", ck = FALSE, raster = TRUE) {
+    image(Matrix(x),
+          sub = "", xlab = "", ylab = "",
+          colorkey = ck,
+          aspect = "fill",
+          scales = list(x = list(draw = FALSE),
+                        y = list(draw = FALSE)),
+          main = title,
+          useRaster = raster
+          )
+}
+```
+
+## MCMC, review
+
+* detailed balance: $\pi_i p_{ij} = \pi_j p_{ji}$
+    * MCMC mapping is $\int \pi_x p_{xy} \, dy$
+    * integrate LHS wrt $i$, RHS wrt $j$ (p. 328 of Tierney's notes)
+* implies that $\pi$ is the stationary distribution
+* also need aperiodicity to get to a **unique** stationary distribution
+* technical conditions for "fast enough" convergence, CLT applying, etc.
+
+[Tierney's notes](https://homepage.divms.uiowa.edu/~luke/classes/STAT7400-2022/slides/mcmc.html#1)
+
+* **data augmentation**: like E-M but stochastic at both steps:
+   * sample expected values of missing data/latent variables from their *conditional posterior distributions* (instead of taking expectation)
+   * sample parameter values from *their* conditional posterior distribution (instead of maximizing)
+* e.g. impute missing values on the fly
+
+## HMC
+
+* Radford Neal's 1995 thesis is [here](https://web.archive.org/web/20220121204956/http://www.db.toronto.edu/~radford/ftp/thesis.pdf) (Wayback Machine): also published by Springer [@nealBayesian2012]
+
+## autodiff ("algorithmic")
+
+* magic technology: "the evaluation of a gradient requires never more than five times the effort of evaluating the underlying function by itself" 
+* operator overloading
+* reverse mode (best when we have a mapping from $R^n \to R$)
+
+([Wikipedia](https://en.wikipedia.org/wiki/Automatic_differentiation)):
+
+\begin{align}
+\frac{\partial y}{\partial x}
+&= \frac{\partial y}{\partial w_{n-1}} \frac{\partial w_{n-1}}{\partial x} \\
+&= \frac{\partial y}{\partial w_{n-1}} \left(\frac{\partial w_{n-1}}{\partial w_{n-2}} \frac{\partial w_{n-2}}{\partial x}\right) \\[6pt]
+&= \frac{\partial y}{\partial w_{n-1}} \left(\frac{\partial w_{n-1}}{\partial w_{n-2}} \left(\frac{\partial w_{n-2}}{\partial w_{n-3}} \frac{\partial w_{n-3}}{\partial x}\right)\right) \\
+&= \cdots
+\end{align}
+
+* lots of other engines (PyTorch, JAX, ...)
+
+## diagnostics
+
+* assuming an AR1 model,
+$$
+\textrm{SD}(\hat \beta) = \frac{\textrm{SD}(\beta|z)}{\sqrt{N}} \sqrt{\frac{1+\rho_\beta}{1-\rho_\beta}}
+$$
+* effective sample size = $N(1-\rho)/(1+\rho)$ (AR1), $N \left( \sum \rho_k \right)^{-1}$ more generally
+* efficiency is $\textrm{ESS}/N$
+* $\hat R$ (Gelman-Rubin statistic: potential scale-reduction factor), improved $\hat R$ [@vehtariRankNormalization2021; @lambertRobust2022]: R code [here](https://github.com/avehtari/rhat_ess/blob/master/code/monitornew.R)
+   * sensitivity to chains with different variances, infinite means
+   * compare within- and between-chain variances
+   * at least 4 chains
+   * threshold of 1.01
+   * improved ESS
+
+## divergences
+
+## centered and non-centered parameters
+
+* funnels
+* centered is better when groups are well characterized ("informative data", large $N$ per group), non-centered is better when joint prior contributes a lot ("noninformative data", small $N$ per group)
