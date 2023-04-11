@@ -15,3 +15,6 @@ tmp.*
 *.toc
 *.tex
 **/.ipynb_checkpoints
+*.o
+*.so
+*.rds
